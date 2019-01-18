@@ -5,6 +5,8 @@ plugins {
 
 def ROBOT_MAIN_CLASS = "org.team639.robot.Main"
 
+targetCompatibility = 1.11
+
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
 deploy {
