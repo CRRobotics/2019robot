@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
+import org.team639.robot.commands.JoystickControlledClimb;
 
 public class Climbing extends Subsystem {
 
@@ -24,7 +25,7 @@ public class Climbing extends Subsystem {
     @Override
     public void initDefaultCommand()
     {
-
+        setDefaultCommand(new JoystickControlledClimb());
     }
 
     /* Moves the climbing motors based on a parameter amount
