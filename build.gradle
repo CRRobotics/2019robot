@@ -22,6 +22,8 @@ deploy {
     artifacts {
         frcJavaArtifact('frcJava') {
             targets << "roborio"
+
+            arguments << '-Djava.library.path=/home/lvuser/deploy'
             // Debug can be overridden by command line, for use with VSCode
             debug = frc.getDebugOrDefault(false)
         }

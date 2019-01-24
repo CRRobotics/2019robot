@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team639.robot.Constants;
+import org.team639.robot.commands.drive.DriveTracker;
 import org.team639.robot.commands.drive.JoystickDrive;
 
 import static org.team639.robot.Constants.Drivetrain.*;
@@ -24,6 +25,8 @@ public class Drivetrain extends Subsystem {
     private double kI = 0;
     private double kD = 0;
     private double kF = 0;
+
+    private DriveTracker tracker;
 
     public Drivetrain(TalonSRX leftMaster, TalonSRX rightMaster, AHRS navx) {
         super("Drivetrain");
@@ -48,6 +51,8 @@ public class Drivetrain extends Subsystem {
         rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
         if (!encodersPresent()) controlMode = Mode.OpenLoop;
+
+        tracker = new DriveTracker(0, 0, this);
     }
 
     /**
@@ -79,6 +84,11 @@ public class Drivetrain extends Subsystem {
                 setSpeedsRaw(ls, rs);
                 break;
         }
+    }
+
+    public void setSpeedsFeetPerSecond(double left, double right) {
+        setControlMode(Mode.ClosedLoop);
+        setSpeedsRaw(left * FPS_TO_MOTOR_UNITS, right * FPS_TO_MOTOR_UNITS);
     }
 
     /**
@@ -225,7 +235,21 @@ public class Drivetrain extends Subsystem {
         setDefaultCommand(new JoystickDrive());
     }
 
-    public static enum Mode {
+    @Override
+    public void periodic() {
+        // Update the position tracking every iteration no matter what.
+        tracker.collect();
+    }
+
+    public double getTrackedX() {
+        return tracker.getX();
+    }
+
+    public double getTrackedY() {
+        return tracker.getY();
+    }
+
+    public enum Mode {
         ClosedLoop(ControlMode.Velocity),
         OpenLoop(ControlMode.PercentOutput);
 
