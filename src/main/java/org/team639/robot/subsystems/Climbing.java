@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 import org.team639.robot.commands.JoystickControlledClimb;
 
 public class Climbing extends Subsystem {
@@ -12,6 +13,9 @@ public class Climbing extends Subsystem {
     private TalonSRX climbMotor2;
     private DigitalInput highlimitswitch;
     private DigitalInput lowlimitswitch;
+    //We might only use 1 piston. This is still very much under construction
+    private Solenoid piston1;
+    private Solenoid piston2;
 
     public void Climbing() {
         //Device numbers/channels at the moment are placeholders
@@ -20,6 +24,8 @@ public class Climbing extends Subsystem {
         climbMotor2 = new TalonSRX(1);
         highlimitswitch = new DigitalInput(2);
         lowlimitswitch = new DigitalInput(3);
+        piston1 = new Solenoid(4);
+        piston2 = new Solenoid(5);
     }
 
     @Override
@@ -55,5 +61,30 @@ public class Climbing extends Subsystem {
             climbMotor1.set(ControlMode.PercentOutput, amount);
             climbMotor2.set(ControlMode.PercentOutput, amount);
         }
+    }
+
+    //Accessor methods for components start here
+    public TalonSRX getClimbMotor1() {
+        return climbMotor1;
+    }
+
+    public TalonSRX getClimbMotor2() {
+        return climbMotor2;
+    }
+
+    public DigitalInput getHighlimitswitch() {
+        return highlimitswitch;
+    }
+
+    public DigitalInput getLowlimitswitch() {
+        return lowlimitswitch;
+    }
+
+    public Solenoid getPiston1() {
+        return piston1;
+    }
+
+    public Solenoid getPiston2() {
+        return piston2;
     }
 }

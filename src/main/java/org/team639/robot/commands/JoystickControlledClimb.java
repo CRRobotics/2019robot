@@ -1,24 +1,13 @@
 package org.team639.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.Joystick;
-import org.team639.robot.subsystems.Climbing;
+import org.team639.robot.Robot;
 
 public class JoystickControlledClimb extends Command{
 
-    Joystick joystick;
-    Climbing climbing;
-
-    //Ports are placeholders and will need to be replaced
-    public JoystickControlledClimb()
-    {
-        joystick = new Joystick(0);
-        climbing = new Climbing();
-    }
-
     public void execute()
     {
-        double input = joystick.getRawAxis(0);
-        climbing.moveSystem(input);
+        double input = Robot.getJoystick().getRawAxis(0);
+        Robot.getClimbing().moveSystem(input);
     }
 
     public boolean isFinished()

@@ -1,8 +1,15 @@
 package org.team639.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import org.team639.robot.subsystems.Climbing;
 
 public class Robot extends TimedRobot {
+
+    //Port number may or may not need to be changed
+    private static Joystick joystick = new Joystick(1);
+    private static Climbing climbing = new Climbing();
+
     @Override
     public void robotInit() {
         super.robotInit();
@@ -51,5 +58,13 @@ public class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
         super.testPeriodic();
+    }
+
+    public static Climbing getClimbing() {
+        return climbing;
+    }
+
+    public static Joystick getJoystick() {
+        return joystick;
     }
 }
