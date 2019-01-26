@@ -63,6 +63,12 @@ public class Climbing extends Subsystem {
         }
     }
 
+    //Sets pistons 1 and 2 to a specified value
+    public void setPistons(boolean open) {
+        piston1.set(open);
+        piston2.set(open);
+    }
+
     //Accessor methods for components start here
     public TalonSRX getClimbMotor1() {
         return climbMotor1;

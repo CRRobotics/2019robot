@@ -6,11 +6,14 @@ import org.team639.robot.Robot;
 //Moves the climbing system pivot in the opposite direction with the Solenoid pistons.
 public class PivotReverse extends Command {
 
+    public PivotReverse () {
+        requires(Robot.getClimbing());
+    }
+
     public void initialize()
     {
         super.initialize();
-        Robot.getClimbing().getPiston1().set(false);
-        Robot.getClimbing().getPiston2().set(false);
+        Robot.getClimbing().setPistons(false);
     }
 
     public boolean isFinished()

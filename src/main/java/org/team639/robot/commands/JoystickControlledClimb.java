@@ -4,6 +4,10 @@ import org.team639.robot.Robot;
 
 public class JoystickControlledClimb extends Command{
 
+    public JoystickControlledClimb () {
+        requires(Robot.getClimbing());
+    }
+
     public void execute()
     {
         double input = Robot.getJoystick().getRawAxis(0);
