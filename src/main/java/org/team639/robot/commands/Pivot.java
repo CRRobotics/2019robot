@@ -14,7 +14,6 @@ public class Pivot extends Command {
     {
         super.initialize();
         Robot.getClimbing().setPistons(true);
-        Robot.getClimbing().setPistons(true);
     }
 
     public boolean isFinished()
