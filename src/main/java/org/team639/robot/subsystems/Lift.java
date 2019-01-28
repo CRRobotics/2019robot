@@ -19,34 +19,45 @@ public abstract class Lift extends Subsystem {
 
     private final int lift_max_height;
     private TalonSRX mainTalon;
-        private TalonSRX followerTalon;
+    private TalonSRX followerTalon;
 
-        private Solenoid brake;
+    private Solenoid brake;
 
-        private ControlMode currentControlMode;
+    private ControlMode currentControlMode;
 
-        private double kP;
-        private double kI;
-        private double kD;
-        private double kF;
+    private double kP;
+    private double kI;
+    private double kD;
+    private double kF;
 
-        public Lift() {
-            lift_max_height = 185;
+    public Lift() {
+        lift_max_height = 185;
 
-            mainTalon = new TalonSRX(6);
-            followerTalon = new TalonSRX(7);
+        mainTalon = new TalonSRX(6);
+        followerTalon = new TalonSRX(7);
 
-            followerTalon.follow(mainTalon);
+        followerTalon.follow(mainTalon);
 
-            mainTalon.setInverted(true);
-            followerTalon.setInverted(true);
+        mainTalon.setInverted(true);
+        followerTalon.setInverted(true);
 
-            mainTalon.configReverseSoftLimitEnable(false, 0);
+        mainTalon.configReverseSoftLimitEnable(false, 0);
 
-            mainTalon.configForwardSoftLimitEnable(true, 0);
-            mainTalon.configForwardSoftLimitThreshold(Constants.LIFT_MAX_HEIGHT, 0);
-
-
+        mainTalon.configForwardSoftLimitEnable(true, 0);
+        mainTalon.configForwardSoftLimitThreshold(Constants.LIFT_MAX_HEIGHT, 0);
     }
 
+        public void setMotionMagicPosition(int tickCount) {
+            mainTalon.set(ControlMode.MotionMagic, tickCount);
+
+        }
+
+        public double getEncPos()
+
 }
+
+
+
+
+
+
