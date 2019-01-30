@@ -52,7 +52,43 @@ public abstract class Lift extends Subsystem {
 
         }
 
-        public double getEncPos()
+        public double getEncPos(){
+            return mainTalon.getSelectedSensorPosition(0);
+
+
+}
+
+        public void zeroEncoder(){
+            mainTalon.getSensorCollection().setQuadraturePosition(0,0)
+        }
+
+        public boolean isAtLowerLimit() {
+            return mainTalon.getSensorCollection().isRevLimitSwitchClosed();
+
+
+            public void setBrake ( boolean locked){
+                brake.set(!locked);
+            }
+
+            public boolean isBraking () {
+                return !brake.get();
+
+            }
+
+            public ControlMode getCurrentControlMode () {
+                return currentControlMode;
+
+            }
+
+
+            public void setcurrentControlMode (ControlMode, ControlMode)
+            this.currentControlMode = ControlMode;
+
+        }
+
+}
+}
+{
 
 }
 
