@@ -23,7 +23,6 @@ deploy {
         frcJavaArtifact('frcJava') {
             targets << "roborio"
 
-            arguments << '-Djava.library.path=/home/lvuser/deploy'
             // Debug can be overridden by command line, for use with VSCode
             debug = frc.getDebugOrDefault(false)
         }
@@ -41,7 +40,6 @@ deploy {
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
-    implementation 'one.util:streamex:0.6.8'
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)

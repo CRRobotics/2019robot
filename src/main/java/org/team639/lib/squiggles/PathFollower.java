@@ -1,10 +1,8 @@
 package org.team639.lib.squiggles;
 
-import one.util.streamex.StreamEx;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.lang.Math.*;
 
@@ -26,13 +24,15 @@ public class PathFollower {
     }
 
     public static Optional<Vector> nextTarget(double lookaheadDistance, Vector currentLocation, List<Vector> path) {
-        var points = StreamEx.of(path)
-                .pairMap((v1, v2) -> intersection(currentLocation, lookaheadDistance, v1, v2))
-                .filter((Optional::isPresent))
-                .collect(Collectors.toList());
+        var points = new ArrayList<Vector>();
+
+        for (int i = 0; i < path.size() - 1; i++) {
+            var intersection = intersection(currentLocation, lookaheadDistance, path.get(i), path.get(i + 1));
+            intersection.ifPresent(v -> points.add(v));
+        }
 
         if (!points.isEmpty()) {
-            return points.get(points.size() - 1);
+            return Optional.of(points.get(points.size() - 1));
         } else {
             return Optional.empty();
         }

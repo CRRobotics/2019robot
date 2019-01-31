@@ -249,6 +249,10 @@ public class Drivetrain extends Subsystem {
         return tracker.getY();
     }
 
+    public double averageVelocity() {
+        return (getLeftEncVelocity() / FPS_TO_MOTOR_UNITS + getRightEncVelocity() / FPS_TO_MOTOR_UNITS) / TRACK_WIDTH_INCHES;
+    }
+
     public enum Mode {
         ClosedLoop(ControlMode.Velocity),
         OpenLoop(ControlMode.PercentOutput);

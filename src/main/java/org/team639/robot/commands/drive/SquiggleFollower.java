@@ -1,13 +1,20 @@
 package org.team639.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.team639.lib.squiggles.Squiggles;
+import org.team639.lib.squiggles.PathFollower;
+import org.team639.lib.squiggles.Vector;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Drivetrain;
 
+import java.util.List;
+
+import static org.team639.robot.Constants.Drivetrain.*;
+
 public class SquiggleFollower extends Command {
-    private Squiggles.PathFollower pf;
+    private PathFollower pf;
     private Drivetrain drivetrain = Robot.drivetrain;
+    private long lastTime = 0;
+    private boolean done = false;
 
     public SquiggleFollower() {
         requires(this.drivetrain);
@@ -15,19 +22,34 @@ public class SquiggleFollower extends Command {
 
     @Override
     protected void initialize() {
-        this.pf = new Squiggles.PathFollower(new Squiggles.DriveSignal(0, 0),0, 0, drivetrain.getRobotAngle(), new Squiggles.PFConfig(32.0 / 12.0, 1, 5, 2, 5));
+        var path = List.of(
+                new Vector(0, 0),
+                new Vector(0, 5 * 12.0),
+                new Vector(5, 5 * 12.0)
+        );
+        this.pf = new PathFollower(path, 0.5, new PathFollower.RateLimiter(2.5 * 12.0, drivetrain.averageVelocity()), MAX_VELOCITY_INCHES_PER_SECOND, K_VELOCITY, TRACK_WIDTH_INCHES);
+        lastTime = System.currentTimeMillis();
+        done = false;
     }
 
     @Override
     protected void execute() {
-        var signal = pf.getDriveSignal();
+        var time = System.currentTimeMillis();
+        var signal = pf.followWithTime(new Vector(drivetrain.getTrackedX(), drivetrain.getTrackedY()), drivetrain.getRobotAngle(), time - lastTime);
 
-        drivetrain.setSpeedsFeetPerSecond(signal.left, signal.right);
+        lastTime = time;
+
+        done = signal.isEmpty();
+
+        if (!done) {
+            var sig = signal.get();
+            drivetrain.setSpeedsFeetPerSecond(sig.left / 12.0, sig.right / 12.0);
+        }
     }
 
     @Override
     protected void end() {
-        pf.close();
+
     }
 
     @Override
@@ -37,7 +59,6 @@ public class SquiggleFollower extends Command {
 
     @Override
     protected boolean isFinished() {
-        var status = pf.follow(drivetrain.getTrackedX(), drivetrain.getTrackedY(), drivetrain.getRobotAngle());
-        return status == Squiggles.PathStatus.FINISHED || status == Squiggles.PathStatus.LOST;
+        return done;
     }
 }

@@ -19,5 +19,10 @@ public class Constants {
         public static final double TICKS_PER_INCH = ENC_TICKS_PER_ROTATION / WHEEL_CIRCUMFERENCE_INCHES;
 
         public static final double FPS_TO_MOTOR_UNITS = 1.0 / 10.0 * 12.0 * TICKS_PER_INCH;
+        public static final double INCHES_PER_SECOND_TO_MOTOR_UNITS = 1.0 / 12 * FPS_TO_MOTOR_UNITS;
+
+        public static final double TRACK_WIDTH_INCHES = 32;
+        public static final double MAX_VELOCITY_INCHES_PER_SECOND = 5 * 12.0;
+        public static final double K_VELOCITY = 3;
     }
 }
