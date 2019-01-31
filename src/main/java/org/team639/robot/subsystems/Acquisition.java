@@ -11,8 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Responsible for manipulating hatch panels and cargo.
  * @author Sara Xin
  */
-public class Acquisition extends Subsystem
-{
+public class Acquisition extends Subsystem {
 
     private TalonSRX topTalon;
     private TalonSRX bottomTalon;
@@ -23,8 +22,7 @@ public class Acquisition extends Subsystem
      * The constructor of the Acquisition class.
      * Initializes all private instance variables.
      */
-    public Acquisition()
-    {
+    public Acquisition() {
         topTalon = new TalonSRX(4);
         bottomTalon = new TalonSRX(3);
 
@@ -38,8 +36,7 @@ public class Acquisition extends Subsystem
     }
 
     @Override
-    public void initDefaultCommand()
-    {
+    public void initDefaultCommand() {
 
 
     }
@@ -49,9 +46,8 @@ public class Acquisition extends Subsystem
      *
      * @param open boolean indicating whether the flower should be open or not.
      */
-    public void setFlowerOpen(boolean open)
-    {
-       flowerOpen.set(open);
+    public void setFlowerOpen(boolean open) {
+        flowerOpen.set(open);
     }
 
     /**
@@ -59,17 +55,43 @@ public class Acquisition extends Subsystem
      *
      * @param forward boolean indicating whether the flower should be positioned forward or not.
      */
-    public void setFlowerForward(boolean forward)
-    {
+    public void setFlowerForward(boolean forward) {
         flowerForward.set(forward);
     }
 
     /**
-     *
+     * methods declaring minimum and maximum speeds of the roller motors in the forward and reverse directions
+     */
+
+    public void setBottomReverseSpeed(double speed) {
+        bottomTalon.configPeakOutputReverse(speed);
+    }
+
+    public void setBottomForwardSpeed(double speed) {
+        bottomTalon.configPeakOutputForward(speed);
+    }
+
+    public void setTopReverseSpeed(double speed) {
+        topTalon.configPeakOutputReverse(speed);
+    }
+
+    public void setTopForwardSpeed(double speed) {
+        topTalon.configPeakOutputForward(speed);
+    }
+     public void setTopFowardSpeed(double speed) {
+ setBottomReverseSpeed(75);
+ setTopForwardSpeed(70);
+ setBottomForwardSpeed(70);
+ setTopReverseSpeed(75);
+
+    }
+
+    /**
+     * setting positions of the auxiliary roller as stored or receiving to be used with motors or pistons
      */
 
 
+    {
 
-
-
+    }
 }
