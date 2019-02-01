@@ -59,12 +59,12 @@ public abstract class Lift extends Subsystem {
 }
 
         public void zeroEncoder(){
-            mainTalon.getSensorCollection().setQuadraturePosition(0,0)
+            mainTalon.getSensorCollection().setQuadraturePosition(0,0);
         }
 
         public boolean isAtLowerLimit() {
             return mainTalon.getSensorCollection().isRevLimitSwitchClosed();
-
+        }
 
             public void setBrake ( boolean locked){
                 brake.set(!locked);
@@ -81,14 +81,9 @@ public abstract class Lift extends Subsystem {
             }
 
 
-            public void setcurrentControlMode (ControlMode, ControlMode)
-            this.currentControlMode = ControlMode;
-
-        }
-
-}
-}
-{
+            public void setcurrentControlMode (ControlMode controlMode) {
+                this.currentControlMode = controlMode;
+            }
 
 }
 

@@ -1,7 +1,7 @@
 package org.team639.robot;
 
 public class Constants {
-    public static final double LIFT_MAX_HEIGHT = 8.0f;
+    public static final int LIFT_MAX_HEIGHT = 8;
 
     public enum liftPosition
     {
