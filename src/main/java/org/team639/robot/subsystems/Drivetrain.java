@@ -50,6 +50,8 @@ public class Drivetrain extends Subsystem {
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
+        zeroRobotAngle();
+
         if (!encodersPresent()) controlMode = Mode.OpenLoop;
 
         tracker = new DriveTracker(0, 0, this);
@@ -61,6 +63,8 @@ public class Drivetrain extends Subsystem {
      * @param rSpeed The value for the right side
      */
     public void setSpeedsRaw(double lSpeed, double rSpeed) {
+        System.out.println("l:" + lSpeed + "r ;" + rSpeed);
+
         rightMaster.set(controlMode.ctreMode, rSpeed);
         leftMaster.set(controlMode.ctreMode, lSpeed);
     }
@@ -235,11 +239,11 @@ public class Drivetrain extends Subsystem {
         setDefaultCommand(new JoystickDrive());
     }
 
-    @Override
-    public void periodic() {
-        // Update the position tracking every iteration no matter what.
-        tracker.collect();
-    }
+//    @Override
+//    public void periodic() {
+//        // Update the position tracking every iteration no matter what.
+//        tracker.collect();
+//    }
 
     public double getTrackedX() {
         return tracker.getX();
@@ -249,8 +253,16 @@ public class Drivetrain extends Subsystem {
         return tracker.getY();
     }
 
+    public void track() {
+        tracker.collect();
+    }
+
+    public void resetTracking() {
+        tracker.reset(0, 0);
+    }
+
     public double averageVelocity() {
-        return (getLeftEncVelocity() / FPS_TO_MOTOR_UNITS + getRightEncVelocity() / FPS_TO_MOTOR_UNITS) / TRACK_WIDTH_INCHES;
+        return (getLeftEncVelocity() / FPS_TO_MOTOR_UNITS + getRightEncVelocity() / FPS_TO_MOTOR_UNITS) / 2.0;
     }
 
     public enum Mode {

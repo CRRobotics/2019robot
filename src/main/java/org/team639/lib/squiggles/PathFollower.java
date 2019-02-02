@@ -46,20 +46,20 @@ public class PathFollower {
         double b = 2 * f.dot(d);
         double c = f.dot(f) - pow(radius, 2);
 
-        double discriminant = pow(b, 2) - 4 * a * c;
+        double discriminant = pow(b, 2) - 4.0 * a * c;
 
-        System.out.println(discriminant);
+//        System.out.println(discriminant);
 
         if (discriminant >= 0) {
             discriminant = sqrt(discriminant);
 
-            System.out.println(discriminant);
+//            System.out.println(discriminant);
 
             double t1 = (-1 * b - discriminant) / (2 * a);
             double t2 = (-1 * b + discriminant) / (2 * a);
 
-            System.out.println(t1);
-            System.out.println(t2);
+//            System.out.println(t1);
+//            System.out.println(t2);
 
             if (t2 >= 0 && t2 <= 1) {
                 return Optional.of(start.add(d.multiply(t2)));
@@ -134,14 +134,14 @@ public class PathFollower {
             this.lastOutput = initialValue;
         }
 
-        public double limit(double input, double elapsedTime) {
-            this.lastOutput = this.testLimit(input, elapsedTime);
+        public double limit(double input, double elapsedTimeMS) {
+            this.lastOutput = this.testLimit(input, elapsedTimeMS);
 
             return this.lastOutput;
         }
 
-        public double testLimit(double val, double time) {
-            var change = this.rate * (time / 1000.0);
+        public double testLimit(double val, double timeMS) {
+            var change = this.rate * (timeMS / 1000.0);
             double output;
             if (val > this.lastOutput + change) {
                 output = this.lastOutput + change;
@@ -156,6 +156,9 @@ public class PathFollower {
     }
 
     public Optional<DriveSignal> followWithTime(Vector robotPosition, double robotAngle, long timeMS) {
+        if (path.get(path.size() - 1).subtract(robotPosition).magnitude() < lookahead) {
+            this.lookahead = path.get(path.size() - 1).subtract(robotPosition).magnitude() - 0.001;
+        }
         var next = nextTarget(lookahead, robotPosition, path);
         if (next.isPresent()) {
             var c = curvature(robotPosition, next.get(), robotAngle);
@@ -163,5 +166,21 @@ public class PathFollower {
         } else {
             return Optional.empty();
         }
+    }
+
+    public double distanceToEnd(Vector position) {
+        if (path.isEmpty()) {
+            return 0;
+        } else {
+            return path.get(path.size() - 1).subtract(position).magnitude();
+        }
+    }
+
+    public double getLookahead() {
+        return lookahead;
+    }
+
+    public void setLookahead(double lookahead) {
+        this.lookahead = lookahead;
     }
 }

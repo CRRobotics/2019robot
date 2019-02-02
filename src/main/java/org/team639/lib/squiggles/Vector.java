@@ -24,7 +24,6 @@ public class Vector {
     }
 
     public double dot(Vector other) {
-//        return this.magnitude() * other.magnitude() * cos(atan2(other.y, other.x) - atan2(this.y, this.x));
         return this.x * other.x + this.y * other.y;
     }
 
