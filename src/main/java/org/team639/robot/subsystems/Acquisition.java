@@ -2,7 +2,6 @@ package org.team639.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -81,11 +80,10 @@ public class Acquisition extends Subsystem {
         topTalon.configPeakOutputReverse(speed);
     }
 
-    public void setTopForwardSpeed() {
+    public void setTopForwardSpeed(double speed) {
         topTalon.configPeakOutputForward(speed);
     }
 
-        } 
 
     /**
      * setting positions of the auxiliary roller as stored or receiving to be used with motors or pistons
@@ -95,9 +93,8 @@ public class Acquisition extends Subsystem {
     /**
      * method for moving roller positions inside of the drive train
      */
-public  double setSpeedPercent(double topTalon, double BottomTalon) {
-    if (setBottomForwardSpeed() < 1 || setBottomForwardSpeed() > -1) return setBottomForwardSpeed(topTalon);
-               else return setTopForwardSpeed();
+public void setSpeedPercent(double topTalon, double BottomTalon) {
+
 
 }
 }
