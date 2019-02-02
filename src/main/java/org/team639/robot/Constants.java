@@ -1,26 +1,14 @@
 package org.team639.robot;
 
 public class Constants {
-    public static final int LIFT_MAX_HEIGHT = 8;
+    public static final int LIFT_MAX_HEIGHT = 8;        // Probably not real value, just temporary
+    public static final int LIFT_MAX_SPEED = 1700;      // Probably not real value, just temporary
+    public static final int LIFT_BALL_LOWER_HEIGHT = 0;
+    public static final int LIFT_BALL_MIDDLE_HEIGHT = 0;
+    public static final int LIFT_BALL_HIGH_HEIGHT = 0;
+    public static final int LIFT_HATCH_LOWER_HEIGHT = 0;
+    public static final int LIFT_HATCH_MIDDLE_HEIGHT = 0;
+    public static final int LIFT_HATCH_HIGH_HEIGHT = 0;
+    public static final int LIFT_CARGO_SHIP_HEIGHT = 0;
 
-    public enum liftPosition
-    {
-
-        // Height in feet from the bottom of the lift
-        // Heights to be implemented
-        TOP_BALL(0.0),
-        TOP_HATCH(0.0),
-        MIDDLE_BALL(0.0),
-        MIDDLE_HATCH(0.0),
-        BOTTOM_BALL(0.0),
-        BOTTOM_HATCH(0.0),
-        CARGO_SHIP(0.0);
-
-        double position;
-
-        liftPosition(double position)
-        {
-            this.position = position;
-        }
-    }
 }

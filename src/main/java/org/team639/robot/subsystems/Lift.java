@@ -1,14 +1,12 @@
 package org.team639.robot.subsystems;
 
 
-
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -17,7 +15,6 @@ import org.team639.robot.Constants;
 
 public abstract class Lift extends Subsystem {
 
-    private final int lift_max_height;
     private TalonSRX mainTalon;
     private TalonSRX followerTalon;
 
@@ -31,7 +28,6 @@ public abstract class Lift extends Subsystem {
     private double kF;
 
     public Lift() {
-        lift_max_height = 185;
 
         mainTalon = new TalonSRX(6);
         followerTalon = new TalonSRX(7);
@@ -47,43 +43,82 @@ public abstract class Lift extends Subsystem {
         mainTalon.configForwardSoftLimitThreshold(Constants.LIFT_MAX_HEIGHT, 0);
     }
 
-        public void setMotionMagicPosition(int tickCount) {
-            mainTalon.set(ControlMode.MotionMagic, tickCount);
-
+    /**
+     * Sets the speed of the lift with a percent of total speed from -1 to 1. Negative is down and positive is up.
+     * @param speed The speed to move the lift.
+     */
+    public void setSpeedPercent(double speed) {
+        if (speed > 1) speed = 1;
+        else if (speed < -1) speed = -1;
+        switch (currentControlMode) {
+            case PercentOutput:
+                mainTalon.set(currentControlMode, speed);
+                break;
+            case Velocity:
+                mainTalon.set(currentControlMode, speed * Constants.LIFT_MAX_SPEED);
+                break;
         }
-
-        public double getEncPos(){
-            return mainTalon.getSelectedSensorPosition(0);
+    }
 
 
-}
 
-        public void zeroEncoder(){
-            mainTalon.getSensorCollection().setQuadraturePosition(0,0);
-        }
+    public double getKP() {
+        return kP;
+    }
 
-        public boolean isAtLowerLimit() {
-            return mainTalon.getSensorCollection().isRevLimitSwitchClosed();
-        }
+    public double getKI() {
+        return kI;
+    }
 
-            public void setBrake ( boolean locked){
-                brake.set(!locked);
-            }
+    public double getKD() {
+        return kD;
+    }
 
-            public boolean isBraking () {
-                return !brake.get();
-
-            }
-
-            public ControlMode getCurrentControlMode () {
-                return currentControlMode;
-
-            }
+    public double getKF() {
+        return kF;
+    }
 
 
-            public void setcurrentControlMode (ControlMode controlMode) {
-                this.currentControlMode = controlMode;
-            }
+    public void setMotionMagicPosition(int tickCount) {
+        mainTalon.set(ControlMode.MotionMagic, tickCount);
+    }
+
+    public double getEncPos() {
+        return mainTalon.getSelectedSensorPosition(0);
+    }
+
+    public double getEncVelocity()
+    {
+        return mainTalon.getSelectedSensorVelocity(0);
+    }
+
+    public void zeroEncoder() {
+        mainTalon.getSensorCollection().setQuadraturePosition(0, 0);
+    }
+
+    public boolean isAtLowerLimit() {
+        return mainTalon.getSensorCollection().isRevLimitSwitchClosed();
+    }
+
+    public void setBrake(boolean locked) {
+        brake.set(locked);
+    }
+
+    public boolean isBraking() {
+        return brake.get();
+
+    }
+
+    public ControlMode getCurrentControlMode() {
+        return currentControlMode;
+    }
+
+
+    public void setcurrentControlMode(ControlMode controlMode) {
+        this.currentControlMode = controlMode;
+    }
+
+
 
 }
 
