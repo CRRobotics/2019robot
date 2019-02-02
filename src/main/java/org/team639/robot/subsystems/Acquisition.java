@@ -50,6 +50,11 @@ public class Acquisition extends Subsystem {
         flowerOpen.set(open);
     }
 
+    public void setFlowerOpen(Solenoid flowerOpen) {
+        this.flowerOpen = flowerOpen;
+
+    }
+
     /**
      * Sets the flower to be forward.
      *
@@ -60,7 +65,8 @@ public class Acquisition extends Subsystem {
     }
 
     /**
-     * methods declaring minimum and maximum speeds of the roller motors in the forward and reverse directions
+     * @author Patrick Pfeifer
+     * methods declaring minimum and maximum speeds of the roller motors (top roller and bottom roller)  in the forward and reverse directions
      */
 
     public void setBottomReverseSpeed(double speed) {
@@ -75,23 +81,23 @@ public class Acquisition extends Subsystem {
         topTalon.configPeakOutputReverse(speed);
     }
 
-    public void setTopForwardSpeed(double speed) {
+    public void setTopForwardSpeed() {
         topTalon.configPeakOutputForward(speed);
     }
-     public void setTopFowardSpeed(double speed) {
- setBottomReverseSpeed(75);
- setTopForwardSpeed(70);
- setBottomForwardSpeed(70);
- setTopReverseSpeed(75);
 
-    }
+        } 
 
     /**
      * setting positions of the auxiliary roller as stored or receiving to be used with motors or pistons
      */
 
 
-    {
+    /**
+     * method for moving roller positions inside of the drive train
+     */
+public  double setSpeedPercent(double topTalon, double BottomTalon) {
+    if (setBottomForwardSpeed() < 1 || setBottomForwardSpeed() > -1) return setBottomForwardSpeed(topTalon);
+               else return setTopForwardSpeed();
 
-    }
+}
 }
