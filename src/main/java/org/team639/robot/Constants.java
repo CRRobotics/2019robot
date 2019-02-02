@@ -27,6 +27,6 @@ public class Constants {
     public static final double LIFT_MIN = .25;
     public static final double LIFT_MAX = .8;
 
-    // Unsure what this is, but MoveLiiftToSetPosition needs it.
+    // Unsure what this is, but MoveLiftToSetPosition needs it.
     public static final int LIFT_TOLERANCE = 600;
 }

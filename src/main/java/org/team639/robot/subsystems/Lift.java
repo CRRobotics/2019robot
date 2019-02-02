@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team639.robot.Constants;
 import org.team639.robot.RobotMap;
 
+// Note - Encoder: 4096 ticks per rotation
 
 public abstract class Lift extends Subsystem {
 
@@ -144,7 +145,6 @@ public abstract class Lift extends Subsystem {
     public ControlMode getCurrentControlMode() {
         return currentControlMode;
     }
-
 
     public void setcurrentControlMode(ControlMode controlMode) {
         this.currentControlMode = controlMode;
