@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team639.robot.Constants;
+import org.team639.robot.RobotMap;
 
 
 public abstract class Lift extends Subsystem {
@@ -41,6 +42,10 @@ public abstract class Lift extends Subsystem {
 
         mainTalon.configForwardSoftLimitEnable(true, 0);
         mainTalon.configForwardSoftLimitThreshold(Constants.LIFT_MAX_HEIGHT, 0);
+
+        brake = RobotMap.getLiftBrake();
+
+        setPID(Constants.LIFT_P, Constants.LIFT_I, Constants.LIFT_D, Constants.LIFT_F);
     }
 
     /**
@@ -58,6 +63,25 @@ public abstract class Lift extends Subsystem {
                 mainTalon.set(currentControlMode, speed * Constants.LIFT_MAX_SPEED);
                 break;
         }
+    }
+
+    /**
+     * Sets the talon internal pid.
+     * @param p The p constant.
+     * @param i The i constant.
+     * @param d The d constant.
+     * @param f The f constant.
+     */
+    public void setPID(double p, double i, double d, double f) {
+        this.kP = p;
+        this.kI = i;
+        this.kD = d;
+        this.kF = f;
+
+        mainTalon.config_kP(0, p, 0);
+        mainTalon.config_kI(0, i, 0);
+        mainTalon.config_kD(0, d, 0);
+        mainTalon.config_kF(0, f, 0);
     }
 
 
@@ -83,7 +107,7 @@ public abstract class Lift extends Subsystem {
         mainTalon.set(ControlMode.MotionMagic, tickCount);
     }
 
-    public double getEncPos() {
+    public int getEncPos() {
         return mainTalon.getSelectedSensorPosition(0);
     }
 
@@ -94,6 +118,14 @@ public abstract class Lift extends Subsystem {
 
     public void zeroEncoder() {
         mainTalon.getSensorCollection().setQuadraturePosition(0, 0);
+    }
+
+    /**
+     * Returns whether or not the encoder is present on the lift.
+     * @return Whether or not the encoder is present.
+     */
+    public boolean encoderPresent() {
+        return mainTalon.getSensorCollection().getPulseWidthRiseToRiseUs() != 0;
     }
 
     public boolean isAtLowerLimit() {
@@ -117,8 +149,6 @@ public abstract class Lift extends Subsystem {
     public void setcurrentControlMode(ControlMode controlMode) {
         this.currentControlMode = controlMode;
     }
-
-
 
 }
 

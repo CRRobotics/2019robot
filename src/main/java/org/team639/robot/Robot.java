@@ -1,8 +1,12 @@
 package org.team639.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import org.team639.robot.subsystems.Lift;
 
 public class Robot extends TimedRobot {
+
+    private static Lift lift;
+
     @Override
     public void robotInit() {
         super.robotInit();
@@ -51,5 +55,9 @@ public class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
         super.testPeriodic();
+    }
+
+    public static Lift getLift() {
+        return lift;
     }
 }
