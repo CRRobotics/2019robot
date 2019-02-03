@@ -93,8 +93,7 @@ public class Acquisition extends Subsystem {
     /**
      * method for moving roller positions inside of the drive train
      */
-public void setSpeedPercent(double topTalon, double BottomTalon) {
+    public void setSpeedPercent(double topTalon, double BottomTalon) {
 
-
-}
+    }
 }
