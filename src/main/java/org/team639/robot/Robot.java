@@ -3,6 +3,7 @@ package org.team639.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team639.lib.commands.DriveThread;
 import org.team639.lib.controls.XBoxController;
 import org.team639.robot.commands.drive.DriveLayout;
 import org.team639.robot.subsystems.Drivetrain;
@@ -21,7 +22,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-
+        DriveThread.getInstance().start();
         OI.mapButtons();
 //        drivetrain.setControlMode(Drivetrain.Mode.OpenLoop);
     }
@@ -48,18 +49,18 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        drivetrain.track();
-
-        SmartDashboard.putNumber("right enc", drivetrain.getRightEncPos());
-        SmartDashboard.putNumber("left enc", drivetrain.getLeftEncPos());
-        SmartDashboard.putNumber("angle", drivetrain.getRobotAngle());
-
-        SmartDashboard.putNumber("tracked x", drivetrain.getTrackedX());
-        SmartDashboard.putNumber("tracked y", drivetrain.getTrackedY());
-
-        var left = drivetrain.getLeftEncVelocity();
-//        if (left > lmax) lmax = left;
-        var right = drivetrain.getRightEncVelocity();
+//        drivetrain.track();
+//
+//        SmartDashboard.putNumber("right enc", drivetrain.getRightEncPos());
+//        SmartDashboard.putNumber("left enc", drivetrain.getLeftEncPos());
+//        SmartDashboard.putNumber("angle", drivetrain.getRobotAngle());
+//
+//        SmartDashboard.putNumber("tracked x", drivetrain.getTrackedX());
+//        SmartDashboard.putNumber("tracked y", drivetrain.getTrackedY());
+//
+//        var left = drivetrain.getLeftEncVelocity();
+////        if (left > lmax) lmax = left;
+//        var right = drivetrain.getRightEncVelocity();
 //        if (right > rmax) rmax = right;
 //
 //        SmartDashboard.putNumber("lmax", lmax);
@@ -67,9 +68,6 @@ public class Robot extends TimedRobot {
 
 //        SmartDashboard.putNumber("left vel", left);
 //        SmartDashboard.putNumber("right vel", right);
-        double scale = 1 - 0.8 * OI.drive.getControllerAxis(XBoxController.ControllerAxis.RightTrigger);
-        SmartDashboard.putNumber("left diff", OI.drive.getLeftStickY() * scale * SPEED_RANGE - left);
-        SmartDashboard.putNumber("right diff", OI.drive.getRightStickY() * scale * SPEED_RANGE - right);
     }
 
     @Override

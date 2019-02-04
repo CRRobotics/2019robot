@@ -232,15 +232,15 @@ public class XBoxController extends JoystickManager {
         return val;
     }
 
-    public void setRightRumble(double rumble) {
+    public synchronized void setRightRumble(double rumble) {
         stick.setRumble(GenericHID.RumbleType.kRightRumble, rumble);
     }
 
-    public void setLeftRumble(double rumble) {
+    public synchronized void setLeftRumble(double rumble) {
         stick.setRumble(GenericHID.RumbleType.kLeftRumble, rumble);
     }
 
-    public void setAllRumble(double rumble) {
+    public synchronized void setAllRumble(double rumble) {
         setRightRumble(rumble);
         setLeftRumble(rumble);
     }

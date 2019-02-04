@@ -6,18 +6,19 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import org.team639.lib.commands.ThreadedDriveCommand;
+import org.team639.lib.subsystem.DriveSubsystem;
 import org.team639.robot.Constants;
 import org.team639.robot.commands.drive.DriveTracker;
 import org.team639.robot.commands.drive.JoystickDrive;
 
 import static org.team639.robot.Constants.Drivetrain.*;
 
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends DriveSubsystem {
     private final TalonSRX leftMaster;
     private final TalonSRX rightMaster;
 
-    private Mode controlMode = Mode.ClosedLoop;
+    private volatile Mode controlMode = Mode.ClosedLoop;
 
     private final AHRS navx;
 
@@ -29,8 +30,6 @@ public class Drivetrain extends Subsystem {
     private DriveTracker tracker;
 
     public Drivetrain(TalonSRX leftMaster, TalonSRX rightMaster, AHRS navx) {
-        super("Drivetrain");
-
         this.leftMaster = leftMaster;
         this.rightMaster = rightMaster;
         this.navx = navx;
@@ -230,13 +229,13 @@ public class Drivetrain extends Subsystem {
         return controlMode;
     }
 
-    public void setControlMode(Mode controlMode) {
+    public synchronized void setControlMode(Mode controlMode) {
         this.controlMode = controlMode;
     }
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new JoystickDrive());
+        setDefaultCommand(new ThreadedDriveCommand(new JoystickDrive(), this));
     }
 
 //    @Override
@@ -263,6 +262,11 @@ public class Drivetrain extends Subsystem {
 
     public double averageVelocity() {
         return (getLeftEncVelocity() / FPS_TO_MOTOR_UNITS + getRightEncVelocity() / FPS_TO_MOTOR_UNITS) / 2.0;
+    }
+
+    @Override
+    public void threadConstant() {
+        track();
     }
 
     public enum Mode {

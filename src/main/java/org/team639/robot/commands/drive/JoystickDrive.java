@@ -1,12 +1,12 @@
 package org.team639.robot.commands.drive;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team639.lib.commands.DriveCommand;
 import org.team639.robot.OI;
 import org.team639.lib.controls.XBoxController;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Drivetrain;
 
-public class JoystickDrive extends Command {
+public class JoystickDrive extends DriveCommand {
     private Drivetrain drivetrain;
 
     public JoystickDrive() {

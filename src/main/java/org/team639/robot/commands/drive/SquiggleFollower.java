@@ -1,7 +1,6 @@
 package org.team639.robot.commands.drive;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team639.lib.commands.DriveCommand;
 import org.team639.lib.squiggles.PathFollower;
 import org.team639.lib.squiggles.Vector;
 import org.team639.robot.Robot;
@@ -11,13 +10,14 @@ import java.util.List;
 
 import static org.team639.robot.Constants.Drivetrain.*;
 
-public class SquiggleFollower extends Command {
+public class SquiggleFollower extends DriveCommand {
     private PathFollower pf;
     private Drivetrain drivetrain = Robot.drivetrain;
     private long lastTime = 0;
     private boolean done = false;
 
     public SquiggleFollower() {
+        super("SquiggleFollower");
         requires(this.drivetrain);
     }
 
