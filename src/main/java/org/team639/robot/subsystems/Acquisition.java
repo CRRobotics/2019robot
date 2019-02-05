@@ -37,8 +37,6 @@ public class Acquisition extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-
-
     }
 
     /**
@@ -54,6 +52,7 @@ public class Acquisition extends Subsystem {
         this.flowerOpen = flowerOpen;
 
     }
+
     /**
      * Sets the flower to be forward.
      *
@@ -62,30 +61,52 @@ public class Acquisition extends Subsystem {
     public void setFlowerForward(boolean forward) {
         flowerForward.set(forward);
     }
+
     public void setFlowerForward(Solenoid flowerForward) {
         this.flowerForward = flowerForward;
     }
+
     /**
      * @author Patrick Pfeifer
      * method declaring minimum and maximum speeds of the roller motors (top roller and bottom roller) as percent
      */
-    public void setTopRollerSpeed( double speed) {
+    public void setTopRollerSpeed(double speed) {
         if (speed > 1) speed = 1;
         else if (speed < -1) speed = -1;
-        topTalon.set(ControlMode.PercentOutput,speed);
+        topTalon.set(ControlMode.PercentOutput, speed);
     }
+
     public void setBottomRollerSpeed(double speed) {
         if (speed > 1) speed = 1;
         else if (speed < -1) speed = -1;
-        bottomTalon.set(ControlMode.PercentOutput,speed);
+        bottomTalon.set(ControlMode.PercentOutput, speed);
     }
+
     /**
      * method for moving roller positions inside of the drive train using motor ticks for the auxiliary roller and bottom roller separately
      */
     public void setAuxiliaryRollerPosiition(int AuxTicks) {
-topTalon.set(ControlMode.MotionMagic, AuxTicks);
+        topTalon.set(ControlMode.MotionMagic, AuxTicks);
     }
+
     public void setBottomRollerPosition(int BottomTicks) {
-bottomTalon.set(ControlMode.MotionMagic, BottomTicks);
+        bottomTalon.set(ControlMode.MotionMagic, BottomTicks);
     }
+
+    /**
+     * gets encoder values like 2017-18 lift code
+     */
+    public int getAuxRollerEncoderPosition() {
+        return topTalon.getSelectedSensorPosition(0);
+    }
+    public void zeroEncoder() {
+
+        topTalon.getSensorCollection().setQuadraturePosition(0, 0);
+    }
+    public boolean isAtOpenPosition() {
+        return topTalon.getSensorCollection().isRevLimitSwitchClosed();
+    }
+ public boolean isAtStoredPosition() {
+        return topTalon.getSensorCollection() .isRevLimitSwitchClosed();
+ }
 }
