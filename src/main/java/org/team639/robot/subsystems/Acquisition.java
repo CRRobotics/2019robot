@@ -1,5 +1,6 @@
 package org.team639.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -53,7 +54,6 @@ public class Acquisition extends Subsystem {
         this.flowerOpen = flowerOpen;
 
     }
-
     /**
      * Sets the flower to be forward.
      *
@@ -65,36 +65,21 @@ public class Acquisition extends Subsystem {
 
     /**
      * @author Patrick Pfeifer
-     * methods declaring minimum and maximum speeds of the roller motors (top roller and bottom roller)  in the forward and reverse directions
+     * method declaring minimum and maximum speeds of the roller motors (top roller and bottom roller) as percent
      */
-
-    public void setBottomReverseSpeed(double speed) {
-        bottomTalon.configPeakOutputReverse(speed);
+    public void setTopRollerSpeed( double speed) {
+        if (speed > 1) speed = 1;
+        else if (speed < -1) speed = -1;
+        topTalon.set(ControlMode.PercentOutput,speed);
     }
-
-    public void setBottomForwardSpeed(double speed) {
-        bottomTalon.configPeakOutputForward(speed);
+    public void setBottomRollerSpeed(double speed) {
+        if (speed > 1) speed = 1;
+        else if (speed < -1) speed = -1;
+        bottomTalon.set(ControlMode.PercentOutput,speed);
     }
-
-    public void setTopReverseSpeed(double speed) {
-        topTalon.configPeakOutputReverse(speed);
-    }
-
-    public void setTopForwardSpeed(double speed) {
-        topTalon.configPeakOutputForward(speed);
-    }
-
-
-    /**
-     * setting positions of the auxiliary roller as stored or receiving to be used with motors or pistons
-     */
-
-
     /**
      * method for moving roller positions inside of the drive train
      */
-public void setSpeedPercent(double topTalon, double BottomTalon) {
 
 
-}
 }
