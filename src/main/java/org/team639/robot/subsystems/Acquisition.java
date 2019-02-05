@@ -4,13 +4,13 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
 /**
  * The acquisition subsystem.
  *
  * Responsible for manipulating hatch panels and cargo.
  * @author Sara Xin
  */
+
 public class Acquisition extends Subsystem {
 
     private TalonSRX topTalon;
@@ -92,15 +92,14 @@ public class Acquisition extends Subsystem {
     public void setBottomRollerPosition(int BottomTicks) {
         bottomTalon.set(ControlMode.MotionMagic, BottomTicks);
     }
-
     /**
-     * gets encoder values like 2017-18 lift code
+     * gets encoder values like 2017-18 lift's code. I hope motion magic works. It looks cool.
+     * @param ?
      */
     public int getAuxRollerEncoderPosition() {
         return topTalon.getSelectedSensorPosition(0);
     }
     public void zeroEncoder() {
-
         topTalon.getSensorCollection().setQuadraturePosition(0, 0);
     }
     public boolean isAtOpenPosition() {
