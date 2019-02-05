@@ -1,7 +1,5 @@
 package org.team639.lib.commands;
 
-import org.team639.lib.subsystem.DriveSubsystem;
-
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -18,6 +16,8 @@ public class DriveThread extends Thread {
 
     private volatile ThreadedDriveCommand runner;
     private volatile DriveCommand currentCommand;
+
+    private long lastTime;
 
     /**
      * Returns a reference to the drive thread.
@@ -36,7 +36,6 @@ public class DriveThread extends Thread {
     private DriveThread() {
         super("Drive Thread");
         this.setDaemon(true);
-        // this.start() // Do I really want this? Should the user call start?
     }
 
     /**
@@ -94,9 +93,12 @@ public class DriveThread extends Thread {
     }
 
     public void run() {
+        lastTime = 0;
         while (true) {
+            if (System.currentTimeMillis() - lastTime >= 5) continue;
+            else lastTime = System.currentTimeMillis();
+
             currentLock.writeLock().lock();
-            // defaultLock.writeLock().lock();
             try {
                 if (currentCommand != null) {
                     currentCommand.execute();
@@ -106,16 +108,10 @@ public class DriveThread extends Thread {
                         runner.done();
                         runner = null;
                     }
-                } //else if (defaultCommand != null) {
-                //     defaultCommand.execute();
-                // } else {
-                //     System.out.println("WHAT ARE YOU DOING SET A DEFAULT COMMAND!!! AAAAAAHHHHHHHHHHH!!!!!!!!!!!!");
-                // }
+                }
             } finally {
                 currentLock.writeLock().unlock();
-                // defaultLock.writeLock().unlock();
             }
         }
     }
 }
-

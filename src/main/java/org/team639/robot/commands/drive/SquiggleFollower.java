@@ -37,6 +37,8 @@ public class SquiggleFollower extends DriveCommand {
 
     @Override
     protected void execute() {
+        drivetrain.track();
+
         var time = System.currentTimeMillis();
         var robotVector = new Vector(drivetrain.getTrackedX(), drivetrain.getTrackedY());
         var signal = pf.followWithTime(robotVector, drivetrain.getRobotAngle(), time - lastTime);

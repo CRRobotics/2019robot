@@ -20,6 +20,8 @@ public class JoystickDrive extends DriveCommand {
 
     @Override
     protected void execute() {
+        drivetrain.track();
+
         if (!drivetrain.encodersPresent()) drivetrain.setControlMode(Drivetrain.Mode.OpenLoop);
 //        else drivetrain.setControlMode();
 
@@ -57,7 +59,7 @@ public class JoystickDrive extends DriveCommand {
      * @param lSpeed The value for the left side
      * @param rSpeed The value for the right side
      */
-    public void tankDrive(double lSpeed, double rSpeed) {
+    private void tankDrive(double lSpeed, double rSpeed) {
         drivetrain.setSpeedsPercent(lSpeed, rSpeed);
     }
 
@@ -66,7 +68,7 @@ public class JoystickDrive extends DriveCommand {
      * @param speed The magnitude of speed from -1 to 1
      * @param turning The turning magnitude from -1 to 1
      */
-    public void arcadeDrive(double speed, double turning) {
+    private void arcadeDrive(double speed, double turning) {
         speed = speed * 2 / 3;
         double turnMultiplier = 1 - speed;
         if (turnMultiplier < 1d / 3d) turnMultiplier = 1d / 3d;
