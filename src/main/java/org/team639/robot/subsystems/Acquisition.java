@@ -62,7 +62,9 @@ public class Acquisition extends Subsystem {
     public void setFlowerForward(boolean forward) {
         flowerForward.set(forward);
     }
-
+    public void setFlowerForward(Solenoid flowerForward) {
+        this.flowerForward = flowerForward;
+    }
     /**
      * @author Patrick Pfeifer
      * method declaring minimum and maximum speeds of the roller motors (top roller and bottom roller) as percent
@@ -78,8 +80,12 @@ public class Acquisition extends Subsystem {
         bottomTalon.set(ControlMode.PercentOutput,speed);
     }
     /**
-     * method for moving roller positions inside of the drive train
+     * method for moving roller positions inside of the drive train using motor ticks for the auxiliary roller and bottom roller separately
      */
-
-
+    public void setAuxiliaryRollerPosiition(int AuxTicks) {
+topTalon.set(ControlMode.MotionMagic, AuxTicks);
+    }
+    public void setBottomRollerPosition(int BottomTicks) {
+bottomTalon.set(ControlMode.MotionMagic, BottomTicks);
+    }
 }
