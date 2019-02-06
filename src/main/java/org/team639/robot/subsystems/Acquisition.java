@@ -48,11 +48,6 @@ public class Acquisition extends Subsystem {
         flowerOpen.set(open);
     }
 
-    public void setFlowerOpen(Solenoid flowerOpen) {
-        this.flowerOpen = flowerOpen;
-
-    }
-
     /**
      * Sets the flower to be forward.
      *
@@ -60,10 +55,6 @@ public class Acquisition extends Subsystem {
      */
     public void setFlowerForward(boolean forward) {
         flowerForward.set(forward);
-    }
-
-    public void setFlowerForward(Solenoid flowerForward) {
-        this.flowerForward = flowerForward;
     }
 
     /**
@@ -105,7 +96,7 @@ public class Acquisition extends Subsystem {
     public boolean isAtOpenPosition() {
         return topTalon.getSensorCollection().isRevLimitSwitchClosed();
     }
- public boolean isAtStoredPosition() {
-        return topTalon.getSensorCollection() .isRevLimitSwitchClosed();
- }
+    public boolean isAtStoredPosition() {
+        return topTalon.getSensorCollection().isRevLimitSwitchClosed();
+    }
 }

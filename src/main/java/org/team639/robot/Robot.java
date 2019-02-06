@@ -1,8 +1,11 @@
 package org.team639.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import org.team639.robot.subsystems.Acquisition;
 
 public class Robot extends TimedRobot {
+    public static final Acquisition acquisition = new Acquisition();
+
     @Override
     public void robotInit() {
         super.robotInit();
