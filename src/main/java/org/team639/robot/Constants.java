@@ -29,4 +29,9 @@ public class Constants {
 
     // Unsure what this is, but MoveLiftToSetPosition needs it.
     public static final int LIFT_TOLERANCE = 600;
+
+    // Constants for the MonitorLift command
+    public static final double MOTOR_RADIUS = 1.0;
+    public static final double LIFT_MASS = 1.0;
+    public static final double SUSPENSION_SPEED = 1.0;
 }
