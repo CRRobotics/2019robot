@@ -33,5 +33,4 @@ public class Constants {
     // Constants for the MonitorLift command
     public static final double MOTOR_RADIUS = 1.0;
     public static final double LIFT_MASS = 1.0;
-    public static final double SUSPENSION_SPEED = 1.0;
 }

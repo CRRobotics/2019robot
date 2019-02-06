@@ -7,6 +7,27 @@ import org.team639.robot.Constants.*;
  */
 public class MonitorLift {
 
+private double motorHoldingSpeed = 1.0;
+private double motorHoldingSpeedPercent = 1.0;
 
+public double getMotorHoldingSpeed()
+{
+    return motorHoldingSpeed;
+}
+
+public void setMotorHoldingSpeed(double motorHoldingSpeed)
+{
+    this.motorHoldingSpeed = motorHoldingSpeed;
+}
+
+public double getMotorHoldingSpeedPercent()
+{
+    return motorHoldingSpeedPercent;
+}
+
+public void setMotorHoldingSpeedPercent(double motorHoldingSpeedPercent)
+{
+    this.motorHoldingSpeedPercent = motorHoldingSpeedPercent;
+}
 
 }
