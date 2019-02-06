@@ -16,7 +16,9 @@ public class JoystickDrive extends DriveCommand {
     }
 
     @Override
-    protected void initialize() {}
+    protected void initialize() {
+        System.out.println("joystickdrive init");
+    }
 
     @Override
     protected void execute() {

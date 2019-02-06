@@ -43,8 +43,8 @@ public class Drivetrain extends DriveSubsystem {
 
         rightMaster.setInverted(true);
 
-        leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 0);
-        rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 0);
+        leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 0);
+        rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 0);
 
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
@@ -62,8 +62,6 @@ public class Drivetrain extends DriveSubsystem {
      * @param rSpeed The value for the right side
      */
     public void setSpeedsRaw(double lSpeed, double rSpeed) {
-        System.out.println("l:" + lSpeed + "r ;" + rSpeed);
-
         rightMaster.set(controlMode.ctreMode, rSpeed);
         leftMaster.set(controlMode.ctreMode, lSpeed);
     }

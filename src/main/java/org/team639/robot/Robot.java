@@ -14,7 +14,7 @@ public class Robot extends TimedRobot {
     public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.navx);;
 
     public static DriveLayout getDriveLayout() {
-        return DriveLayout.Tank;
+        return DriveLayout.Arcade2JoystickRight;
     }
 
     public double lmax = 0;
@@ -23,6 +23,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         DriveThread.getInstance().start();
+        System.out.println("thread started");
         OI.mapButtons();
 //        drivetrain.setControlMode(Drivetrain.Mode.OpenLoop);
     }

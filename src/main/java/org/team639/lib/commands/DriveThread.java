@@ -93,10 +93,13 @@ public class DriveThread extends Thread {
     }
 
     public void run() {
+        System.out.println("Thread started");
         lastTime = 0;
         while (true) {
-            if (System.currentTimeMillis() - lastTime >= 5) continue;
+            if (System.currentTimeMillis() - lastTime <= 5) continue;
             else lastTime = System.currentTimeMillis();
+
+//            System.out.println("in thread loop");
 
             currentLock.writeLock().lock();
             try {
