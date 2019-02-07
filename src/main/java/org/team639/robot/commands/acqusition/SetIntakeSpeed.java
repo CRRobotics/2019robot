@@ -7,21 +7,22 @@ import org.team639.robot.subsystems.Acquisition;
 public class SetIntakeSpeed extends Command {
 
     private Acquisition acquisition = Robot.acquisition;
+    private double speed;
 
     public SetIntakeSpeed(double speed) {
         requires(acquisition);
+        this.speed = speed;
     }
-
 
     /**
      * The initialize method is called the first time this Command is run after being started.
      */
     @Override
     protected void initialize() {
-
-        acquisition.setTopRollerSpeed(0);
-        acquisition.setBottomRollerSpeed(0);
+        acquisition.setTopRollerSpeed(this.speed);
+        acquisition.setBottomRollerSpeed(this.speed);
     }
+
     /**
      * Returns whether this command is finished. If it is, then the command will be removed and {@link
      * Command#end() end()} will be called.
@@ -34,27 +35,6 @@ public class SetIntakeSpeed extends Command {
      */
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
-    /**
-     * Called when the command ended peacefully. This is where you may want to wrap up loose ends,
-     * like shutting off a motor that was being used in the command.
-     */
-
-
-    @Override
-    protected void end() {
-        super.end();
-    }
-
-/**
- * Called when the command ends because somebody called {@link Command#cancel() cancel()} or
- * another command shared the same requirements as this one, and booted it out.
- *
- * <p>This is where you may want to wrap up loose ends, like shutting off a motor that was being
- * used in the command.
- *
- * <p>Generally, it is useful to simply call the {@link Command#end() end()} method within this
- * method, as done here.
- **/
 }
