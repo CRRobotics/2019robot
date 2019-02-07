@@ -1,20 +1,29 @@
 package org.team639.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
 /**
  * The acquisition subsystem.
  *
  * Responsible for manipulating hatch panels and cargo.
  * @author Sara Xin
+ * @author Patrick Pfeifer
+ * @author Jack Greenberg
  */
-
 public class Acquisition extends Subsystem {
 
-    private TalonSRX topTalon;
-    private TalonSRX bottomTalon;
+    private TalonSRX auxiliaryRollerLever;
+    private TalonSRX lowerRollerExtension;
+
+    private Spark upperRoller;
+    private Spark lowerRoller;
+
     private Solenoid flowerOpen;
     private Solenoid flowerForward;
 
@@ -23,16 +32,24 @@ public class Acquisition extends Subsystem {
      * Initializes all private instance variables.
      */
     public Acquisition() {
-        topTalon = new TalonSRX(4);
-        bottomTalon = new TalonSRX(3);
+        upperRoller = new Spark(0);
+        lowerRoller = new Spark(1);
+
+        auxiliaryRollerLever = new TalonSRX(4);
+        lowerRollerExtension = new TalonSRX(3);
 
         flowerOpen = new Solenoid(1);
         flowerForward = new Solenoid(2);
 
 
-        topTalon.configFactoryDefault();
-        bottomTalon.configFactoryDefault();
+        auxiliaryRollerLever.configFactoryDefault();
+        lowerRollerExtension.configFactoryDefault();
 
+        auxiliaryRollerLever.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+        lowerRollerExtension.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+
+        auxiliaryRollerLever.setNeutralMode(NeutralMode.Brake);
+        lowerRollerExtension.setNeutralMode(NeutralMode.Brake);
     }
 
     @Override
@@ -58,45 +75,75 @@ public class Acquisition extends Subsystem {
     }
 
     /**
-     * @author Patrick Pfeifer
-     * method declaring minimum and maximum speeds of the roller motors (top roller and bottom roller) as percent
+     * Sets the speed of the top roller.
+     * @param speed The speed of the roller as a percent from -1 to 1.
      */
-    public void setTopRollerSpeed(double speed) {
+    public void setUpperRollerSpeed(double speed) {
         if (speed > 1) speed = 1;
         else if (speed < -1) speed = -1;
-        topTalon.set(ControlMode.PercentOutput, speed);
-    }
-
-    public void setBottomRollerSpeed(double speed) {
-        if (speed > 1) speed = 1;
-        else if (speed < -1) speed = -1;
-        bottomTalon.set(ControlMode.PercentOutput, speed);
+        upperRoller.set(speed);
     }
 
     /**
-     * method for moving roller positions inside of the drive train using motor ticks for the auxiliary roller and bottom roller separately
+     * Sets the speed of the bottom roller.
+     * @param speed The speed of the roller as a percent from -1 to 1.
      */
-    public void setAuxiliaryRollerPosiition(int AuxTicks) {
-        topTalon.set(ControlMode.MotionMagic, AuxTicks);
+    public void setLowerRollerSpeed(double speed) {
+        if (speed > 1) speed = 1;
+        else if (speed < -1) speed = -1;
+        lowerRoller.set(speed);
     }
 
-    public void setBottomRollerPosition(int BottomTicks) {
-        bottomTalon.set(ControlMode.MotionMagic, BottomTicks);
+    public void setAuxiliaryRollerLeverSpeed(double speed) {
+        if (speed > 1) speed = 1;
+        else if (speed < -1) speed = -1;
+        auxiliaryRollerLever.set(ControlMode.PercentOutput, speed);
     }
+
     /**
-     * gets encoder values like 2017-18 lift's code. I hope motion magic works. It looks cool.
-     * @param ?
+     * Returns the position of the auxiliary roller.
+     * @return The position of the auxiliary roller in encoder ticks.
      */
-    public int getAuxRollerEncoderPosition() {
-        return topTalon.getSelectedSensorPosition(0);
+    public int getAuxiliaryRollerEncoderPosition() {
+        return auxiliaryRollerLever.getSelectedSensorPosition(0);
     }
-    public void zeroEncoder() {
-        topTalon.getSensorCollection().setQuadraturePosition(0, 0);
+
+    /**
+     * Zeroes the position of the auxiliary encoder.
+     */
+    public void zeroAuxiliaryEncoder() {
+        auxiliaryRollerLever.getSensorCollection().setQuadraturePosition(0, 0);
     }
-    public boolean isAtOpenPosition() {
-        return topTalon.getSensorCollection().isRevLimitSwitchClosed();
+
+    /**
+     * Returns whether the auxiliary roller is in its storage position.
+     * @return Whether the auxiliary roller is in its storage position.
+     */
+    public boolean isAuxiliaryRollerStored() {
+        return auxiliaryRollerLever.getSensorCollection().isRevLimitSwitchClosed();
     }
-    public boolean isAtStoredPosition() {
-        return topTalon.getSensorCollection().isRevLimitSwitchClosed();
+
+    /**
+     * Returns whether the auxiliary roller is in its extended position.
+     * @return Whether the auxiliary roller is in its extended position.
+     */
+    public boolean isAuxiliaryRollerExtended() {
+        return auxiliaryRollerLever.getSensorCollection().isFwdLimitSwitchClosed();
+    }
+
+    /**
+     * Returns whether a hatch is detected on the flower, regardless of whether the flower is actually open.
+     * @return Whether a hatch is detected on the flower, regardless of whether the flower is actually open.
+     */
+    public boolean isHatchOnFlower() {
+        return false; // TODO: actually read sensor.
+    }
+
+    /**
+     * Returns whether cargo is detected within the cargo acquisition.
+     * @return Whether cargo is detected within the cargo acquisition.
+     */
+    public boolean isCargoDetected() {
+        return false; // TODO: actually read sensor.
     }
 }
