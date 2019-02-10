@@ -33,11 +33,11 @@ public class ArcPathGenerator {
     }
 
     public static class ArcPath {
-        private double straightDistance;
-        private double straightAngle;
-        private double radius;
-        private double endAngle;
-        private boolean straightFirst;
+        public final double straightDistance;
+        public final double straightAngle;
+        public final double radius;
+        public final double endAngle;
+        public final boolean straightFirst;
 
         public ArcPath(double straightDistance, double straightAngle, double radius, double endAngle, boolean straightFirst) {
             this.straightDistance = straightDistance;

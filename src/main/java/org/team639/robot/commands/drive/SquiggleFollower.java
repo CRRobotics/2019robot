@@ -2,20 +2,20 @@ package org.team639.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.lib.commands.DriveCommand;
+import org.team639.lib.math.PID;
+import org.team639.lib.squiggles.ArcPathGenerator;
 import org.team639.lib.squiggles.PathFollower;
 import org.team639.lib.squiggles.Vector;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Drivetrain;
 
-import java.util.List;
-
-import static org.team639.robot.Constants.Drivetrain.*;
-
 public class SquiggleFollower extends DriveCommand {
-    private PathFollower pf;
+    private ArcPathGenerator.ArcPath path;
     private Drivetrain drivetrain = Robot.drivetrain;
-    private long lastTime = 0;
-    private boolean done = false;
+    private State state;
+    private int leftEncTicks;
+
+    private PID anglePID;
 
     public SquiggleFollower() {
         super("SquiggleFollower");
@@ -24,17 +24,20 @@ public class SquiggleFollower extends DriveCommand {
 
     @Override
     protected void initialize() {
-        var path = List.of(
-                new Vector(0, 0),
-                new Vector(0, 10 * 12.0),
-                new Vector(7 * 12, 10 * 12)
-        );
-        this.pf = new PathFollower(path, 20, new PathFollower.RateLimiter(2.5 * 12.0, drivetrain.averageVelocity()), MAX_VELOCITY_INCHES_PER_SECOND, K_VELOCITY, TRACK_WIDTH_INCHES);
-        lastTime = System.currentTimeMillis();
+        path = ArcPathGenerator.generatePath(new Vector(0, 0), Math.PI / 2, new Vector(5 * 12, 5 * 12), 0);
+        if (path.straightFirst) {
+            state = State.Straight;
+            leftEncTicks = drivetrain.getLeftEncPos();
+        } else {
+            state = State.Arc;
+        }
+
         drivetrain.resetTracking();
         drivetrain.zeroRobotAngle();
-        done = false;
         System.out.println("squigglefollower");
+        System.out.println("radius: " + path.radius);
+        System.out.println("straight: " + path.straightDistance);
+        anglePID = new PID(10, 0, 0, 0.2, 0.5, 0.5, Math.toRadians(5), 0);
     }
 
     @Override
@@ -44,29 +47,25 @@ public class SquiggleFollower extends DriveCommand {
         SmartDashboard.putNumber("tracked x", drivetrain.getTrackedX());
         SmartDashboard.putNumber("tracked y", drivetrain.getTrackedY());
 
-        var time = System.currentTimeMillis();
-        var robotVector = new Vector(drivetrain.getTrackedX(), drivetrain.getTrackedY());
-        var signal = pf.followWithTime(robotVector, drivetrain.getRobotAngle(), time - lastTime);
-
-        lastTime = time;
-
-        done = signal.isEmpty() || pf.distanceToEnd(robotVector) < 20;
-
-        SmartDashboard.putNumber("distance to end", pf.distanceToEnd(robotVector));
-
-        SmartDashboard.putNumber("left vel", drivetrain.getLeftEncVelocity());
-        SmartDashboard.putNumber("right vel", drivetrain.getRightEncVelocity());
-
-        SmartDashboard.putNumber("gyro", drivetrain.getRobotAngle());
-
-        if (!done) {
-            var sig = signal.get();
-//            System.out.println("l:" + sig.left + "r ;"+sig.right);
-            SmartDashboard.putNumber("left signal", sig.left);
-            SmartDashboard.putNumber("right signal", sig.right);
-            drivetrain.setSpeedsFeetPerSecond(sig.left / 12.0, sig.right / 12.0);
-        } else {
-            System.out.println("done");
+        switch (state) {
+            case Straight:
+                if (drivetrain.getLeftEncPos() - leftEncTicks > path.straightDistance - 500) {
+                    state = path.straightFirst ? State.Arc : State.Done;
+                } else {
+                    drivetrain.setSpeedsPercent(0.3, 0.3);
+                }
+                break;
+            case Arc:
+                if (Math.abs(Math.toRadians(drivetrain.getRobotAngle()) - path.endAngle) < Math.toRadians(5)) {
+                    state = path.straightFirst ? State.Done : State.Straight;
+                } else {
+                    var sig = PathFollower.velocities(anglePID.compute(Math.abs(Math.toRadians(drivetrain.getRobotAngle())) - path.endAngle), 1.0 / path.radius, 28);
+//                    System.out.println("l: " + sig.left + ", r: " + sig.right);
+                    drivetrain.setSpeedsFeetPerSecond(sig.left, sig.right);
+                }
+                break;
+            case Done:
+                break;
         }
     }
 
@@ -82,6 +81,12 @@ public class SquiggleFollower extends DriveCommand {
 
     @Override
     protected boolean isFinished() {
-        return done;
+        return state == State.Done;
+    }
+
+    enum State {
+        Straight,
+        Arc,
+        Done
     }
 }

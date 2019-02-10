@@ -2,16 +2,12 @@ package org.team639.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.lib.commands.DriveThread;
-import org.team639.lib.controls.XBoxController;
 import org.team639.robot.commands.drive.DriveLayout;
 import org.team639.robot.subsystems.Drivetrain;
 
-import static org.team639.robot.Constants.Drivetrain.SPEED_RANGE;
-
 public class Robot extends TimedRobot {
-    public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.navx);;
+    public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.navx);
 
     public static DriveLayout getDriveLayout() {
         return DriveLayout.Arcade2JoystickRight;

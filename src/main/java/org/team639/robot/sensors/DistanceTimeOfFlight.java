@@ -25,6 +25,6 @@ public class DistanceTimeOfFlight {
      */
     public double getDistance() {
         var raw = this.pwm.getRaw();
-        return raw * CONVERSION_TO_INCHES;
+        return raw; // * CONVERSION_TO_INCHES;
     }
 }
