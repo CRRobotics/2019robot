@@ -94,41 +94,47 @@ public class Acquisition extends Subsystem {
         lowerRoller.set(speed);
     }
 
-    public void setAuxiliaryRollerLeverSpeed(double speed) {
+//    public void setAuxiliaryRollerLeverSpeed(double speed) {
+//        if (speed > 1) speed = 1;
+//        else if (speed < -1) speed = -1;
+//        auxiliaryRollerLever.set(ControlMode.PercentOutput, speed);
+//    }
+
+    public void setLowerRollerExtensionSpeed(double speed) {
         if (speed > 1) speed = 1;
         else if (speed < -1) speed = -1;
         auxiliaryRollerLever.set(ControlMode.PercentOutput, speed);
     }
 
     /**
-     * Returns the position of the auxiliary roller.
-     * @return The position of the auxiliary roller in encoder ticks.
+     * Returns the position of the lower roller extension.
+     * @return The position of the lower roller extension in encoder ticks.
      */
-    public int getAuxiliaryRollerEncoderPosition() {
+    public int getLowerRollerExtensionEncoderPosition() {
         return auxiliaryRollerLever.getSelectedSensorPosition(0);
     }
 
     /**
-     * Zeroes the position of the auxiliary encoder.
+     * Zeroes the position of the lower extension encoder.
      */
-    public void zeroAuxiliaryEncoder() {
+    public void zeroLowerExtensionEncoder() {
         auxiliaryRollerLever.getSensorCollection().setQuadraturePosition(0, 0);
     }
 
     /**
-     * Returns whether the auxiliary roller is in its storage position.
-     * @return Whether the auxiliary roller is in its storage position.
+     * Returns whether the lower roller is in its storage position.
+     * @return Whether the lower roller is in its storage position.
      */
-    public boolean isAuxiliaryRollerStored() {
-        return auxiliaryRollerLever.getSensorCollection().isRevLimitSwitchClosed();
+    public boolean isLowerRollerStored() {
+        return lowerRollerExtension.getSensorCollection().isRevLimitSwitchClosed();
     }
 
     /**
-     * Returns whether the auxiliary roller is in its extended position.
-     * @return Whether the auxiliary roller is in its extended position.
+     * Returns whether the lower roller is in its extended position.
+     * @return Whether the lower roller is in its extended position.
      */
-    public boolean isAuxiliaryRollerExtended() {
-        return auxiliaryRollerLever.getSensorCollection().isFwdLimitSwitchClosed();
+    public boolean isLowerRollerExtended() {
+        return lowerRollerExtension.getSensorCollection().isFwdLimitSwitchClosed();
     }
 
     /**

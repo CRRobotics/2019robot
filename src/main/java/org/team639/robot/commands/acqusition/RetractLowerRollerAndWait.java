@@ -8,21 +8,20 @@ import org.team639.robot.subsystems.Acquisition;
 import static org.team639.robot.Constants.AuxiliaryRoller.*;
 
 /**
- * Extends the auxiliary roller.
+ * Retracts the lower roller.
  */
-public class ExtendAuxiliaryRollerAndWait extends Command {
+public class RetractLowerRollerAndWait extends Command {
     private Acquisition acquisition = Robot.acquisition;
     private PID pid;
 
     // Doesn't require Acquisition so other commands don't have to be interrupted
-    public ExtendAuxiliaryRollerAndWait() {}
+    public RetractLowerRollerAndWait() {}
 
     /**
      * The initialize method is called the first time this Command is run after being started.
      */
     @Override
     protected void initialize() {
-        super.initialize();
         pid = new PID(P, I, D, MIN_SPEED, MAX_SPEED, RATE, TOLERANCE, I_CAP);
     }
 
@@ -31,8 +30,8 @@ public class ExtendAuxiliaryRollerAndWait extends Command {
      */
     @Override
     protected void execute() {
-        var output = pid.compute(LOWERED_TICKS - acquisition.getAuxiliaryRollerEncoderPosition());
-        acquisition.setAuxiliaryRollerLeverSpeed(output);
+        var output = pid.compute(0 - acquisition.getLowerRollerExtensionEncoderPosition());
+        acquisition.setLowerRollerExtensionSpeed(output);
     }
 
     /**
@@ -41,7 +40,7 @@ public class ExtendAuxiliaryRollerAndWait extends Command {
      */
     @Override
     protected void end() {
-        acquisition.setAuxiliaryRollerLeverSpeed(0);
+        acquisition.setLowerRollerExtensionSpeed(0);
     }
 
     /**
@@ -72,6 +71,6 @@ public class ExtendAuxiliaryRollerAndWait extends Command {
      */
     @Override
     protected boolean isFinished() {
-        return acquisition.isAuxiliaryRollerExtended();
+        return acquisition.isLowerRollerStored();
     }
 }

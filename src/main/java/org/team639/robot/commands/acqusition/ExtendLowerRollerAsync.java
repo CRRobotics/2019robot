@@ -7,20 +7,20 @@ import org.team639.robot.subsystems.Acquisition;
 import static org.team639.robot.Constants.AuxiliaryRoller.LOWER_SPEED;
 
 /**
- * Extends the auxiliary roller.
+ * Extends the lower roller.
  */
-public class RetractAuxiliaryRollerAsync extends Command {
+public class ExtendLowerRollerAsync extends Command {
     private Acquisition acquisition = Robot.acquisition;
 
     // Doesn't require Acquisition so other commands don't have to be interrupted
-    public RetractAuxiliaryRollerAsync() {}
+    public ExtendLowerRollerAsync() {}
 
     /**
      * The initialize method is called the first time this Command is run after being started.
      */
     @Override
     protected void initialize() {
-        acquisition.setAuxiliaryRollerLeverSpeed(-1 * LOWER_SPEED);
+        acquisition.setLowerRollerExtensionSpeed(LOWER_SPEED);
     }
 
     /**
