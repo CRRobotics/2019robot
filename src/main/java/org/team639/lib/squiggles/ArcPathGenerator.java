@@ -1,17 +1,19 @@
 package org.team639.lib.squiggles;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.*;
 
 public class ArcPathGenerator {
-    public static ArcPath generatePath(Vector robotPos, double robotAngle, Vector endPos, double endAngle) {
+    public static SimpleArcPath generateSimplePath(Vector startPos, double startAngle, Vector endPos, double endAngle) {
 
-        robotAngle %= (2.0 * PI);
+        startAngle %= (2.0 * PI);
         endAngle %= (2.0 * PI);
 
-        var intersect = intersection(robotPos, robotAngle ,endPos, endAngle);
+        var intersect = intersection(startPos, startAngle, endPos, endAngle);
 
-        var sti = robotPos.subtract(intersect);
+        var sti = startPos.subtract(intersect);
         var ite = endPos.subtract(intersect);
 
         var diff = sti.magnitude() - ite.magnitude();
@@ -22,18 +24,60 @@ public class ArcPathGenerator {
             sti = sti.multiply(ite.magnitude() / sti.magnitude());
         }
 
-        var center = intersection(sti, robotAngle + PI / 2.0, ite, endAngle + PI / 2.0);
+        var center = intersection(sti, startAngle + PI / 2.0, ite, endAngle + PI / 2.0);
 
         double radius = center.subtract(sti).magnitude();
 
-        return new ArcPath(diff, endAngle, radius, endAngle, diff > 0, (endAngle - robotAngle) > 0 ? Direction.Left : Direction.Right);
+        return new SimpleArcPath(diff, endAngle, radius, endAngle, diff > 0, (endAngle - startAngle) > 0 ? Direction.Left : Direction.Right);
     }
 
     public static Vector intersection(Vector startPos, double startAngle, Vector endPos, double endAngle) {
+        if (startAngle == PI / 2.0 || startAngle == 3.0 * PI / 2.0) startAngle += 0.001;
+        if (endAngle == PI / 2.0 || endAngle == 3.0 * PI / 2.0) endAngle += 0.001;
         double x = (tan(startAngle) * startPos.x - tan(endAngle) * endPos.x - startPos.y + endPos.y) / (tan(startAngle) - tan(endAngle));
         double y = tan(startAngle) * (x - startPos.x) + startPos.y;
 
         return new Vector(x, y);
+    }
+
+    public static List<PathSegment> generateComplexPath(Vector startPos, double startAngle, Vector endPos, double endAngle) {
+        startAngle %= (2.0 * PI);
+        endAngle %= (2.0 * PI);
+
+        var intersect = intersection(startPos, startAngle, endPos, endAngle);
+
+        boolean b1 = endAngle <= PI / 2.0 && endAngle >= -1 * PI / 2.0 && intersect.x < endPos.x;
+        boolean b2 = (endAngle >= PI / 2.0 || endAngle <= -1 * PI / 2.0) && intersect.x > endPos.x;
+
+        if (b1 || b2) {
+            return generateSimplePath(startPos, startAngle, endPos, endAngle).toComplex();
+        } else {
+            var midpoint = new Vector((startPos.x + endPos.x) / 2.0, (startPos.y + endPos.y) / 2.0);
+            var angle = atan2(endPos.y - startPos.y, endPos.x - startPos.x);
+            var avg = ((angle - startAngle) + (angle - endAngle)) / 2.0;
+
+            var midAngle = angle + avg;
+
+            return generateComplexPath(List.of(
+                    new Position(startPos, startAngle),
+                    new Position(midpoint, midAngle),
+                    new Position(endPos, endAngle)
+            ));
+        }
+    }
+
+    public static List<PathSegment> generateComplexPath(List<Position> positions) {
+        var path = new ArrayList<PathSegment>();
+        for (int i = 0; i < positions.size() - 1; i++) {
+            var p1 = positions.get(i);
+            var p2 = positions.get(i + 1);
+
+            var segment = generateSimplePath(p1.vector, p1.angle, p2.vector, p2.angle);
+
+            path.addAll(segment.toComplex());
+        }
+
+        return path;
     }
 
     /**
@@ -47,7 +91,7 @@ public class ArcPathGenerator {
         return outerSpeed * ((2 * radius / trackWidth) - 1) / ((2 * radius / trackWidth) + 1);
     }
 
-    public static class ArcPath {
+    public static class SimpleArcPath {
         public final double straightDistance;
         public final double straightAngle;
         public final double radius;
@@ -55,13 +99,27 @@ public class ArcPathGenerator {
         public final boolean straightFirst;
         public final Direction direction;
 
-        public ArcPath(double straightDistance, double straightAngle, double radius, double endAngle, boolean straightFirst, Direction direction) {
+        public SimpleArcPath(double straightDistance, double straightAngle, double radius, double endAngle, boolean straightFirst, Direction direction) {
             this.straightDistance = straightDistance;
             this.straightAngle = straightAngle;
             this.radius = radius;
             this.endAngle = endAngle;
             this.straightFirst = straightFirst;
             this.direction = direction;
+        }
+
+        public List<PathSegment> toComplex() {
+            var path = new ArrayList<PathSegment>();
+
+            path.add(PathSegment.arc(new ArcSegment(this.direction, this.endAngle, this.radius)));
+
+            if (this.straightFirst && this.straightDistance > 0) {
+                path.add(0, PathSegment.straight(new StraightSegment(this.straightAngle, this.straightDistance)));
+            } else if (this.straightDistance > 0) {
+                path.add(PathSegment.straight(new StraightSegment(this.straightAngle, this.straightDistance)));
+            }
+
+            return path;
         }
     }
 
@@ -76,11 +134,11 @@ public class ArcPathGenerator {
             this.arcSegment = arcSegment;
         }
 
-        public PathSegment straight(StraightSegment segment) {
+        public static PathSegment straight(StraightSegment segment) {
             return new PathSegment(SegmentType.Straight, segment, null);
         }
 
-        public PathSegment arc(ArcSegment segment) {
+        public static PathSegment arc(ArcSegment segment) {
             return new PathSegment(SegmentType.Arc, null, segment);
         }
     }
@@ -115,5 +173,15 @@ public class ArcPathGenerator {
     public enum Direction {
         Left,
         Right
+    }
+
+    public static class Position {
+        public final Vector vector;
+        public final double angle;
+
+        public Position(Vector vector, double angle) {
+            this.vector = vector;
+            this.angle = angle;
+        }
     }
 }

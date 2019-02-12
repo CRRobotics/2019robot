@@ -1,9 +1,7 @@
 package org.team639.robot;
 
-import org.team639.lib.commands.ThreadedDriveCommand;
 import org.team639.lib.controls.JoystickManager;
 import org.team639.lib.controls.XBoxController;
-import org.team639.robot.commands.drive.SquiggleFollower;
 
 /**
  * Defines the mappings between buttons and actions and allows access to raw joystick values.
@@ -13,6 +11,6 @@ public class OI {
     public static final JoystickManager controller = new XBoxController(1);
 
     public static void mapButtons() {
-//        controller.mapButton(XBoxController.Buttons.A, new ThreadedDriveCommand(new SquiggleFollower(), Robot.drivetrain), JoystickManager.MappingType.WhenPressed);
+//        controller.mapButton(XBoxController.Buttons.A, new ThreadedDriveCommand(new SimpleArcFollower(), Robot.drivetrain), JoystickManager.MappingType.WhenPressed);
     }
 }

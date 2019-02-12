@@ -4,29 +4,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.lib.commands.DriveCommand;
 import org.team639.lib.math.PID;
 import org.team639.lib.squiggles.ArcPathGenerator;
-import org.team639.lib.squiggles.PathFollower;
 import org.team639.lib.squiggles.Vector;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Drivetrain;
 
 import static org.team639.robot.Constants.Drivetrain.TRACK_WIDTH_INCHES;
 
-public class SquiggleFollower extends DriveCommand {
-    private ArcPathGenerator.ArcPath path;
+public class SimpleArcFollower extends DriveCommand {
+    private ArcPathGenerator.SimpleArcPath path;
     private Drivetrain drivetrain = Robot.drivetrain;
     private State state;
     private int leftEncTicks;
 
     private PID anglePID;
 
-    public SquiggleFollower() {
-        super("SquiggleFollower");
+    public SimpleArcFollower() {
+        super("SimpleArcFollower");
         requires(this.drivetrain);
     }
 
     @Override
     protected void initialize() {
-        path = ArcPathGenerator.generatePath(new Vector(0, 0), Math.PI / 2, new Vector(5 * 12, 5 * 12), 0);
+        path = ArcPathGenerator.generateSimplePath(new Vector(0, 0), Math.PI / 2, new Vector(5 * 12, 5 * 12), 0);
         if (path.straightFirst) {
             state = State.Straight;
             leftEncTicks = drivetrain.getLeftEncPos();
@@ -36,7 +35,7 @@ public class SquiggleFollower extends DriveCommand {
 
         drivetrain.resetTracking();
         drivetrain.zeroRobotAngle();
-        System.out.println("squigglefollower");
+        System.out.println("SimpleArcFollower");
         System.out.println("radius: " + path.radius);
         System.out.println("straight: " + path.straightDistance);
         anglePID = new PID(10, 0, 0, 0.2, 0.5, 0.5, Math.toRadians(5), 0);
