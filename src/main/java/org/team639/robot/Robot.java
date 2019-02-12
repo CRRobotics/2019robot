@@ -2,13 +2,31 @@ package org.team639.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import org.team639.robot.subsystems.Acquisition;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import org.team639.lib.commands.DriveThread;
+import org.team639.robot.commands.drive.DriveLayout;
+import org.team639.robot.subsystems.Drivetrain;
 
+/**
+ * The main loop of Redshift, Code Red Robotics' 2019 robot.
+ */
 public class Robot extends TimedRobot {
     public static final Acquisition acquisition = new Acquisition();
+    public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.navx);
+
+    public static DriveLayout getDriveLayout() {
+        return DriveLayout.Arcade2JoystickRight;
+    }
+
+    public double lmax = 0;
+    public double rmax = 0;
 
     @Override
     public void robotInit() {
-        super.robotInit();
+        DriveThread.getInstance().start();
+        System.out.println("thread started");
+        OI.mapButtons();
+//        drivetrain.setControlMode(Drivetrain.Mode.OpenLoop);
     }
 
     @Override
@@ -33,7 +51,23 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        super.robotPeriodic();
+//        SmartDashboard.putNumber("right enc", drivetrain.getRightEncPos());
+//        SmartDashboard.putNumber("left enc", drivetrain.getLeftEncPos());
+//        SmartDashboard.putNumber("angle", drivetrain.getRobotAngle());
+//
+//        SmartDashboard.putNumber("tracked x", drivetrain.getTrackedX());
+//        SmartDashboard.putNumber("tracked y", drivetrain.getTrackedY());
+//
+//        var left = drivetrain.getLeftEncVelocity();
+//        if (left > lmax) lmax = left;
+//        var right = drivetrain.getRightEncVelocity();
+//        if (right > rmax) rmax = right;
+//
+//        SmartDashboard.putNumber("lmax", lmax);
+//        SmartDashboard.putNumber("rmax", rmax);
+
+//        SmartDashboard.putNumber("left vel", left);
+//        SmartDashboard.putNumber("right vel", right);
     }
 
     @Override
@@ -48,7 +82,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        super.teleopPeriodic();
+        Scheduler.getInstance().run();
     }
 
     @Override
