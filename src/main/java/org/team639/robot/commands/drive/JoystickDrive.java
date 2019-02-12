@@ -6,6 +6,9 @@ import org.team639.lib.controls.XBoxController;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Drivetrain;
 
+/**
+ * Sets drivetrain speeds based on joystick input.
+ */
 public class JoystickDrive extends DriveCommand {
     private Drivetrain drivetrain;
 

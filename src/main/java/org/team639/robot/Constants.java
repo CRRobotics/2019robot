@@ -1,8 +1,18 @@
 package org.team639.robot;
 
+/**
+ * Contains constants for the robot.
+ */
 public class Constants {
+
+    /**
+     * Is this code running on the real robot?
+     */
     public static final boolean REAL = false;
 
+    /**
+     * Constants for the drivetrain.
+     */
     public static class Drivetrain {
         public static final double MIN_DRIVE_PERCENT = 0.09;
 

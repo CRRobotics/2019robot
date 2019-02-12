@@ -6,6 +6,9 @@ import org.team639.lib.commands.DriveThread;
 import org.team639.robot.commands.drive.DriveLayout;
 import org.team639.robot.subsystems.Drivetrain;
 
+/**
+ * The main loop of Redshift, Code Red Robotics' 2019 robot.
+ */
 public class Robot extends TimedRobot {
     public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.navx);
 
@@ -46,8 +49,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-//        drivetrain.track();
-//
 //        SmartDashboard.putNumber("right enc", drivetrain.getRightEncPos());
 //        SmartDashboard.putNumber("left enc", drivetrain.getLeftEncPos());
 //        SmartDashboard.putNumber("angle", drivetrain.getRobotAngle());
@@ -56,7 +57,7 @@ public class Robot extends TimedRobot {
 //        SmartDashboard.putNumber("tracked y", drivetrain.getTrackedY());
 //
 //        var left = drivetrain.getLeftEncVelocity();
-////        if (left > lmax) lmax = left;
+//        if (left > lmax) lmax = left;
 //        var right = drivetrain.getRightEncVelocity();
 //        if (right > rmax) rmax = right;
 //

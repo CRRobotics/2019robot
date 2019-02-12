@@ -14,6 +14,9 @@ import org.team639.robot.commands.drive.JoystickDrive;
 
 import static org.team639.robot.Constants.Drivetrain.*;
 
+/**
+ * The robot drivetrain hardware wrapper.
+ */
 public class Drivetrain extends DriveSubsystem {
     private final TalonSRX leftMaster;
     private final TalonSRX rightMaster;
@@ -29,6 +32,12 @@ public class Drivetrain extends DriveSubsystem {
 
     private DriveTracker tracker;
 
+    /**
+     * Creates a drivetrain with the given components.
+     * @param leftMaster The master motor on the left side.
+     * @param rightMaster The master motor on the right side.
+     * @param navx The robot navx.
+     */
     public Drivetrain(TalonSRX leftMaster, TalonSRX rightMaster, AHRS navx) {
         this.leftMaster = leftMaster;
         this.rightMaster = rightMaster;
@@ -87,6 +96,11 @@ public class Drivetrain extends DriveSubsystem {
         }
     }
 
+    /**
+     * Sets the speed of the robot in feet per second.
+     * @param left The speed of the left side of the robot in feet per second.
+     * @param right The speed of the right side of the robot in feet per second.
+     */
     public void setSpeedsFeetPerSecond(double left, double right) {
         setControlMode(Mode.ClosedLoop);
         setSpeedsRaw(left * FPS_TO_MOTOR_UNITS, right * FPS_TO_MOTOR_UNITS);
@@ -129,6 +143,7 @@ public class Drivetrain extends DriveSubsystem {
      * @return Whether or not the encoders are both connected.
      */
     public boolean encodersPresent() {
+        // We have to assume that the encoders are present if we aren't running on the real robot.
         return !Constants.REAL || !(rightMaster.getSensorCollection().getPulseWidthRiseToRiseUs() == 0 || leftMaster.getSensorCollection().getPulseWidthRiseToRiseUs() == 0);
     }
 
@@ -236,30 +251,34 @@ public class Drivetrain extends DriveSubsystem {
         setDefaultCommand(new ThreadedDriveCommand(new JoystickDrive(), this));
     }
 
-//    @Override
-//    public void periodic() {
-//        // Update the position tracking every iteration no matter what.
-//        tracker.collect();
-//    }
-
+    /**
+     * Returns the tracked x position of the robot.
+     * @return The tracked x position of the robot.
+     */
     public double getTrackedX() {
         return tracker.getX();
     }
 
+    /**
+     * Returns the tracked y position of the robot.
+     * @return The tracked y position of the robot.
+     */
     public double getTrackedY() {
         return tracker.getY();
     }
 
+    /**
+     * Updates the drive tracker.
+     */
     public void track() {
         tracker.collect();
     }
 
+    /**
+     * Resets the drive tracker to (0, 0)
+     */
     public void resetTracking() {
         tracker.reset(0, 0);
-    }
-
-    public double averageVelocity() {
-        return (getLeftEncVelocity() / FPS_TO_MOTOR_UNITS + getRightEncVelocity() / FPS_TO_MOTOR_UNITS) / 2.0;
     }
 
     @Override
@@ -267,6 +286,9 @@ public class Drivetrain extends DriveSubsystem {
         track();
     }
 
+    /**
+     * Represents the possible modes that the drivetrain can be in.
+     */
     public enum Mode {
         ClosedLoop(ControlMode.Velocity),
         OpenLoop(ControlMode.PercentOutput);
