@@ -9,6 +9,8 @@ import org.team639.lib.squiggles.Vector;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Drivetrain;
 
+import static org.team639.robot.Constants.Drivetrain.TRACK_WIDTH_INCHES;
+
 public class SquiggleFollower extends DriveCommand {
     private ArcPathGenerator.ArcPath path;
     private Drivetrain drivetrain = Robot.drivetrain;
@@ -59,9 +61,16 @@ public class SquiggleFollower extends DriveCommand {
                 if (Math.abs(Math.toRadians(drivetrain.getRobotAngle()) - path.endAngle) < Math.toRadians(5)) {
                     state = path.straightFirst ? State.Done : State.Straight;
                 } else {
-                    var sig = PathFollower.velocities(anglePID.compute(Math.abs(Math.toRadians(drivetrain.getRobotAngle())) - path.endAngle), 1.0 / path.radius, 28);
-//                    System.out.println("l: " + sig.left + ", r: " + sig.right);
-                    drivetrain.setSpeedsFeetPerSecond(sig.left, sig.right);
+                    var outer = anglePID.compute(Math.abs(Math.toRadians(drivetrain.getRobotAngle())) - path.endAngle);
+                    var inner = ArcPathGenerator.innerSpeed(outer, path.radius, TRACK_WIDTH_INCHES);
+                    switch (path.direction) {
+                        case Left:
+                            drivetrain.setSpeedsPercent(inner, outer);
+                            break;
+                        case Right:
+                            drivetrain.setSpeedsPercent(outer, inner);
+                            break;
+                    }
                 }
                 break;
             case Done:
