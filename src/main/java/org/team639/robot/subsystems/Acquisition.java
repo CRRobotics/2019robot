@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -26,16 +27,19 @@ public class Acquisition extends Subsystem {
     private Solenoid flowerOpen;
     private Solenoid flowerForward;
 
+    private DigitalInput cargoDetector;
+
     /**
      * Creates a new acquisition using the provided hardware.
      */
-    public Acquisition(TalonSRX lowerRollerExtension, Spark upperRoller, Spark lowerRoller, Solenoid flowerOpen, Solenoid flowerForward) {
+    public Acquisition(TalonSRX lowerRollerExtension, Spark upperRoller, Spark lowerRoller, Solenoid flowerOpen, Solenoid flowerForward, DigitalInput cargoDetector) {
         super("Acquisition");
         this.lowerRollerExtension = lowerRollerExtension;
         this.upperRoller = upperRoller;
         this.lowerRoller = lowerRoller;
         this.flowerOpen = flowerOpen;
         this.flowerForward = flowerForward;
+        this.cargoDetector = cargoDetector;
 
         lowerRollerExtension.configFactoryDefault();
 
@@ -140,6 +144,6 @@ public class Acquisition extends Subsystem {
      * @return Whether cargo is detected within the cargo acquisition.
      */
     public boolean isCargoDetected() {
-        return false; // TODO: actually read sensor.
+        return cargoDetector.get();
     }
 }
