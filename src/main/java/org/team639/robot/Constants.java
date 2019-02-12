@@ -36,7 +36,7 @@ public class Constants {
         public static final double K_VELOCITY = 1;
     }
 
-    public static class AuxiliaryRoller {
+    public static class LowerRoller {
         public static final double P = 0.1;
         public static final double I = 0;
         public static final double D = 0;

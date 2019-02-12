@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Acquisition;
 
-import static org.team639.robot.Constants.AuxiliaryRoller.LOWER_SPEED;
+import static org.team639.robot.Constants.LowerRoller.LOWER_SPEED;
 
 /**
  * Extends the lower roller.

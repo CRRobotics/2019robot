@@ -11,8 +11,19 @@ import org.team639.robot.subsystems.Drivetrain;
  * The main loop of Redshift, Code Red Robotics' 2019 robot.
  */
 public class Robot extends TimedRobot {
-    public static final Acquisition acquisition = new Acquisition();
-    public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.navx);
+    public static final Acquisition acquisition = new Acquisition(
+            RobotMap.lowerRollerExtension,
+            RobotMap.upperRoller,
+            RobotMap.lowerRoller,
+            RobotMap.flowerOpen,
+            RobotMap.flowerForward
+    );
+
+    public static final Drivetrain drivetrain = new Drivetrain(
+            RobotMap.leftDriveMaster,
+            RobotMap.rightDriveMaster,
+            RobotMap.navx
+    );
 
     public static DriveLayout getDriveLayout() {
         return DriveLayout.Arcade2JoystickRight;

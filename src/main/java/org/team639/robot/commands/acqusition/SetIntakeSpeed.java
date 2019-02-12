@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Acquisition;
 
+/**
+ * Sets the speed of the cargo intake rollers
+ */
 public class SetIntakeSpeed extends Command {
 
     private Acquisition acquisition = Robot.acquisition;

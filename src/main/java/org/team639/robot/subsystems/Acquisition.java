@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Acquisition extends Subsystem {
 
-    private TalonSRX auxiliaryRollerLever;
     private TalonSRX lowerRollerExtension;
 
     private Spark upperRoller;
@@ -28,27 +27,20 @@ public class Acquisition extends Subsystem {
     private Solenoid flowerForward;
 
     /**
-     * The constructor of the Acquisition class.
-     * Initializes all private instance variables.
+     * Creates a new acquisition using the provided hardware.
      */
-    public Acquisition() {
-        upperRoller = new Spark(0);
-        lowerRoller = new Spark(1);
+    public Acquisition(TalonSRX lowerRollerExtension, Spark upperRoller, Spark lowerRoller, Solenoid flowerOpen, Solenoid flowerForward) {
+        super("Acquisition");
+        this.lowerRollerExtension = lowerRollerExtension;
+        this.upperRoller = upperRoller;
+        this.lowerRoller = lowerRoller;
+        this.flowerOpen = flowerOpen;
+        this.flowerForward = flowerForward;
 
-        auxiliaryRollerLever = new TalonSRX(4);
-        lowerRollerExtension = new TalonSRX(3);
-
-        flowerOpen = new Solenoid(1);
-        flowerForward = new Solenoid(2);
-
-
-        auxiliaryRollerLever.configFactoryDefault();
         lowerRollerExtension.configFactoryDefault();
 
-        auxiliaryRollerLever.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         lowerRollerExtension.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
-        auxiliaryRollerLever.setNeutralMode(NeutralMode.Brake);
         lowerRollerExtension.setNeutralMode(NeutralMode.Brake);
     }
 
@@ -94,16 +86,14 @@ public class Acquisition extends Subsystem {
         lowerRoller.set(speed);
     }
 
-//    public void setAuxiliaryRollerLeverSpeed(double speed) {
-//        if (speed > 1) speed = 1;
-//        else if (speed < -1) speed = -1;
-//        auxiliaryRollerLever.set(ControlMode.PercentOutput, speed);
-//    }
-
+    /**
+     * Sets the speed at which the lower roller is extending (or retracting).
+     * @param speed A value from -1 to 1 representing the speed of the extension winch as a percent of maximum.
+     */
     public void setLowerRollerExtensionSpeed(double speed) {
         if (speed > 1) speed = 1;
         else if (speed < -1) speed = -1;
-        auxiliaryRollerLever.set(ControlMode.PercentOutput, speed);
+        lowerRollerExtension.set(ControlMode.PercentOutput, speed);
     }
 
     /**
@@ -111,14 +101,14 @@ public class Acquisition extends Subsystem {
      * @return The position of the lower roller extension in encoder ticks.
      */
     public int getLowerRollerExtensionEncoderPosition() {
-        return auxiliaryRollerLever.getSelectedSensorPosition(0);
+        return lowerRollerExtension.getSelectedSensorPosition(0);
     }
 
     /**
      * Zeroes the position of the lower extension encoder.
      */
     public void zeroLowerExtensionEncoder() {
-        auxiliaryRollerLever.getSensorCollection().setQuadraturePosition(0, 0);
+        lowerRollerExtension.getSensorCollection().setQuadraturePosition(0, 0);
     }
 
     /**

@@ -5,7 +5,7 @@ import org.team639.lib.math.PID;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Acquisition;
 
-import static org.team639.robot.Constants.AuxiliaryRoller.*;
+import static org.team639.robot.Constants.LowerRoller.*;
 
 /**
  * Retracts the lower roller.
