@@ -33,4 +33,8 @@ public class Constants {
     // Constants for the MonitorLift command
     public static final double MOTOR_RADIUS = 1.0;
     public static final double LIFT_MASS = 1.0;
+
+    // Arbitrary values for now, stuff for MotionMagic.
+    public static final int LIFT_MOTION_MAGIC_CRUISING_SPEED = 1000;
+    public static final int LIFT_MOTION_MAGIC_ACCELERATION = 1000;
 }

@@ -6,6 +6,8 @@ import org.team639.lib.math.PID;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Lift;
 
+import javax.naming.ldap.Control;
+
 import static org.team639.robot.Constants.*;
 
 /**
@@ -24,7 +26,6 @@ class MoveLiftToSetPosition extends Command {
         lift = Robot.getLift();
         requires(lift);
     }
-
 
     /**
      * The initialize method is called the first time this Command is run after being started.

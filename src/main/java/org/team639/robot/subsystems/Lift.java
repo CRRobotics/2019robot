@@ -4,12 +4,7 @@ package org.team639.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team639.robot.Constants;
 import org.team639.robot.RobotMap;
 
@@ -48,6 +43,8 @@ public abstract class Lift extends Subsystem {
 
         setPID(Constants.LIFT_P, Constants.LIFT_I, Constants.LIFT_D, Constants.LIFT_F);
     }
+
+
 
     /**
      * Sets the speed of the lift with a percent of total speed from -1 to 1. Negative is down and positive is up.
@@ -148,6 +145,9 @@ public abstract class Lift extends Subsystem {
 
     public void setcurrentControlMode(ControlMode controlMode) {
         this.currentControlMode = controlMode;
+        mainTalon.configMotionCruiseVelocity(Constants.LIFT_MOTION_MAGIC_CRUISING_SPEED);
+        mainTalon.configMotionAcceleration(Constants.LIFT_MOTION_MAGIC_ACCELERATION);
+        mainTalon.configMotionProfileTrajectoryPeriod();
     }
 
 }
