@@ -58,6 +58,7 @@ public class SimpleArcFollower extends DriveCommand {
                 break;
             case Arc:
                 if (Math.abs(Math.toRadians(drivetrain.getRobotAngle()) - path.endAngle) < Math.toRadians(5)) {
+                    leftEncTicks = drivetrain.getLeftEncPos();
                     state = path.straightFirst ? State.Done : State.Straight;
                 } else {
                     var outer = anglePID.compute(Math.abs(Math.toRadians(drivetrain.getRobotAngle())) - path.endAngle);
