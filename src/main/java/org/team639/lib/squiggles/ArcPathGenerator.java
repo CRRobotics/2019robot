@@ -28,7 +28,7 @@ public class ArcPathGenerator {
 
         double radius = center.subtract(sti).magnitude();
 
-        return new SimpleArcPath(diff, endAngle, radius, endAngle, diff > 0, (endAngle - startAngle) > 0 ? Direction.Left : Direction.Right);
+        return new SimpleArcPath(abs(diff), endAngle, radius, endAngle, diff > 0, (endAngle - startAngle) > 0 ? Direction.Left : Direction.Right);
     }
 
     public static Vector intersection(Vector startPos, double startAngle, Vector endPos, double endAngle) {
@@ -88,7 +88,7 @@ public class ArcPathGenerator {
      * @return The speed the inner wheels should be set to.
      */
     public static double innerSpeed(double outerSpeed, double radius, double trackWidth) {
-        return outerSpeed * ((2 * radius / trackWidth) - 1) / ((2 * radius / trackWidth) + 1);
+        return outerSpeed * ((2.0 * radius / trackWidth) - 1.0) / ((2.0 * radius / trackWidth) + 1.0);
     }
 
     public static class SimpleArcPath {

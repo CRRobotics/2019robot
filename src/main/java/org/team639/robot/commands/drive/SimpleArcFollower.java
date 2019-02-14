@@ -2,13 +2,16 @@ package org.team639.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.lib.commands.DriveCommand;
+import org.team639.lib.math.AngleMath;
 import org.team639.lib.math.PID;
 import org.team639.lib.squiggles.ArcPathGenerator;
 import org.team639.lib.squiggles.Vector;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Drivetrain;
 
+import static org.team639.robot.Constants.Drivetrain.TICKS_PER_INCH;
 import static org.team639.robot.Constants.Drivetrain.TRACK_WIDTH_INCHES;
+import static org.team639.robot.Constants.Drivetrain.*;
 
 public class SimpleArcFollower extends DriveCommand {
     private ArcPathGenerator.SimpleArcPath path;
@@ -17,6 +20,7 @@ public class SimpleArcFollower extends DriveCommand {
     private int leftEncTicks;
 
     private PID anglePID;
+    private PID turnPID;
 
     public SimpleArcFollower() {
         super("SimpleArcFollower");
@@ -25,7 +29,7 @@ public class SimpleArcFollower extends DriveCommand {
 
     @Override
     protected void initialize() {
-        path = ArcPathGenerator.generateSimplePath(new Vector(0, 0), Math.PI / 2, new Vector(5 * 12, 5 * 12), 0);
+        path = ArcPathGenerator.generateSimplePath(new Vector(0, 0), Math.PI / 2, new Vector(15 * 12, 5 * 12), 0);
         if (path.straightFirst) {
             state = State.Straight;
             leftEncTicks = drivetrain.getLeftEncPos();
@@ -38,7 +42,9 @@ public class SimpleArcFollower extends DriveCommand {
         System.out.println("SimpleArcFollower");
         System.out.println("radius: " + path.radius);
         System.out.println("straight: " + path.straightDistance);
-        anglePID = new PID(10, 0, 0, 0.2, 0.5, 0.5, Math.toRadians(5), 0);
+        anglePID = new PID(10, 0, 0, 0.45, 0.5, 0.5, Math.toRadians(5), 0);
+
+        turnPID = new PID(AC_P, AC_I, AC_D, AC_MIN, AC_MAX, AC_RATE, AC_TOLERANCE, AC_I_CAP);
     }
 
     @Override
@@ -47,13 +53,16 @@ public class SimpleArcFollower extends DriveCommand {
 
         SmartDashboard.putNumber("tracked x", drivetrain.getTrackedX());
         SmartDashboard.putNumber("tracked y", drivetrain.getTrackedY());
+        SmartDashboard.putNumber("angle", drivetrain.getRobotAngle());
 
         switch (state) {
             case Straight:
-                if (drivetrain.getLeftEncPos() - leftEncTicks > path.straightDistance - 500) {
+                if (drivetrain.getLeftEncPos() - leftEncTicks > path.straightDistance * TICKS_PER_INCH - 500) {
                     state = path.straightFirst ? State.Arc : State.Done;
                 } else {
-                    drivetrain.setSpeedsPercent(0.3, 0.3);
+                    double error = AngleMath.shortestAngle(drivetrain.getRobotAngle(), path.straightAngle);
+                    double output = turnPID.compute(error);
+                    drivetrain.setSpeedsPercent(0.5 - output, 0.5 + output);
                 }
                 break;
             case Arc:
