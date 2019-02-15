@@ -63,6 +63,12 @@ public abstract class Lift extends Subsystem {
         }
     }
 
+    public void engageBrake()
+    {
+        currentControlMode = ControlMode.Velocity;
+        mainTalon.set(currentControlMode, Constants.LIFT_BRAKE_SPEED);
+    }
+
     /**
      * Sets the talon internal pid.
      * @param p The p constant.
@@ -147,7 +153,7 @@ public abstract class Lift extends Subsystem {
         this.currentControlMode = controlMode;
         mainTalon.configMotionCruiseVelocity(Constants.LIFT_MOTION_MAGIC_CRUISING_SPEED);
         mainTalon.configMotionAcceleration(Constants.LIFT_MOTION_MAGIC_ACCELERATION);
-        mainTalon.configMotionProfileTrajectoryPeriod();
+        mainTalon.configMotionProfileTrajectoryPeriod(10);
     }
 
 }
