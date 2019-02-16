@@ -2,11 +2,13 @@ package org.team639.robot.subsystems;
 
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Solenoid;
 import org.team639.robot.Constants;
 import org.team639.robot.RobotMap;
+import org.team639.robot.commands.lift.EngageLiftMotorBrake;
 
 // Note - Encoder: 4096 ticks per rotation
 
@@ -18,6 +20,8 @@ public abstract class Lift extends Subsystem {
     private Solenoid brake;
 
     private ControlMode currentControlMode;
+
+    private EngageLiftMotorBrake motorBrake;
 
     private double kP;
     private double kI;
@@ -41,10 +45,16 @@ public abstract class Lift extends Subsystem {
 
         brake = RobotMap.getLiftBrake();
 
+        motorBrake = new EngageLiftMotorBrake(0);
+        motorBrake.setRunning(false);
+
         setPID(Constants.LIFT_P, Constants.LIFT_I, Constants.LIFT_D, Constants.LIFT_F);
     }
 
-
+    public void initDefaultCommand()
+    {
+        setDefaultCommand(motorBrake);
+    }
 
     /**
      * Sets the speed of the lift with a percent of total speed from -1 to 1. Negative is down and positive is up.
@@ -65,8 +75,7 @@ public abstract class Lift extends Subsystem {
 
     public void engageBrake()
     {
-        currentControlMode = ControlMode.Velocity;
-        mainTalon.set(currentControlMode, Constants.LIFT_BRAKE_SPEED);
+        motorBrake = new EngageLiftMotorBrake(getEncPos());
     }
 
     /**

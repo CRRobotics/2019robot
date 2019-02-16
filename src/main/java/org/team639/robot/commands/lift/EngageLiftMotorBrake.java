@@ -19,11 +19,10 @@ import static org.team639.robot.Constants.*;
 public class EngageLiftMotorBrake extends Command {
 
     private Lift lift;
-    private LiftPosition position;
-    private boolean running;
+    private int position;
     private PID pid;
 
-    public EngageLiftMotorBrake(LiftPosition position) {
+    public EngageLiftMotorBrake(int position) {
         this.position = position;
         lift = Robot.getLift();
         requires(lift);
@@ -34,8 +33,7 @@ public class EngageLiftMotorBrake extends Command {
      */
     @Override
     protected void initialize() {
-        running = true;
-        if (!lift.encoderPresent()) running = false;
+        //if (!lift.encoderPresent()) running = false;
         pid = new PID(LIFT_POS_P, LIFT_POS_I, LIFT_POS_D, LIFT_MIN, LIFT_MAX, LIFT_RATE, LIFT_TOLERANCE, 0);
     }
 
@@ -44,7 +42,7 @@ public class EngageLiftMotorBrake extends Command {
      */
     @Override
     protected void execute() {
-        int error = position.getEncTicks() - lift.getEncPos();
+        int error = position - lift.getEncPos();
         double speed;
         speed = pid.compute(error);
         lift.setSpeedPercent(speed);
@@ -84,6 +82,6 @@ public class EngageLiftMotorBrake extends Command {
      */
     @Override
     protected boolean isFinished() {
-        return !running;
+        return false;
     }
 }
