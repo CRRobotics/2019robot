@@ -11,6 +11,11 @@ import org.team639.lib.subsystem.DriveSubsystem;
 import org.team639.robot.Constants;
 import org.team639.robot.commands.drive.DriveTracker;
 import org.team639.robot.commands.drive.JoystickDrive;
+import org.team639.robot.sensors.DistanceTimeOfFlight;
+import org.team639.robot.sensors.LineFollower;
+
+import java.util.Optional;
+import java.util.OptionalDouble;
 
 import static org.team639.robot.Constants.Drivetrain.*;
 
@@ -22,6 +27,9 @@ public class Drivetrain extends DriveSubsystem {
     private final TalonSRX rightMaster;
 
     private volatile Mode controlMode = Mode.ClosedLoop;
+
+    private LineFollower lineFollower;
+    private DistanceTimeOfFlight distanceFront;
 
     private final AHRS navx;
 
@@ -38,10 +46,12 @@ public class Drivetrain extends DriveSubsystem {
      * @param rightMaster The master motor on the right side.
      * @param navx The robot navx.
      */
-    public Drivetrain(TalonSRX leftMaster, TalonSRX rightMaster, AHRS navx) {
+    public Drivetrain(TalonSRX leftMaster, TalonSRX rightMaster, AHRS navx, LineFollower lineFollower, DistanceTimeOfFlight distanceFront) {
         this.leftMaster = leftMaster;
         this.rightMaster = rightMaster;
         this.navx = navx;
+        this.lineFollower = lineFollower;
+        this.distanceFront = distanceFront;
 
         this.leftMaster.configFactoryDefault();
         this.rightMaster.configFactoryDefault();
@@ -284,6 +294,14 @@ public class Drivetrain extends DriveSubsystem {
     @Override
     public void threadConstant() {
         track();
+    }
+
+    public OptionalDouble lineFollowerValue() {
+        return lineFollower.getRawPosition();
+    }
+
+    public double getFrontDistance() {
+        return distanceFront.getDistance();
     }
 
     /**
