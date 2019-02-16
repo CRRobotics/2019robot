@@ -21,6 +21,7 @@ public class Climbing extends Subsystem {
     //We might only use 1 piston. This is still very much under construction
     private Solenoid piston1;
     private Solenoid piston2;
+    private Solenoid breakPiston;
 
     public void Climbing() {
         //Device numbers/channels at the moment are placeholders
@@ -36,6 +37,7 @@ public class Climbing extends Subsystem {
         lowlimitswitch = new DigitalInput(3);
         piston1 = new Solenoid(4);
         piston2 = new Solenoid(5);
+        breakPiston = new Solenoid(6);
     }
 
     @Override
@@ -53,6 +55,16 @@ public class Climbing extends Subsystem {
      */
     public void moveSystem(double speed)
     {
+        //Enales brake when speed is set to 0, or close enough to 0
+        if (speed == 0)
+        {
+            breakPiston.set(true);
+        }
+        //Turns the break off if the piston is on while speed is not 0
+        if (speed != 0 && breakPiston.get())
+        {
+            breakPiston.set(false);
+        }
         if ((highlimitswitch.get() && speed > 1)
                 || (lowlimitswitch.get() && speed < 1))
         {
