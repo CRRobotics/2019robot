@@ -5,17 +5,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.lib.math.PID;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Lift;
+import static org.team639.robot.Constants.*;
 
 import javax.naming.ldap.Control;
-
-import static org.team639.robot.Constants.*;
 
 /**
  * Moves the lift to one of several preset positions defined in {@link LiftPosition}
  * @see LiftPosition
  * @see Lift
  */
-class MoveLiftToSetPosition extends Command {
+public class MoveLiftToSetPosition extends Command {
     private Lift lift;
     private LiftPosition position;
     private boolean done;

@@ -15,6 +15,12 @@ import static org.team639.robot.RobotMap.*;
 
 // Note - Encoder: 4096 ticks per rotation
 
+/**
+ * CLass for controlling the lift system
+ * @author Aidan Foley
+ * @author Rohit Lal
+ */
+
 public class Lift extends Subsystem {
 
     private TalonSRX mainTalon;
