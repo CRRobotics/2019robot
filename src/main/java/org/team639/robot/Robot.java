@@ -12,7 +12,7 @@ import org.team639.robot.subsystems.Drivetrain;
  */
 public class Robot extends TimedRobot {
 
-    private static Lift lift;
+    private static final Lift lift = new Lift(RobotMap.liftMainTalon, RobotMap.liftFollowerTalon);
 
     public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.navx);
 

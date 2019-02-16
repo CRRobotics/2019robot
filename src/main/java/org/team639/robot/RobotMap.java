@@ -16,6 +16,9 @@ public class RobotMap {
     public static final TalonSRX rightDriveMaster = new TalonSRX(0);
     public static final AHRS navx = new AHRS(SPI.Port.kMXP);
 
+    public static final TalonSRX liftMainTalon = new TalonSRX(6);
+    public static final TalonSRX liftFollowerTalon = new TalonSRX(7);
+
     public static void init() {
         liftBrake = new LoggingSolenoid(6); // Not sure if the channel is correct, will probably change later
     }

@@ -2,6 +2,8 @@ package org.team639.robot.subsystems;
 
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.networktables.TableListener;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -9,10 +11,11 @@ import edu.wpi.first.wpilibj.Solenoid;
 import org.team639.robot.Constants;
 import org.team639.robot.RobotMap;
 import org.team639.robot.commands.lift.EngageLiftMotorBrake;
+import static org.team639.robot.RobotMap.*;
 
 // Note - Encoder: 4096 ticks per rotation
 
-public abstract class Lift extends Subsystem {
+public class Lift extends Subsystem {
 
     private TalonSRX mainTalon;
     private TalonSRX followerTalon;
@@ -28,10 +31,10 @@ public abstract class Lift extends Subsystem {
     private double kD;
     private double kF;
 
-    public Lift() {
+    public Lift(TalonSRX mainTalon, TalonSRX followerTalon) {
 
-        mainTalon = new TalonSRX(6);
-        followerTalon = new TalonSRX(7);
+        this.mainTalon = mainTalon;
+        this.followerTalon = mainTalon;
 
         followerTalon.follow(mainTalon);
 
