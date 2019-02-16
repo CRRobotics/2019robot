@@ -40,6 +40,12 @@ public class PID {
         lastOutput = 0;
     }
 
+    public void reset() {
+        totalError = 0;
+        lastError = 0;
+        lastOutput = 0;
+    }
+
     /**
      * Changes the PID constants.
      * @param p The new P constant

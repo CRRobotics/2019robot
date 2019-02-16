@@ -46,7 +46,6 @@ public abstract class Lift extends Subsystem {
         brake = RobotMap.getLiftBrake();
 
         motorBrake = new EngageLiftMotorBrake(0);
-        motorBrake.setRunning(false);
 
         setPID(Constants.LIFT_P, Constants.LIFT_I, Constants.LIFT_D, Constants.LIFT_F);
     }
