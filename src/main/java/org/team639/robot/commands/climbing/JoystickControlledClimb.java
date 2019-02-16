@@ -1,4 +1,5 @@
-package org.team639.robot.commands;
+package org.team639.robot.commands.climbing;
+import org.team639.robot.OI;
 import edu.wpi.first.wpilibj.command.Command;
 import org.team639.robot.Robot;
 
@@ -13,7 +14,7 @@ public class JoystickControlledClimb extends Command{
 
     public void execute()
     {
-        double input = Robot.getJoystick().getRawAxis(0);
+        double input = OI.controller.getLeftStickY();
         Robot.getClimbing().moveSystem(input);
     }
 

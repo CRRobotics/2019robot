@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
-import org.team639.robot.commands.JoystickControlledClimb;
+import org.team639.robot.commands.climbing.JoystickControlledClimb;
 
 /*
  * Controls the functions of the climbing subsystem. This system has pneumatics that moves its
