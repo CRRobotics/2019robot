@@ -5,8 +5,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.team639.lib.controls.JoystickManager;
 import org.team639.lib.controls.XBoxController;
 import org.team639.robot.commands.lift.*;
-import org.team639.robot.subsystems.Lift;
-//import static org.team639.robot.Constants.*;
 
 /**
  * Defines the mappings between buttons and actions and allows access to raw joystick values.
@@ -31,10 +29,10 @@ public class OI {
         // B -> Middle
         // A -> Bottom
         // X -> Cargo Hatch
-        controller.mapButton(XBoxController.Buttons.Y, new MoveToTop(), JoystickManager.MappingType.WhenPressed);
-        controller.mapButton(XBoxController.Buttons.B, new MoveToMiddle(), JoystickManager.MappingType.WhenPressed);
-        controller.mapButton(XBoxController.Buttons.A, new MoveToBottom(), JoystickManager.MappingType.WhenPressed);
-        controller.mapButton(XBoxController.Buttons.X, new MoveLiftToSetPosition(LiftPosition.CARGO_SHIP), JoystickManager.MappingType.WhenPressed);
+        controller.mapButton(XBoxController.Buttons.POVUp, new MoveToTop(), JoystickManager.MappingType.WhenPressed);
+        controller.mapButton(XBoxController.Buttons.POVRight, new MoveToMiddle(), JoystickManager.MappingType.WhenPressed);
+        controller.mapButton(XBoxController.Buttons.POVDown, new MoveToBottom(), JoystickManager.MappingType.WhenPressed);
+        controller.mapButton(XBoxController.Buttons.POVLeft, new MoveLiftToSetPosition(LiftPosition.CARGO_SHIP), JoystickManager.MappingType.WhenPressed);
     }
 
 
