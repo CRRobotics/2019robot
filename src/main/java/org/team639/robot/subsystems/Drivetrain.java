@@ -1,9 +1,6 @@
 package org.team639.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import org.team639.lib.commands.ThreadedDriveCommand;
@@ -13,6 +10,7 @@ import org.team639.robot.commands.drive.DriveTracker;
 import org.team639.robot.commands.drive.JoystickDrive;
 import org.team639.robot.sensors.DistanceTimeOfFlight;
 import org.team639.robot.sensors.LineFollower;
+import org.team639.robot.sensors.VisionTarget;
 
 import java.util.Optional;
 import java.util.OptionalDouble;
@@ -26,7 +24,7 @@ public class Drivetrain extends DriveSubsystem {
     private final TalonSRX leftMaster;
     private final TalonSRX rightMaster;
 
-    private volatile Mode controlMode = Mode.ClosedLoop;
+    private volatile Mode controlMode = Mode.OpenLoop;
 
     private LineFollower lineFollower;
     private DistanceTimeOfFlight distanceFront;
@@ -46,12 +44,15 @@ public class Drivetrain extends DriveSubsystem {
      * @param rightMaster The master motor on the right side.
      * @param navx The robot navx.
      */
-    public Drivetrain(TalonSRX leftMaster, TalonSRX rightMaster, AHRS navx, LineFollower lineFollower, DistanceTimeOfFlight distanceFront) {
+    public Drivetrain(TalonSRX leftMaster, TalonSRX rightMaster, IMotorController[] leftFollowers, IMotorController[] rightFollowers, AHRS navx, LineFollower lineFollower, DistanceTimeOfFlight distanceFront) {
         this.leftMaster = leftMaster;
         this.rightMaster = rightMaster;
         this.navx = navx;
         this.lineFollower = lineFollower;
         this.distanceFront = distanceFront;
+
+        for (IMotorController motorController : leftFollowers) motorController.follow(leftMaster);
+        for (IMotorController motorController : rightFollowers) motorController.follow(rightMaster);
 
         this.leftMaster.configFactoryDefault();
         this.rightMaster.configFactoryDefault();
@@ -61,6 +62,7 @@ public class Drivetrain extends DriveSubsystem {
         setPIDF(DRIVE_P, DRIVE_I, DRIVE_D, DRIVE_F);
 
         rightMaster.setInverted(true);
+        for (IMotorController motorController : rightFollowers) motorController.setInverted(true);
 
         leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 0);
         rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 0);
@@ -302,6 +304,10 @@ public class Drivetrain extends DriveSubsystem {
 
     public double getFrontDistance() {
         return distanceFront.getDistance();
+    }
+
+    public Optional<VisionTarget> getVisionTarget() {
+        return Optional.empty();
     }
 
     /**

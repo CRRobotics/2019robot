@@ -12,10 +12,10 @@ import org.team639.robot.subsystems.Drivetrain;
  * The main loop of Redshift, Code Red Robotics' 2019 robot.
  */
 public class Robot extends TimedRobot {
-    public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.navx, new LineFollower(0), new DistanceTimeOfFlight(1));
+    public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.leftFollowers, RobotMap.rightFollowers, RobotMap.navx, new LineFollower(0), new DistanceTimeOfFlight(1));
 
     public static DriveLayout getDriveLayout() {
-        return DriveLayout.Arcade2JoystickRight;
+        return DriveLayout.Tank;
     }
 
     public double lmax = 0;

@@ -43,5 +43,7 @@ public class Constants {
         public static final double AC_RATE = 0.01;
         public static final double AC_I_CAP = 0.2;
         public static final double AC_TOLERANCE = 1;
+
+        public static final double VISION_APPROACH_BASE_SPEED = 0.3;
     }
 }
