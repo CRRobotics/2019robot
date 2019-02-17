@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 
+import static org.team639.robot.Constants.REAL;
+
 /**
  * A central location for robot hardware.
  */
