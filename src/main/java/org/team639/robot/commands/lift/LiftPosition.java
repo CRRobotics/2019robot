@@ -3,12 +3,11 @@ package org.team639.robot.commands.lift;
 import static org.team639.robot.Constants.*;
 
 /**
- * The possible preset positions that the lift can travel to.
+ * Set positions that the lift can travel to.
  */
 public enum LiftPosition {
 
-    // Height in feet from the bottom of the lift
-    // Heights to be implemented
+    // Height in encoder ticks
     TOP_BALL(LIFT_BALL_HIGH_HEIGHT),
     TOP_HATCH(LIFT_HATCH_HIGH_HEIGHT),
     MIDDLE_BALL(LIFT_BALL_MIDDLE_HEIGHT),

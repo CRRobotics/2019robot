@@ -13,6 +13,7 @@ public class OI {
     public static final JoystickManager drive = new XBoxController(0); // new DoubleLogitechAttack3(); // new LogitechF310(0);
     public static final JoystickManager controller = new XBoxController(1);
 
+    // Temporary, this will be replaced by getting whether we have a hatch or ball from the aquisition system.
     public static boolean hatch;
 
     public static void mapButtons() {
@@ -25,10 +26,10 @@ public class OI {
         };
         mapCondition(liftJoystickActivated, new MoveLiftWithJoystick(controller), JoystickManager.MappingType.WhenPressed);
 
-        // Y -> Top
-        // B -> Middle
-        // A -> Bottom
-        // X -> Cargo Hatch
+        // Up -> Top
+        // Right -> Middle
+        // Down -> Bottom
+        // Left -> Cargo Hatch
         controller.mapButton(XBoxController.Buttons.POVUp, new MoveToTop(), JoystickManager.MappingType.WhenPressed);
         controller.mapButton(XBoxController.Buttons.POVRight, new MoveToMiddle(), JoystickManager.MappingType.WhenPressed);
         controller.mapButton(XBoxController.Buttons.POVDown, new MoveToBottom(), JoystickManager.MappingType.WhenPressed);

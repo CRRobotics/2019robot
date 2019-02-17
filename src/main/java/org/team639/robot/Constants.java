@@ -1,9 +1,11 @@
 package org.team639.robot;
 
 public class Constants {
-    public static final int LIFT_MAX_HEIGHT = 8;        // Probably not real value, just temporary
-    public static final int LIFT_MAX_SPEED = 1700;      // Probably not real value, just temporary
-    public static final int LIFT_BRAKE_SPEED = 500;     // Temporary value, will be determined through testing
+
+    // All need to be determined through testing.
+    public static final int LIFT_MAX_HEIGHT = 8;
+    public static final int LIFT_MAX_SPEED = 1700;
+    public static final int LIFT_BRAKE_SPEED = 500;
     public static final int LIFT_BALL_LOWER_HEIGHT = 0;
     public static final int LIFT_BALL_MIDDLE_HEIGHT = 0;
     public static final int LIFT_BALL_HIGH_HEIGHT = 0;
@@ -12,30 +14,26 @@ public class Constants {
     public static final int LIFT_HATCH_HIGH_HEIGHT = 0;
     public static final int LIFT_CARGO_SHIP_HEIGHT = 0;
 
-    //lift speed pid
+    // Lift Speed PID
     public static final double LIFT_P = 0;//0.05;
     public static final double LIFT_I = 0;//0.005;
     public static final double LIFT_D = 0;//10;
     public static final double LIFT_F = 1023.0 / LIFT_MAX_SPEED;
 
-    // Unsure what these are, but MoveLiftToSetPosition needs them.
+    // Lift Position PID
     public static final double LIFT_POS_P = 0.00036;
     public static final double LIFT_POS_I = 0;
     public static final double LIFT_POS_D = 0;
 
-    // Unsure what the values for these should be
+    // All need to be determined through testing.
     public static final double LIFT_RATE = .03;
     public static final double LIFT_MIN = .25;
     public static final double LIFT_MAX = .8;
 
-    // Unsure what this is, but MoveLiftToSetPosition needs it.
+    // Needs to be determined through testing.
     public static final int LIFT_TOLERANCE = 600;
 
-    // Constants for the MonitorLift command
-    public static final double MOTOR_RADIUS = 1.0;
-    public static final double LIFT_MASS = 1.0;
-
-    // Arbitrary values for now, stuff for MotionMagic.
+    // Arbitrary values for now, variables for MotionMagic.
     public static final int LIFT_MOTION_MAGIC_CRUISING_SPEED = 1000;
     public static final int LIFT_MOTION_MAGIC_ACCELERATION = 1000;
 

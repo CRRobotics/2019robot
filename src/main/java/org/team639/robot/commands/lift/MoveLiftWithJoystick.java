@@ -16,6 +16,10 @@ public class MoveLiftWithJoystick extends Command {
     private boolean done;
     private PID pid;
 
+    /**
+     * Moves the lift with a joystick.
+     * @param joystickManager The JoystickManager to get input from
+     */
     public MoveLiftWithJoystick(JoystickManager joystickManager) {
         this.joystickManager = joystickManager;
         lift = Robot.getLift();

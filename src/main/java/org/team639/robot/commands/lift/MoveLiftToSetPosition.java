@@ -20,6 +20,10 @@ public class MoveLiftToSetPosition extends Command {
     private boolean done;
     private PID pid;
 
+    /**
+     * Constructor, creates a new MoveLiftToSetPosition command with a LiftPosition to go to.
+     * @param position The position to go to.
+     */
     public MoveLiftToSetPosition(LiftPosition position) {
         this.position = position;
         lift = Robot.getLift();
