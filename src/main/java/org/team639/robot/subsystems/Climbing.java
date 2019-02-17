@@ -1,6 +1,9 @@
 package org.team639.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import org.team639.lib.subsystem.DriveSubsystem;
+import org.team639.robot.Constants;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -41,8 +44,7 @@ public class Climbing extends Subsystem {
     }
 
     @Override
-    public void initDefaultCommand()
-    {
+    public void initDefaultCommand() {
         setDefaultCommand(new JoystickControlledClimb());
     }
 
@@ -53,27 +55,21 @@ public class Climbing extends Subsystem {
      * Values > 0 move the system up
      * @param speed The speed at which the motors are run, which will be scaled down 50%
      */
-    public void moveSystem(double speed)
-    {
+    public void moveSystem(double speed) {
         //Enales brake when speed is set to 0, or close enough to 0
-        if (speed == 0)
-        {
+        if (speed > -.1 && speed < .1) {
             breakPiston.set(true);
         }
         //Turns the break off if the piston is on while speed is not 0
-        if (speed != 0 && breakPiston.get())
-        {
+        if ((speed > -.1 || speed < .1) && breakPiston.get()) {
             breakPiston.set(false);
         }
         if ((highlimitswitch.get() && speed > 1)
-                || (lowlimitswitch.get() && speed < 1))
-        {
+                || (lowlimitswitch.get() && speed < 1)) {
             //Prevents the motors from running past the limit switches
             climbMotor1.set(ControlMode.PercentOutput, 0);
             climbMotor2.set(ControlMode.PercentOutput, 0);
-        }
-        else
-        {
+        } else {
             climbMotor1.set(ControlMode.PercentOutput, speed);
             climbMotor2.set(ControlMode.PercentOutput, speed);
         }
@@ -92,9 +88,18 @@ public class Climbing extends Subsystem {
      * Returns the encoder position of a specified motor, assuming the encoder has index 0.
      * @param The motor to return an encoder position of
      */
-    public int getEncoderPositions(TalonSRX motor)
+    public int getEncoderPositions(TalonSRX motor) {
+        return motor.getSelectedSensorPosition(0);
+    }
+
+    /*
+     * Returns the encoder position, converted to inches of a specified motor, assuming the encoder has index 0.
+     * I don't even know if I'm doing it right.
+     * @param The motor to return an encoder position of
+     */
+    public int getEncoderPositionsInInches(TalonSRX motor)
     {
-        return climbMotor1.getSelectedSensorPosition(0);
+        return motor.getSelectedSensorPosition(0)*1/(int)Constants.Climbing.TICKS_PER_INCH_CLIMBING;
     }
 
 }
