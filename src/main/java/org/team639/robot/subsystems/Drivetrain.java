@@ -1,16 +1,22 @@
 package org.team639.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.lib.commands.ThreadedDriveCommand;
+import org.team639.lib.communication.UdpReceiver;
 import org.team639.lib.subsystem.DriveSubsystem;
 import org.team639.robot.Constants;
 import org.team639.robot.commands.drive.DriveTracker;
 import org.team639.robot.commands.drive.JoystickDrive;
+import org.team639.robot.sensors.DistanceTimeOfFlight;
+import org.team639.robot.sensors.LineFollower;
+import org.team639.robot.sensors.VisionTarget;
+
+import java.net.SocketException;
+import java.util.Optional;
+import java.util.OptionalDouble;
 
 import static org.team639.robot.Constants.Drivetrain.*;
 
@@ -23,6 +29,9 @@ public class Drivetrain extends DriveSubsystem {
 
     private volatile Mode controlMode = Mode.ClosedLoop;
 
+    private LineFollower lineFollower;
+    private DistanceTimeOfFlight distanceFront;
+
     private final AHRS navx;
 
     private double kP = 0.1;
@@ -32,25 +41,37 @@ public class Drivetrain extends DriveSubsystem {
 
     private DriveTracker tracker;
 
+    private UdpReceiver visionReceiver;
+    private Thread visionRunner;
+
     /**
      * Creates a drivetrain with the given components.
      * @param leftMaster The master motor on the left side.
      * @param rightMaster The master motor on the right side.
      * @param navx The robot navx.
      */
-    public Drivetrain(TalonSRX leftMaster, TalonSRX rightMaster, AHRS navx) {
+    public Drivetrain(TalonSRX leftMaster, TalonSRX rightMaster, IMotorController[] leftFollowers, IMotorController[] rightFollowers, AHRS navx, LineFollower lineFollower, DistanceTimeOfFlight distanceFront) {
         this.leftMaster = leftMaster;
         this.rightMaster = rightMaster;
         this.navx = navx;
+        this.lineFollower = lineFollower;
+        this.distanceFront = distanceFront;
+
+        for (IMotorController motorController : leftFollowers) motorController.follow(leftMaster);
+        for (IMotorController motorController : rightFollowers) motorController.follow(rightMaster);
 
         this.leftMaster.configFactoryDefault();
         this.rightMaster.configFactoryDefault();
+
+        this.leftMaster.setSensorPhase(true);
+        this.rightMaster.setSensorPhase(true);
 
         setNeutralMode(NeutralMode.Brake);
 
         setPIDF(DRIVE_P, DRIVE_I, DRIVE_D, DRIVE_F);
 
         rightMaster.setInverted(true);
+        for (IMotorController motorController : rightFollowers) motorController.setInverted(true);
 
         leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 0);
         rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 0);
@@ -63,6 +84,15 @@ public class Drivetrain extends DriveSubsystem {
         if (!encodersPresent()) controlMode = Mode.OpenLoop;
 
         tracker = new DriveTracker(0, 0, this);
+
+        try {
+            visionReceiver = new UdpReceiver(5810, 2);
+            visionRunner = new Thread(visionReceiver);
+            visionRunner.setDaemon(true);
+            visionRunner.start();
+        } catch (SocketException se) {
+            System.err.println("Vision connection failed: " + se);
+        }
     }
 
     /**
@@ -73,6 +103,9 @@ public class Drivetrain extends DriveSubsystem {
     public void setSpeedsRaw(double lSpeed, double rSpeed) {
         rightMaster.set(controlMode.ctreMode, rSpeed);
         leftMaster.set(controlMode.ctreMode, lSpeed);
+
+        SmartDashboard.putNumber("left error", lSpeed - getLeftEncVelocity());
+        SmartDashboard.putNumber("right error", rSpeed - getRightEncVelocity());
     }
 
     /**
@@ -284,6 +317,24 @@ public class Drivetrain extends DriveSubsystem {
     @Override
     public void threadConstant() {
         track();
+    }
+
+    public OptionalDouble lineFollowerValue() {
+        return lineFollower.getRawPosition();
+    }
+
+    public double getFrontDistance() {
+        return distanceFront.getDistance();
+    }
+
+    public Optional<VisionTarget> getVisionTarget() {
+        if (visionReceiver != null && visionRunner.isAlive()) {
+            var buf = visionReceiver.getCurrentBuffer();
+            if (buf.length < 2 || buf[0] < 0) return Optional.empty();
+            return Optional.of(new VisionTarget(buf[0], getRobotAngle() - buf[1] * 0.2));
+        } else {
+            return Optional.empty();
+        }
     }
 
     /**

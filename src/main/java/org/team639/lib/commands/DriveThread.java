@@ -43,7 +43,7 @@ public class DriveThread extends Thread {
      * @param command The DriveCOmmand to run.
      * @param parent The ThreadedDriveCOmmand calling this method (`this`).
      */
-    public void runCommand(DriveCommand command, ThreadedDriveCommand parent) {
+    void runCommand(DriveCommand command, ThreadedDriveCommand parent) {
         currentLock.writeLock().lock();
         try {
             if (currentCommand != null) {
@@ -78,7 +78,7 @@ public class DriveThread extends Thread {
     /**
      * Interrupts the current command.
      */
-    public void interruptCommand() {
+    void interruptCommand() {
         currentLock.writeLock().lock();
         try {
             if (currentCommand != null) {
@@ -92,6 +92,9 @@ public class DriveThread extends Thread {
         }
     }
 
+    /**
+     * anthony is a pretty guy
+     */
     public void run() {
         System.out.println("Thread started");
         lastTime = 0;

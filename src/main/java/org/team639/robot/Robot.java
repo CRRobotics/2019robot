@@ -5,6 +5,8 @@ import org.team639.robot.subsystems.Acquisition;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import org.team639.lib.commands.DriveThread;
 import org.team639.robot.commands.drive.DriveLayout;
+import org.team639.robot.sensors.DistanceTimeOfFlight;
+import org.team639.robot.sensors.LineFollower;
 import org.team639.robot.subsystems.Drivetrain;
 
 /**
@@ -16,14 +18,12 @@ public class Robot extends TimedRobot {
             RobotMap.upperRoller,
             RobotMap.lowerRoller,
             RobotMap.flowerOpen,
-            RobotMap.flowerForward
+            RobotMap.flowerForward,
+            RobotMap.cargoDetector
     );
 
-    public static final Drivetrain drivetrain = new Drivetrain(
-            RobotMap.leftDriveMaster,
-            RobotMap.rightDriveMaster,
-            RobotMap.navx
-    );
+    public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.leftFollowers, RobotMap.rightFollowers, RobotMap.navx, new LineFollower(0), new DistanceTimeOfFlight(1));
+
 
     public static DriveLayout getDriveLayout() {
         return DriveLayout.Arcade2JoystickRight;

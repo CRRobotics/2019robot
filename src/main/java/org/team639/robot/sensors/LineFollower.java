@@ -2,6 +2,8 @@ package org.team639.robot.sensors;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 
+import java.util.OptionalDouble;
+
 /**
  * Class for interfacing with line follower modules through an analog input.
  */
@@ -20,7 +22,12 @@ public class LineFollower {
      * Returns a value from -2.5 to 2.5 representing how far to the left or right of center the line is.
      * @return A value from -2.5 to 2.5 representing how far to the left or right of center the line is.
      */
-    public double getRawPosition() {
-        return input.getVoltage() - 2.5;
+    public OptionalDouble getRawPosition() {
+        var val = input.getVoltage() - 2.5;
+        if (Math.abs(val) > 2.3) {
+            return OptionalDouble.empty();
+        } else {
+            return OptionalDouble.of(val);
+        }
     }
 }
