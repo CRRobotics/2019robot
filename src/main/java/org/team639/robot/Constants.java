@@ -14,6 +14,8 @@ public class Constants {
     public static final int LIFT_HATCH_HIGH_HEIGHT = 0;
     public static final int LIFT_CARGO_SHIP_HEIGHT = 0;
 
+    public static final double LIFT_ZERO_SPEED = 0.1;
+
     // Lift Speed PID
     public static final double LIFT_P = 0;//0.05;
     public static final double LIFT_I = 0;//0.005;

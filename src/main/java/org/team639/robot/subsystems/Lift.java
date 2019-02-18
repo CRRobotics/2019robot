@@ -44,12 +44,9 @@ public class Lift extends Subsystem {
 
         follower.follow(mainTalon);
 
-        mainTalon.setInverted(true);
-        follower.setInverted(true);
-
         mainTalon.configReverseSoftLimitEnable(false, 0);
 
-        mainTalon.configForwardSoftLimitEnable(true, 0);
+//        mainTalon.configForwardSoftLimitEnable(true, 0);
 //        mainTalon.configForwardSoftLimitThreshold(Constants.LIFT_MAX_HEIGHT, 0);
 
         setPID(Constants.LIFT_P, Constants.LIFT_I, Constants.LIFT_D, Constants.LIFT_F);
@@ -59,7 +56,7 @@ public class Lift extends Subsystem {
      * Sets the default command to motorBrake, so if nothing is done the motor will hold the lift in place.
      */
     public void initDefaultCommand() {
-//        setDefaultCommand(motorBrake);
+
     }
 
     /**
