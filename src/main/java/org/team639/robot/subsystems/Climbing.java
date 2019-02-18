@@ -18,28 +18,25 @@ import org.team639.robot.commands.climbing.JoystickControlledClimb;
 public class Climbing extends Subsystem {
 
     private TalonSRX climbMotor1;
-    private TalonSRX climbMotor2;
+    //private TalonSRX climbMotor2;
     private DigitalInput highlimitswitch;
     private DigitalInput lowlimitswitch;
     //We might only use 1 piston. This is still very much under construction
     private Solenoid piston1;
-    private Solenoid piston2;
+    //private Solenoid piston2;
     private Solenoid breakPiston;
 
     public void Climbing() {
         //Device numbers/channels at the moment are placeholders
         //Need to be changed in order to test code
-        climbMotor1 = new TalonSRX(0);
-        climbMotor2 = new TalonSRX(1);
+        climbMotor1 = new TalonSRX(8);
         climbMotor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-        climbMotor2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         //May set to inverted depending on how the motors run
         //climbMotor1.setInverted(true);
         //climbMotor1.setInverted(true);
         highlimitswitch = new DigitalInput(2);
         lowlimitswitch = new DigitalInput(3);
         piston1 = new Solenoid(4);
-        piston2 = new Solenoid(5);
         breakPiston = new Solenoid(6);
     }
 
@@ -68,10 +65,8 @@ public class Climbing extends Subsystem {
                 || (lowlimitswitch.get() && speed < 1)) {
             //Prevents the motors from running past the limit switches
             climbMotor1.set(ControlMode.PercentOutput, 0);
-            climbMotor2.set(ControlMode.PercentOutput, 0);
         } else {
             climbMotor1.set(ControlMode.PercentOutput, speed);
-            climbMotor2.set(ControlMode.PercentOutput, speed);
         }
     }
 
@@ -81,7 +76,6 @@ public class Climbing extends Subsystem {
      */
     public void setPistons(boolean open) {
         piston1.set(open);
-        piston2.set(open);
     }
 
     /*
