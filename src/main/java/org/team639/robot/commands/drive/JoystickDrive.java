@@ -50,19 +50,6 @@ public class JoystickDrive extends DriveCommand {
                 arcadeDrive(OI.drive.getRightStickY() * scale, OI.drive.getLeftStickX() * scale);
                 break;
         }
-
-        var left = drivetrain.getLeftEncVelocity();
-        if (left > lmax) lmax = left;
-        var right = drivetrain.getRightEncVelocity();
-        if (right > rmax) rmax = right;
-
-        SmartDashboard.putNumber("left", drivetrain.getLeftEncVelocity());
-        SmartDashboard.putNumber("right", drivetrain.getRightEncVelocity());
-
-
-
-        SmartDashboard.putNumber("lmax", lmax);
-        SmartDashboard.putNumber("rmax", rmax);
     }
 
     @Override
