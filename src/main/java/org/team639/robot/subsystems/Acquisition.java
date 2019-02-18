@@ -41,6 +41,8 @@ public class Acquisition extends Subsystem {
         this.flowerForward = flowerForward;
         this.cargoDetector = cargoDetector;
 
+        lowerRoller.setInverted(true);
+
         lowerRollerExtension.configFactoryDefault();
 
         lowerRollerExtension.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
