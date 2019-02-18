@@ -20,6 +20,6 @@ public class MoveToMiddle extends ConditionalCommand {
     @Override
     public boolean condition()
     {
-        return OI.isHatch();
+        return false; // TODO: actually use condition
     }
 }

@@ -2,9 +2,13 @@ package org.team639.robot;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
+import org.team639.lib.commands.ThreadedDriveCommand;
 import org.team639.lib.controls.JoystickManager;
 import org.team639.lib.controls.XBoxController;
 import org.team639.robot.commands.lift.*;
+import org.team639.robot.commands.drive.FollowLine;
+
+import static org.team639.robot.Constants.LIFT_JOYSTICK_DEADZONE;
 
 /**
  * Defines the mappings between buttons and actions and allows access to raw joystick values.
@@ -13,15 +17,15 @@ public class OI {
     public static final JoystickManager drive = new XBoxController(0); // new DoubleLogitechAttack3(); // new LogitechF310(0);
     public static final JoystickManager controller = new XBoxController(1);
 
-    // Temporary, this will be replaced by getting whether we have a hatch or ball from the aquisition system.
-    public static boolean hatch;
-
     public static void mapButtons() {
+
+        controller.mapButton(XBoxController.Buttons.A, new ThreadedDriveCommand(new FollowLine(), Robot.drivetrain), JoystickManager.MappingType.WhenPressed);
+
 //        controller.mapButton(XBoxController.Buttons.A, new ThreadedDriveCommand(new SquiggleFollower(), Robot.drivetrain), JoystickManager.MappingType.WhenPressed);
         Button liftJoystickActivated = new Button() {
             @Override
             public boolean get() {
-                return Math.abs(controller.getRightStickY()) > 0;
+                return Math.abs(controller.getRightStickY()) > LIFT_JOYSTICK_DEADZONE;
             }
         };
         mapCondition(liftJoystickActivated, new MoveLiftWithJoystick(controller), JoystickManager.MappingType.WhenPressed);
@@ -55,10 +59,5 @@ public class OI {
                 condition.toggleWhenPressed(cmd);
                 break;
         }
-    }
-
-    public static boolean isHatch()
-    {
-        return hatch;
     }
 }

@@ -42,10 +42,11 @@ public class Lift extends Subsystem {
      * @param mainTalon The main motor.
      * @param followerTalon The following motor.
      */
-    public Lift(TalonSRX mainTalon, TalonSRX followerTalon) {
+    public Lift(TalonSRX mainTalon, TalonSRX followerTalon, Solenoid brake) {
 
         this.mainTalon = mainTalon;
         this.followerTalon = mainTalon;
+        this.brake = brake;
 
         followerTalon.follow(mainTalon);
 
@@ -56,8 +57,6 @@ public class Lift extends Subsystem {
 
         mainTalon.configForwardSoftLimitEnable(true, 0);
         mainTalon.configForwardSoftLimitThreshold(Constants.LIFT_MAX_HEIGHT, 0);
-
-        brake = RobotMap.getLiftBrake();
 
         motorBrake = new EngageLiftMotorBrake(0);
 
