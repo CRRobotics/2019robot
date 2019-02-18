@@ -1,12 +1,7 @@
 package org.team639.robot.commands.lift;
-import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 import org.team639.lib.math.PID;
-import org.team639.robot.Constants.*;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motion.*;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.ctre.phoenix.motorcontrol.ControlMode.*;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Lift;
 

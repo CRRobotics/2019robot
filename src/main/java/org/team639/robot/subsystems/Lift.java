@@ -1,16 +1,11 @@
 package org.team639.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.networktables.TableListener;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Solenoid;
 import org.team639.robot.Constants;
-import org.team639.robot.RobotMap;
 import org.team639.robot.commands.lift.EngageLiftMotorBrake;
-import static org.team639.robot.RobotMap.*;
 
 // Note - Encoder: 4096 ticks per rotation
 
@@ -27,7 +22,7 @@ public class Lift extends Subsystem {
 
     private Solenoid brake;
 
-    private ControlMode currentControlMode;
+    private ControlMode currentControlMode = ControlMode.Velocity;
 
     private EngageLiftMotorBrake motorBrake;
 
@@ -216,7 +211,6 @@ public class Lift extends Subsystem {
         this.currentControlMode = controlMode;
         mainTalon.configMotionCruiseVelocity(Constants.LIFT_MOTION_MAGIC_CRUISING_SPEED);
         mainTalon.configMotionAcceleration(Constants.LIFT_MOTION_MAGIC_ACCELERATION);
-        mainTalon.configMotionProfileTrajectoryPeriod(10);
     }
 
 }
