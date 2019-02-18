@@ -8,7 +8,7 @@ public class Constants {
     /**
      * Is this code running on the real robot?
      */
-    public static final boolean REAL = false;
+    public static final boolean REAL = true;
 
     /**
      * Constants for the drivetrain.
@@ -16,10 +16,10 @@ public class Constants {
     public static class Drivetrain {
         public static final double MIN_DRIVE_PERCENT = 0.09;
 
-        public static final double SPEED_RANGE = 3300 * 0.95;
-        public static final double DRIVE_P = 0.15;
-        public static final double DRIVE_I = 0.000175;
-        public static final double DRIVE_D = 0.75;
+        public static final double SPEED_RANGE = (REAL ? 2200 : 3300) * 0.95;
+        public static final double DRIVE_P = 0.1;
+        public static final double DRIVE_I = 0.0002;
+        public static final double DRIVE_D = 0.02;
         public static final double DRIVE_F = 1023 / SPEED_RANGE;
 
         public static final double WHEEL_DIAMETER_INCHES = 6;
@@ -31,8 +31,19 @@ public class Constants {
         public static final double FPS_TO_MOTOR_UNITS = 1.0 / 10.0 * 12.0 * TICKS_PER_INCH;
         public static final double INCHES_PER_SECOND_TO_MOTOR_UNITS = 1.0 / 12 * FPS_TO_MOTOR_UNITS;
 
-        public static final double TRACK_WIDTH_INCHES = 28;
+        public static final double TRACK_WIDTH_INCHES = 34.3;
         public static final double MAX_VELOCITY_INCHES_PER_SECOND = 6;
         public static final double K_VELOCITY = 1;
+
+        public static final double AC_P = 0.01;
+        public static final double AC_I = 0.00000001;
+        public static final double AC_D = 0;
+        public static final double AC_MIN = 0;
+        public static final double AC_MAX = 0.03;
+        public static final double AC_RATE = 0.01;
+        public static final double AC_I_CAP = 0.2;
+        public static final double AC_TOLERANCE = 1;
+
+        public static final double VISION_APPROACH_BASE_SPEED = 0.3;
     }
 }
