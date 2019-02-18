@@ -41,6 +41,8 @@ public class Acquisition extends Subsystem {
         this.flowerForward = flowerForward;
         this.cargoDetector = cargoDetector;
 
+        lowerRoller.setInverted(true);
+
         lowerRollerExtension.configFactoryDefault();
 
         lowerRollerExtension.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
@@ -144,6 +146,6 @@ public class Acquisition extends Subsystem {
      * @return Whether cargo is detected within the cargo acquisition.
      */
     public boolean isCargoDetected() {
-        return cargoDetector.get();
+        return !cargoDetector.get();
     }
 }
