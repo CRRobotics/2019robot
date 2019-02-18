@@ -17,7 +17,7 @@ public class RobotMap {
     public static final Solenoid liftBrake = new Solenoid(3);
 
     public static final TalonSRX liftMainTalon = new TalonSRX(6);
-    public static final TalonSRX liftFollowerTalon = new TalonSRX(7);
+    public static final VictorSPX liftFollower = new VictorSPX(7);
 
     public static final TalonSRX leftDriveMaster = new TalonSRX(0);
     public static final TalonSRX rightDriveMaster = new TalonSRX(3);

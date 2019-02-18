@@ -80,14 +80,6 @@ public class Lift extends Subsystem {
     }
 
     /**
-     * Engages the motor brake.
-     */
-    public void engageBrake()
-    {
-        motorBrake = new EngageLiftMotorBrake(getEncPos());
-    }
-
-    /**
      * Sets the talon internal pid.
      * @param p The p constant.
      * @param i The i constant.
