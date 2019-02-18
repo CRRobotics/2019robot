@@ -8,7 +8,7 @@ public class Constants {
     /**
      * Is this code running on the real robot?
      */
-    public static final boolean REAL = false;
+    public static final boolean REAL = true;
 
     /**
      * Constants for the drivetrain.
@@ -16,10 +16,10 @@ public class Constants {
     public static class Drivetrain {
         public static final double MIN_DRIVE_PERCENT = 0.09;
 
-        public static final double SPEED_RANGE = 3300 * 0.95;
-        public static final double DRIVE_P = 0.15;
-        public static final double DRIVE_I = 0.000175;
-        public static final double DRIVE_D = 0.75;
+        public static final double SPEED_RANGE = (REAL ? 2200 : 3300) * 0.95;
+        public static final double DRIVE_P = 0.1;
+        public static final double DRIVE_I = 0.0002;
+        public static final double DRIVE_D = 0.02;
         public static final double DRIVE_F = 1023 / SPEED_RANGE;
 
         public static final double WHEEL_DIAMETER_INCHES = 6;

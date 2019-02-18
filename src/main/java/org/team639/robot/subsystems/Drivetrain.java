@@ -3,7 +3,9 @@ package org.team639.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.lib.commands.ThreadedDriveCommand;
+import org.team639.lib.communication.UdpReceiver;
 import org.team639.lib.subsystem.DriveSubsystem;
 import org.team639.robot.Constants;
 import org.team639.robot.commands.drive.DriveTracker;
@@ -12,6 +14,7 @@ import org.team639.robot.sensors.DistanceTimeOfFlight;
 import org.team639.robot.sensors.LineFollower;
 import org.team639.robot.sensors.VisionTarget;
 
+import java.net.SocketException;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
@@ -24,7 +27,7 @@ public class Drivetrain extends DriveSubsystem {
     private final TalonSRX leftMaster;
     private final TalonSRX rightMaster;
 
-    private volatile Mode controlMode = Mode.OpenLoop;
+    private volatile Mode controlMode = Mode.ClosedLoop;
 
     private LineFollower lineFollower;
     private DistanceTimeOfFlight distanceFront;
@@ -37,6 +40,9 @@ public class Drivetrain extends DriveSubsystem {
     private double kF = 0;
 
     private DriveTracker tracker;
+
+    private UdpReceiver visionReceiver;
+    private Thread visionRunner;
 
     /**
      * Creates a drivetrain with the given components.
@@ -57,6 +63,9 @@ public class Drivetrain extends DriveSubsystem {
         this.leftMaster.configFactoryDefault();
         this.rightMaster.configFactoryDefault();
 
+        this.leftMaster.setSensorPhase(true);
+        this.rightMaster.setSensorPhase(true);
+
         setNeutralMode(NeutralMode.Brake);
 
         setPIDF(DRIVE_P, DRIVE_I, DRIVE_D, DRIVE_F);
@@ -75,6 +84,15 @@ public class Drivetrain extends DriveSubsystem {
         if (!encodersPresent()) controlMode = Mode.OpenLoop;
 
         tracker = new DriveTracker(0, 0, this);
+
+        try {
+            visionReceiver = new UdpReceiver(5810, 2);
+            visionRunner = new Thread(visionReceiver);
+            visionRunner.setDaemon(true);
+            visionRunner.start();
+        } catch (SocketException se) {
+            System.err.println("Vision connection failed: " + se);
+        }
     }
 
     /**
@@ -85,6 +103,9 @@ public class Drivetrain extends DriveSubsystem {
     public void setSpeedsRaw(double lSpeed, double rSpeed) {
         rightMaster.set(controlMode.ctreMode, rSpeed);
         leftMaster.set(controlMode.ctreMode, lSpeed);
+
+        SmartDashboard.putNumber("left error", lSpeed - getLeftEncVelocity());
+        SmartDashboard.putNumber("right error", rSpeed - getRightEncVelocity());
     }
 
     /**
@@ -307,7 +328,13 @@ public class Drivetrain extends DriveSubsystem {
     }
 
     public Optional<VisionTarget> getVisionTarget() {
-        return Optional.empty();
+        if (visionReceiver != null && visionRunner.isAlive()) {
+            var buf = visionReceiver.getCurrentBuffer();
+            if (buf.length < 2 || buf[0] < 0) return Optional.empty();
+            return Optional.of(new VisionTarget(buf[0], getRobotAngle() - buf[1] * 0.2));
+        } else {
+            return Optional.empty();
+        }
     }
 
     /**

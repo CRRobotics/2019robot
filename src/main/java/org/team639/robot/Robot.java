@@ -15,7 +15,7 @@ public class Robot extends TimedRobot {
     public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.leftFollowers, RobotMap.rightFollowers, RobotMap.navx, new LineFollower(0), new DistanceTimeOfFlight(1));
 
     public static DriveLayout getDriveLayout() {
-        return DriveLayout.Tank;
+        return DriveLayout.Arcade2JoystickRight;
     }
 
     public double lmax = 0;

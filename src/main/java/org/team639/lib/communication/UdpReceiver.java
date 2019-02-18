@@ -22,7 +22,7 @@ public class UdpReceiver implements Runnable {
 
     /**
      * Creates a new UdpReceiver.
-     * @param port THe port the reciever is listening on.
+     * @param port The port the receiver is listening on.
      * @param maxLength The maximum length packet that can be received.
      * @throws SocketException A possible exception from creating the underlying socket.
      */
