@@ -19,7 +19,7 @@ public class OI {
 
     public static void mapButtons() {
 
-        controller.mapButton(XBoxController.Buttons.A, new ThreadedDriveCommand(new FollowLine(), Robot.drivetrain), JoystickManager.MappingType.WhenPressed);
+//        controller.mapButton(XBoxController.Buttons.A, new ThreadedDriveCommand(new FollowLine(), Robot.drivetrain), JoystickManager.MappingType.WhenPressed);
 
 //        controller.mapButton(XBoxController.Buttons.A, new ThreadedDriveCommand(new SquiggleFollower(), Robot.drivetrain), JoystickManager.MappingType.WhenPressed);
         Button liftJoystickActivated = new Button() {
@@ -28,16 +28,16 @@ public class OI {
                 return Math.abs(controller.getRightStickY()) > LIFT_JOYSTICK_DEADZONE;
             }
         };
-        mapCondition(liftJoystickActivated, new MoveLiftWithJoystick(controller), JoystickManager.MappingType.WhenPressed);
+        mapCondition(liftJoystickActivated, new MoveLiftWithJoystick(), JoystickManager.MappingType.WhenPressed);
 
         // Up -> Top
         // Right -> Middle
         // Down -> Bottom
         // Left -> Cargo Hatch
-        controller.mapButton(XBoxController.Buttons.POVUp, new MoveToTop(), JoystickManager.MappingType.WhenPressed);
-        controller.mapButton(XBoxController.Buttons.POVRight, new MoveToMiddle(), JoystickManager.MappingType.WhenPressed);
-        controller.mapButton(XBoxController.Buttons.POVDown, new MoveToBottom(), JoystickManager.MappingType.WhenPressed);
-        controller.mapButton(XBoxController.Buttons.POVLeft, new MoveLiftToSetPosition(LiftPosition.CARGO_SHIP), JoystickManager.MappingType.WhenPressed);
+//        controller.mapButton(XBoxController.Buttons.POVUp, new MoveToTop(), JoystickManager.MappingType.WhenPressed);
+//        controller.mapButton(XBoxController.Buttons.POVRight, new MoveToMiddle(), JoystickManager.MappingType.WhenPressed);
+//        controller.mapButton(XBoxController.Buttons.POVDown, new MoveToBottom(), JoystickManager.MappingType.WhenPressed);
+//        controller.mapButton(XBoxController.Buttons.POVLeft, new MoveLiftToSetPosition(LiftPosition.CARGO_SHIP), JoystickManager.MappingType.WhenPressed);
     }
 
 

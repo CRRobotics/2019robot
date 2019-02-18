@@ -1,6 +1,7 @@
 package org.team639.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -18,13 +19,11 @@ import org.team639.robot.commands.lift.EngageLiftMotorBrake;
 public class Lift extends Subsystem {
 
     private TalonSRX mainTalon;
-    private TalonSRX followerTalon;
+    private VictorSPX follower;
 
     private Solenoid brake;
 
     private ControlMode currentControlMode = ControlMode.Velocity;
-
-    private EngageLiftMotorBrake motorBrake;
 
     private double kP;
     private double kI;
@@ -35,25 +34,23 @@ public class Lift extends Subsystem {
     /**
      * Constructor, initializes the lift given the two required motors.
      * @param mainTalon The main motor.
-     * @param followerTalon The following motor.
+     * @param follower The following motor.
      */
-    public Lift(TalonSRX mainTalon, TalonSRX followerTalon, Solenoid brake) {
+    public Lift(TalonSRX mainTalon, VictorSPX follower, Solenoid brake) {
 
         this.mainTalon = mainTalon;
-        this.followerTalon = mainTalon;
+        this.follower = follower;
         this.brake = brake;
 
-        followerTalon.follow(mainTalon);
+        follower.follow(mainTalon);
 
         mainTalon.setInverted(true);
-        followerTalon.setInverted(true);
+        follower.setInverted(true);
 
         mainTalon.configReverseSoftLimitEnable(false, 0);
 
         mainTalon.configForwardSoftLimitEnable(true, 0);
-        mainTalon.configForwardSoftLimitThreshold(Constants.LIFT_MAX_HEIGHT, 0);
-
-        motorBrake = new EngageLiftMotorBrake(0);
+//        mainTalon.configForwardSoftLimitThreshold(Constants.LIFT_MAX_HEIGHT, 0);
 
         setPID(Constants.LIFT_P, Constants.LIFT_I, Constants.LIFT_D, Constants.LIFT_F);
     }
@@ -61,9 +58,8 @@ public class Lift extends Subsystem {
     /**
      * Sets the default command to motorBrake, so if nothing is done the motor will hold the lift in place.
      */
-    public void initDefaultCommand()
-    {
-        setDefaultCommand(motorBrake);
+    public void initDefaultCommand() {
+//        setDefaultCommand(motorBrake);
     }
 
     /**

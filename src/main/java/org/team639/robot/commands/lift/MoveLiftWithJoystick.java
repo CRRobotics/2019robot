@@ -12,16 +12,11 @@ import static org.team639.robot.Constants.*;
 public class MoveLiftWithJoystick extends Command {
 
     private Lift lift;
-    private JoystickManager joystickManager;
-    private boolean done;
-    private PID pid;
 
     /**
      * Moves the lift with a joystick.
-     * @param joystickManager The JoystickManager to get input from
      */
-    public MoveLiftWithJoystick(JoystickManager joystickManager) {
-        this.joystickManager = joystickManager;
+    public MoveLiftWithJoystick() {
         lift = Robot.getLift();
         requires(lift);
     }
@@ -31,10 +26,7 @@ public class MoveLiftWithJoystick extends Command {
      */
     @Override
     protected void initialize() {
-        done = false;
         lift.setBrake(false);
-        if (!lift.encoderPresent()) done = true;
-        pid = new PID(LIFT_POS_P, LIFT_POS_I, LIFT_POS_D, LIFT_MIN, LIFT_MAX, LIFT_RATE, LIFT_TOLERANCE, 0);
     }
 
     /**
@@ -81,7 +73,7 @@ public class MoveLiftWithJoystick extends Command {
      */
     @Override
     protected boolean isFinished() {
-        return done;
+        return false;
     }
 
 }
