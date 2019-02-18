@@ -1,6 +1,5 @@
 package org.team639.robot.commands.drive;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.lib.commands.DriveCommand;
 import org.team639.robot.OI;
 import org.team639.lib.controls.XBoxController;

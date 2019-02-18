@@ -334,11 +334,15 @@ public class Drivetrain extends DriveSubsystem {
     public Optional<VisionTarget> getVisionTarget() {
         if (visionReceiver != null && visionRunner.isAlive()) {
             var buf = visionReceiver.getCurrentBuffer();
-            if (buf.length < 2 || buf[0] < 0) return Optional.empty();
-            return Optional.of(new VisionTarget(buf[0], getRobotAngle() - buf[1] * 0.2));
+            if (buf.length < 2 || unsignedByteToInt(buf[0]) - 128 < 0) return Optional.empty();
+            return Optional.of(new VisionTarget(unsignedByteToInt(buf[0]) - 128, getRobotAngle() - (unsignedByteToInt(buf[1]) - 128) * 5));
         } else {
             return Optional.empty();
         }
+    }
+
+    private static int unsignedByteToInt(byte b) {
+        return b > 0 ? (int)b : (int)(b + 256);
     }
 
     /**
