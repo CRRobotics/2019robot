@@ -14,7 +14,7 @@ public class Constants {
      * Constants for the drivetrain.
      */
     public static class Drivetrain {
-        public static final double MIN_DRIVE_PERCENT = 0.09;
+        public static final double MIN_DRIVE_PERCENT = 0.3;
 
         public static final double SPEED_RANGE = (REAL ? 2200 : 3300) * 0.95;
         public static final double DRIVE_P = 0.1;
@@ -62,7 +62,7 @@ public class Constants {
 
     public static class Acquisition {
         public static final double CARGO_INTAKE_SPEED = .85;
-        public static final double CARGO_INTAKE_STALL = 0.2;
+        public static final double CARGO_INTAKE_STALL = 0.15;
 
         public static final double HATCH_OPEN_DELAY = 0.2;
         public static final double HATCH_EXTEND_DELAY = 0.2;

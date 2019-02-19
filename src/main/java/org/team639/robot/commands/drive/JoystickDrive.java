@@ -1,10 +1,14 @@
 package org.team639.robot.commands.drive;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.lib.commands.DriveCommand;
+import org.team639.robot.Constants;
 import org.team639.robot.OI;
 import org.team639.lib.controls.XBoxController;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Drivetrain;
+
+import static org.team639.robot.Constants.Drivetrain.MIN_DRIVE_PERCENT;
 
 /**
  * Sets drivetrain speeds based on joystick input.
@@ -24,17 +28,27 @@ public class JoystickDrive extends DriveCommand {
     @Override
     protected void initialize() {
         System.out.println("joystickdrive init");
+
+        SmartDashboard.putNumber("Drive P", Constants.Drivetrain.DRIVE_P);
+        SmartDashboard.putNumber("Drive I", Constants.Drivetrain.DRIVE_I);
+        SmartDashboard.putNumber("Drive D", Constants.Drivetrain.DRIVE_D);
     }
 
     @Override
     protected void execute() {
         drivetrain.track();
 
+        double p = SmartDashboard.getNumber("Drive P", Constants.Drivetrain.DRIVE_P);
+        double i = SmartDashboard.getNumber("Drive I", Constants.Drivetrain.DRIVE_I);
+        double d = SmartDashboard.getNumber("Drive D", Constants.Drivetrain.DRIVE_D);
+
+        drivetrain.setPIDF(p, i, d, Constants.Drivetrain.DRIVE_F);
+
         if (!drivetrain.encodersPresent()) drivetrain.setControlMode(Drivetrain.Mode.OpenLoop);
 //        else drivetrain.setControlMode();
 
-        double scale = 1 - 0.8 * OI.drive.getControllerAxis(XBoxController.ControllerAxis.RightTrigger);
-        if (scale < 0.2) scale = 0.2;
+        double scale = 1 - (1 - MIN_DRIVE_PERCENT) * OI.drive.getControllerAxis(XBoxController.ControllerAxis.RightTrigger);
+        if (scale < MIN_DRIVE_PERCENT) scale = MIN_DRIVE_PERCENT;
         switch (Robot.getDriveLayout()) {
             case Tank:
                 tankDrive(OI.drive.getLeftStickY() * scale, OI.drive.getRightStickY() * scale);

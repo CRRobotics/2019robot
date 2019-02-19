@@ -2,7 +2,6 @@ package org.team639.robot;
 
 import org.team639.lib.controls.JoystickManager;
 import org.team639.lib.controls.XBoxController;
-import org.team639.robot.commands.drive.ApproachVisionTarget;
 import org.team639.robot.commands.acqusition.*;
 
 import static org.team639.robot.Constants.Acquisition.CARGO_EXPULSION_SPEED;
