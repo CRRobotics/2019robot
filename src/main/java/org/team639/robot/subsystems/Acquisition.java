@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.team639.robot.sensors.HatchDistanceSensor;
+
+import static org.team639.robot.Constants.Acquisition.HATCH_DETECT_DISTANCE;
 
 /**
  * The acquisition subsystem.
@@ -28,11 +31,12 @@ public class Acquisition extends Subsystem {
     private Solenoid flowerForward;
 
     private DigitalInput cargoDetector;
+    private HatchDistanceSensor hatchDistanceSensor;
 
     /**
      * Creates a new acquisition using the provided hardware.
      */
-    public Acquisition(TalonSRX lowerRollerExtension, Spark upperRoller, Spark lowerRoller, Solenoid flowerOpen, Solenoid flowerForward, DigitalInput cargoDetector) {
+    public Acquisition(TalonSRX lowerRollerExtension, Spark upperRoller, Spark lowerRoller, Solenoid flowerOpen, Solenoid flowerForward, DigitalInput cargoDetector, HatchDistanceSensor hatchDistanceSensor) {
         super("Acquisition");
         this.lowerRollerExtension = lowerRollerExtension;
         this.upperRoller = upperRoller;
@@ -40,6 +44,7 @@ public class Acquisition extends Subsystem {
         this.flowerOpen = flowerOpen;
         this.flowerForward = flowerForward;
         this.cargoDetector = cargoDetector;
+        this.hatchDistanceSensor = hatchDistanceSensor;
 
         lowerRoller.setInverted(true);
 
@@ -50,6 +55,7 @@ public class Acquisition extends Subsystem {
         lowerRollerExtension.setNeutralMode(NeutralMode.Brake);
 
         setFlowerOpen(true);
+        setFlowerForward(true);
     }
 
     @Override
@@ -148,7 +154,7 @@ public class Acquisition extends Subsystem {
      * @return Whether a hatch is detected on the flower, regardless of whether the flower is actually open.
      */
     public boolean isHatchOnFlower() {
-        return false; // TODO: actually read sensor.
+        return hatchDistanceSensor.getDistanceInches() <= HATCH_DETECT_DISTANCE; // TODO: actually read sensor.
     }
 
     /**

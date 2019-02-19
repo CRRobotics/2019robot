@@ -18,7 +18,8 @@ public class Robot extends TimedRobot {
             RobotMap.lowerRoller,
             RobotMap.flowerOpen,
             RobotMap.flowerForward,
-            RobotMap.cargoDetector
+            RobotMap.cargoDetector,
+            RobotMap.hatchDetector
     );
 
     public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.leftFollowers, RobotMap.rightFollowers, RobotMap.navx, new LineFollower(0));

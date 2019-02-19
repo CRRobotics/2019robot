@@ -4,10 +4,8 @@ import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.*;
+import org.team639.robot.sensors.HatchDistanceSensor;
 
 import static org.team639.robot.Constants.REAL;
 
@@ -35,4 +33,5 @@ public class RobotMap {
     };
 
     public static final DigitalInput cargoDetector = new DigitalInput(0);
+    public static final HatchDistanceSensor hatchDetector = new HatchDistanceSensor(1);
 }

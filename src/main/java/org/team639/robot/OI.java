@@ -4,6 +4,8 @@ import org.team639.lib.controls.JoystickManager;
 import org.team639.lib.controls.XBoxController;
 import org.team639.robot.commands.acqusition.*;
 
+import static org.team639.robot.Constants.Acquisition.CARGO_EXPULSION_SPEED;
+
 /**
  * Defines the mappings between buttons and actions and allows access to raw joystick values.
  */
@@ -20,5 +22,9 @@ public class OI {
         controller.mapButton(XBoxController.Buttons.LB, new PlaceHatch(), JoystickManager.MappingType.WhenPressed);
         controller.mapButton(XBoxController.Buttons.RB, new AcquireHatch(), JoystickManager.MappingType.WhenPressed);
 //        controller.mapButton(XBoxController.Buttons.RB, new SetIntakeSpeed(0), JoystickManager.MappingType.WhenReleased);
+
+        controller.mapButton(XBoxController.Buttons.B, new SetIntakeSpeed(CARGO_EXPULSION_SPEED), JoystickManager.MappingType.WhenPressed);
+        controller.mapButton(XBoxController.Buttons.B, new SetIntakeSpeed(0), JoystickManager.MappingType.WhenReleased);
+        controller.mapButton(XBoxController.Buttons.Y, new IntakeCargo(), JoystickManager.MappingType.WhenPressed);
     }
 }
