@@ -19,7 +19,7 @@ public class RetractFlower extends Command {
      */
     @Override
     protected void initialize() {
-        acquisition.setFlowerForward(false);
+        if (!acquisition.isHatchOnFlower()) acquisition.setFlowerForward(false);
     }
 
     /**

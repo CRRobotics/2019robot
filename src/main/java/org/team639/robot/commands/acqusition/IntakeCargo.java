@@ -12,6 +12,7 @@ import static org.team639.robot.Constants.Acquisition.CARGO_INTAKE_STALL;
  */
 public class IntakeCargo extends Command {
     private Acquisition acquisition;
+    private boolean done = false;
 
     public IntakeCargo() {
         this.acquisition = Robot.acquisition;
@@ -24,8 +25,15 @@ public class IntakeCargo extends Command {
      */
     @Override
     protected void initialize() {
-        acquisition.setLowerRollerSpeed(CARGO_INTAKE_SPEED);
-        acquisition.setUpperRollerSpeed(CARGO_INTAKE_SPEED);
+        done = acquisition.isHatchOnFlower();
+
+        if (!done) {
+            acquisition.setLowerRollerSpeed(CARGO_INTAKE_SPEED);
+            acquisition.setUpperRollerSpeed(CARGO_INTAKE_SPEED);
+
+            acquisition.setFlowerForward(false);
+            acquisition.setFlowerOpen(false);
+        }
     }
 
     /**
@@ -56,7 +64,7 @@ public class IntakeCargo extends Command {
      */
     @Override
     protected boolean isFinished() {
-        return false;
+        return done;
     }
 
     /**
