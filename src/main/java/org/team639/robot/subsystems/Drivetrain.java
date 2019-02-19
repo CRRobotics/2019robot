@@ -9,12 +9,13 @@ import org.team639.lib.subsystem.DriveSubsystem;
 import org.team639.robot.Constants;
 import org.team639.robot.commands.drive.DriveTracker;
 import org.team639.robot.commands.drive.JoystickDrive;
-import org.team639.robot.sensors.DistanceTimeOfFlight;
 import org.team639.robot.sensors.LineFollower;
 import org.team639.robot.sensors.VisionTarget;
 import org.team639.robot.subsystems.shuffleboard.DrivetrainDisplay;
 
 import java.net.SocketException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
@@ -30,7 +31,6 @@ public class Drivetrain extends DriveSubsystem {
     private volatile Mode controlMode = Mode.ClosedLoop;
 
     private LineFollower lineFollower;
-    private DistanceTimeOfFlight distanceFront;
 
     private final AHRS navx;
 
@@ -52,12 +52,11 @@ public class Drivetrain extends DriveSubsystem {
      * @param rightMaster The master motor on the right side.
      * @param navx The robot navx.
      */
-    public Drivetrain(TalonSRX leftMaster, TalonSRX rightMaster, IMotorController[] leftFollowers, IMotorController[] rightFollowers, AHRS navx, LineFollower lineFollower, DistanceTimeOfFlight distanceFront) {
+    public Drivetrain(TalonSRX leftMaster, TalonSRX rightMaster, IMotorController[] leftFollowers, IMotorController[] rightFollowers, AHRS navx, LineFollower lineFollower) {
         this.leftMaster = leftMaster;
         this.rightMaster = rightMaster;
         this.navx = navx;
         this.lineFollower = lineFollower;
-        this.distanceFront = distanceFront;
 
         for (IMotorController motorController : leftFollowers) motorController.follow(leftMaster);
         for (IMotorController motorController : rightFollowers) motorController.follow(rightMaster);
@@ -68,7 +67,7 @@ public class Drivetrain extends DriveSubsystem {
         this.leftMaster.setSensorPhase(true);
         this.rightMaster.setSensorPhase(true);
 
-        setNeutralMode(NeutralMode.Brake);
+        setNeutralMode(NeutralMode.Coast);
 
         setPIDF(DRIVE_P, DRIVE_I, DRIVE_D, DRIVE_F);
 
@@ -327,15 +326,15 @@ public class Drivetrain extends DriveSubsystem {
         return lineFollower.getRawPosition();
     }
 
-    public double getFrontDistance() {
-        return distanceFront.getDistance();
-    }
-
     public Optional<VisionTarget> getVisionTarget() {
         if (visionReceiver != null && visionRunner.isAlive()) {
             var buf = visionReceiver.getCurrentBuffer();
-            if (buf.length < 2 || unsignedByteToInt(buf[0]) - 128 < 0) return Optional.empty();
-            return Optional.of(new VisionTarget(unsignedByteToInt(buf[0]) - 128, getRobotAngle() - (unsignedByteToInt(buf[1]) - 128) * 5));
+            if (buf.length < 2 || buf[0] < 0) return Optional.empty();
+            ByteBuffer b = ByteBuffer.wrap(buf);
+            b.order(ByteOrder.BIG_ENDIAN);
+            float dst = b.getFloat(0);
+            float angle = b.getFloat(1);
+            return Optional.of(new VisionTarget(dst, getRobotAngle() - angle));
         } else {
             return Optional.empty();
         }

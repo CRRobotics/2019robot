@@ -46,4 +46,29 @@ public class Constants {
 
         public static final double VISION_APPROACH_BASE_SPEED = 0.3;
     }
+
+    public static class LowerRoller {
+        public static final double P = 0.1;
+        public static final double I = 0;
+        public static final double D = 0;
+        public static final double MAX_SPEED = 1;
+        public static final double MIN_SPEED = 0.2;
+        public static final double RATE = 0.3;
+        public static final double TOLERANCE = 0;
+        public static final double I_CAP = 5;
+        public static final double LOWERED_TICKS = 2000;
+        public static final double LOWER_SPEED = 0.5;
+    }
+
+    public static class Acquisition {
+        public static final double CARGO_INTAKE_SPEED = .85;
+        public static final double CARGO_INTAKE_STALL = 0.2;
+
+        public static final double HATCH_OPEN_DELAY = 0.2;
+        public static final double HATCH_EXTEND_DELAY = 0.2;
+
+        public static final double CARGO_EXPULSION_SPEED = -1.0;
+
+        public static final double HATCH_DETECT_DISTANCE = 3.0;
+    }
 }

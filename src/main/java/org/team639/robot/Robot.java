@@ -1,10 +1,10 @@
 package org.team639.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import org.team639.robot.subsystems.Acquisition;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import org.team639.lib.commands.DriveThread;
 import org.team639.robot.commands.drive.DriveLayout;
-import org.team639.robot.sensors.DistanceTimeOfFlight;
 import org.team639.robot.sensors.LineFollower;
 import org.team639.robot.subsystems.Drivetrain;
 
@@ -12,7 +12,18 @@ import org.team639.robot.subsystems.Drivetrain;
  * The main loop of Redshift, Code Red Robotics' 2019 robot.
  */
 public class Robot extends TimedRobot {
-    public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.leftFollowers, RobotMap.rightFollowers, RobotMap.navx, new LineFollower(0), new DistanceTimeOfFlight(1));
+    public static final Acquisition acquisition = new Acquisition(
+            RobotMap.lowerRollerExtension,
+            RobotMap.upperRoller,
+            RobotMap.lowerRoller,
+            RobotMap.flowerOpen,
+            RobotMap.flowerForward,
+            RobotMap.cargoDetector,
+            RobotMap.hatchDetector
+    );
+
+    public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.leftFollowers, RobotMap.rightFollowers, RobotMap.navx, new LineFollower(0));
+
 
     public static DriveLayout getDriveLayout() {
         return DriveLayout.Arcade2JoystickRight;
