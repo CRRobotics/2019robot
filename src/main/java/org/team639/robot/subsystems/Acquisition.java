@@ -156,6 +156,6 @@ public class Acquisition extends Subsystem {
      * @return Whether cargo is detected within the cargo acquisition.
      */
     public boolean isCargoDetected() {
-        return cargoDetector.get();
+        return !cargoDetector.get();
     }
 }
