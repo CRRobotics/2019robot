@@ -34,7 +34,7 @@ public class MoveLiftWithJoystick extends Command {
      */
     @Override
     protected void execute() {
-        System.out.println(lift.isAtLowerLimit());
+        System.out.println(lift.encoderPresent());
         var val = OI.controller.getRightStickY();
         if (Math.abs(val) > LIFT_JOYSTICK_DEADZONE) {
             lift.setBrake(false);

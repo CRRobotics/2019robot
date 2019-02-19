@@ -1,6 +1,7 @@
 package org.team639.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -51,10 +52,14 @@ public class Lift extends Subsystem {
 //        mainTalon.configForwardSoftLimitEnable(true, 0);
 //        mainTalon.configForwardSoftLimitThreshold(Constants.LIFT_MAX_HEIGHT, 0);
 
+        mainTalon.setNeutralMode(NeutralMode.Brake);
+
         mainTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         mainTalon.setSensorPhase(true);
 
         mainTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 15, 0);
+
+        mainTalon.configAllowableClosedloopError(0, 50, 0);
 
         setPID(Constants.LIFT_P, Constants.LIFT_I, Constants.LIFT_D, Constants.LIFT_F);
 
@@ -124,20 +129,12 @@ public class Lift extends Subsystem {
     }
 
     /**
-     * Sets the magic motion position in encoder ticks.
-     * I don't think that this will be used since we are not using MotionMagic for the motorbrake.
-     * @param tickCount The magic motion position in encoder ticks.
-     */
-    public void setMotionMagicPosition(int tickCount) {
-        mainTalon.set(ControlMode.MotionMagic, tickCount);
-    }
-
-    /**
      * Returns the encoder position in ticks.
      * @return The encoder position in ticks.
      */
     public int getEncPos() {
-        return mainTalon.getSelectedSensorPosition(0);
+//        return mainTalon.getSelectedSensorPosition(0);
+        return mainTalon.getSensorCollection().getQuadraturePosition();
     }
 
     /**
@@ -204,8 +201,6 @@ public class Lift extends Subsystem {
      */
     public void setCurrentControlMode(ControlMode controlMode) {
         this.currentControlMode = controlMode;
-        mainTalon.configMotionCruiseVelocity(Constants.LIFT_MOTION_MAGIC_CRUISING_SPEED);
-        mainTalon.configMotionAcceleration(Constants.LIFT_MOTION_MAGIC_ACCELERATION);
     }
 
 }
