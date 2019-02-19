@@ -28,6 +28,9 @@ public class ApproachVisionTarget extends DriveCommand {
     protected void initialize() {
         target = drivetrain.getVisionTarget();
 
+        System.out.println(drivetrain.getRobotAngle());
+        target.ifPresent(System.out::println);
+
         anglePID = new PID(AC_P, AC_I, AC_D, AC_MIN, AC_MAX, AC_RATE, AC_TOLERANCE, AC_I_CAP);
     }
 
@@ -36,7 +39,7 @@ public class ApproachVisionTarget extends DriveCommand {
         if (target.isPresent()) {
             var t = target.get();
 
-            var correction = anglePID.compute(t.angle - drivetrain.getRobotAngle());
+            var correction = anglePID.compute(-1 * t.angle + drivetrain.getRobotAngle());
 
             drivetrain.setSpeedsPercent(VISION_APPROACH_BASE_SPEED + correction, VISION_APPROACH_BASE_SPEED - correction);
         }
@@ -54,6 +57,6 @@ public class ApproachVisionTarget extends DriveCommand {
 
     @Override
     protected boolean isFinished() {
-        return drivetrain.lineFollowerValue().isPresent() || target.isEmpty();
+        return /*drivetrain.lineFollowerValue().isPresent() ||*/ target.isEmpty();
     }
 }

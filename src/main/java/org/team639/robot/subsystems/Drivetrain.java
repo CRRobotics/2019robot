@@ -3,7 +3,6 @@ package org.team639.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.lib.commands.ThreadedDriveCommand;
 import org.team639.lib.communication.UdpReceiver;
 import org.team639.lib.subsystem.DriveSubsystem;
@@ -13,6 +12,7 @@ import org.team639.robot.commands.drive.JoystickDrive;
 import org.team639.robot.sensors.DistanceTimeOfFlight;
 import org.team639.robot.sensors.LineFollower;
 import org.team639.robot.sensors.VisionTarget;
+import org.team639.robot.subsystems.shuffleboard.DrivetrainDisplay;
 
 import java.net.SocketException;
 import java.util.Optional;
@@ -43,6 +43,8 @@ public class Drivetrain extends DriveSubsystem {
 
     private UdpReceiver visionReceiver;
     private Thread visionRunner;
+
+    private DrivetrainDisplay display = new DrivetrainDisplay();
 
     /**
      * Creates a drivetrain with the given components.
@@ -104,8 +106,10 @@ public class Drivetrain extends DriveSubsystem {
         rightMaster.set(controlMode.ctreMode, rSpeed);
         leftMaster.set(controlMode.ctreMode, lSpeed);
 
-        SmartDashboard.putNumber("left error", lSpeed - getLeftEncVelocity());
-        SmartDashboard.putNumber("right error", rSpeed - getRightEncVelocity());
+        if (controlMode == Mode.ClosedLoop) {
+            display.setLeftError(lSpeed - getLeftEncVelocity());
+            display.setRightError(rSpeed - getRightEncVelocity());
+        }
     }
 
     /**
@@ -330,11 +334,15 @@ public class Drivetrain extends DriveSubsystem {
     public Optional<VisionTarget> getVisionTarget() {
         if (visionReceiver != null && visionRunner.isAlive()) {
             var buf = visionReceiver.getCurrentBuffer();
-            if (buf.length < 2 || buf[0] < 0) return Optional.empty();
-            return Optional.of(new VisionTarget(buf[0], getRobotAngle() - buf[1] * 0.2));
+            if (buf.length < 2 || unsignedByteToInt(buf[0]) - 128 < 0) return Optional.empty();
+            return Optional.of(new VisionTarget(unsignedByteToInt(buf[0]) - 128, getRobotAngle() - (unsignedByteToInt(buf[1]) - 128) * 5));
         } else {
             return Optional.empty();
         }
+    }
+
+    private static int unsignedByteToInt(byte b) {
+        return b > 0 ? (int)b : (int)(b + 256);
     }
 
     /**
