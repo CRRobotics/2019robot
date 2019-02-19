@@ -1,5 +1,6 @@
 package org.team639.robot;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -13,6 +14,12 @@ import static org.team639.robot.Constants.REAL;
  * A central location for robot hardware.
  */
 public class RobotMap {
+
+    public static final Solenoid liftBrake = new Solenoid(3);
+
+    public static final TalonSRX liftMainTalon = new TalonSRX(6);
+    public static final VictorSPX liftFollower = new VictorSPX(7);
+
     public static final TalonSRX leftDriveMaster = new TalonSRX(0);
     public static final TalonSRX rightDriveMaster = new TalonSRX(3);
     public static final AHRS navx = new AHRS(SPI.Port.kMXP);

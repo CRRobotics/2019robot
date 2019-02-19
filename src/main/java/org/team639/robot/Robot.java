@@ -2,6 +2,8 @@ package org.team639.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import org.team639.robot.subsystems.Acquisition;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team639.robot.subsystems.Lift;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import org.team639.lib.commands.DriveThread;
 import org.team639.robot.commands.drive.DriveLayout;
@@ -24,13 +26,13 @@ public class Robot extends TimedRobot {
 
     public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.leftFollowers, RobotMap.rightFollowers, RobotMap.navx, new LineFollower(0));
 
+    private static final Lift lift = new Lift(RobotMap.liftMainTalon, RobotMap.liftFollower, RobotMap.liftBrake);
 
     public static DriveLayout getDriveLayout() {
         return DriveLayout.Arcade2JoystickRight;
     }
 
-    public double lmax = 0;
-    public double rmax = 0;
+    private double liftMaxSpeed = 0;
 
     @Override
     public void robotInit() {
@@ -79,6 +81,12 @@ public class Robot extends TimedRobot {
 
 //        SmartDashboard.putNumber("left vel", left);
 //        SmartDashboard.putNumber("right vel", right);
+
+        var liftSpeed = lift.getEncVelocity();
+
+        if (liftSpeed > liftMaxSpeed) liftMaxSpeed = liftSpeed;
+        SmartDashboard.putNumber("lift max speed", liftMaxSpeed);
+        SmartDashboard.putNumber("lift position", lift.getEncPos());
     }
 
     @Override
@@ -99,5 +107,9 @@ public class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
         super.testPeriodic();
+    }
+
+    public static Lift getLift() {
+        return lift;
     }
 }

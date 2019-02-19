@@ -1,9 +1,45 @@
 package org.team639.robot;
 
-/**
- * Contains constants for the robot.
- */
 public class Constants {
+
+    // All need to be determined through testing.
+    public static final int LIFT_MAX_HEIGHT = 8;
+    public static final int LIFT_MAX_SPEED = 1700;
+    public static final int LIFT_BRAKE_SPEED = 500;
+    public static final int LIFT_BALL_LOWER_HEIGHT = 0;
+    public static final int LIFT_BALL_MIDDLE_HEIGHT = 0;
+    public static final int LIFT_BALL_HIGH_HEIGHT = 0;
+    public static final int LIFT_HATCH_LOWER_HEIGHT = 0;
+    public static final int LIFT_HATCH_MIDDLE_HEIGHT = 0;
+    public static final int LIFT_HATCH_HIGH_HEIGHT = 0;
+    public static final int LIFT_CARGO_SHIP_HEIGHT = 0;
+
+    public static final double LIFT_ZERO_SPEED = 0.1;
+
+    // Lift Speed PID
+    public static final double LIFT_P = 0;//0.05;
+    public static final double LIFT_I = 0;//0.005;
+    public static final double LIFT_D = 0;//10;
+    public static final double LIFT_F = 1023.0 / LIFT_MAX_SPEED;
+
+    // Lift Position PID
+    public static final double LIFT_POS_P = 0.00036;
+    public static final double LIFT_POS_I = 0;
+    public static final double LIFT_POS_D = 0;
+
+    // All need to be determined through testing.
+    public static final double LIFT_RATE = .03;
+    public static final double LIFT_MIN = .25;
+    public static final double LIFT_MAX = .8;
+
+    // Needs to be determined through testing.
+    public static final int LIFT_TOLERANCE = 600;
+
+    // Arbitrary values for now, variables for MotionMagic.
+    public static final int LIFT_MOTION_MAGIC_CRUISING_SPEED = 1000;
+    public static final int LIFT_MOTION_MAGIC_ACCELERATION = 1000;
+
+    public static final double LIFT_JOYSTICK_DEADZONE = 0.1;
 
     /**
      * Is this code running on the real robot?
