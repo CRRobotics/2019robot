@@ -1,6 +1,8 @@
 package org.team639.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.robot.subsystems.Lift;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import org.team639.lib.commands.DriveThread;
@@ -21,8 +23,7 @@ public class Robot extends TimedRobot {
         return DriveLayout.Arcade2JoystickRight;
     }
 
-    public double lmax = 0;
-    public double rmax = 0;
+    private double liftMaxSpeed = 0;
 
     @Override
     public void robotInit() {
@@ -71,6 +72,12 @@ public class Robot extends TimedRobot {
 
 //        SmartDashboard.putNumber("left vel", left);
 //        SmartDashboard.putNumber("right vel", right);
+
+        var liftSpeed = lift.getEncVelocity();
+
+        if (liftSpeed > liftMaxSpeed) liftMaxSpeed = liftSpeed;
+        SmartDashboard.putNumber("lift max speed", liftMaxSpeed);
+        SmartDashboard.putNumber("lift position", lift.getEncPos());
     }
 
     @Override

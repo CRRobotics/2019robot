@@ -169,7 +169,7 @@ public class Lift extends Subsystem {
      * @param locked whether the brake is locked or not.
      */
     public void setBrake(boolean locked) {
-        brake.set(locked);
+        brake.set(!locked);
     }
 
     /**

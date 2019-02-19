@@ -39,7 +39,7 @@ public class Constants {
     public static final int LIFT_MOTION_MAGIC_CRUISING_SPEED = 1000;
     public static final int LIFT_MOTION_MAGIC_ACCELERATION = 1000;
 
-    public static final double LIFT_JOYSTICK_DEADZONE = 0.05;
+    public static final double LIFT_JOYSTICK_DEADZONE = 0.1;
 
     /**
      * Is this code running on the real robot?
