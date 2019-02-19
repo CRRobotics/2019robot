@@ -14,6 +14,9 @@ import org.team639.robot.sensors.LineFollower;
 import org.team639.robot.sensors.VisionTarget;
 
 import java.net.SocketException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
@@ -63,7 +66,7 @@ public class Drivetrain extends DriveSubsystem {
         this.leftMaster.setSensorPhase(true);
         this.rightMaster.setSensorPhase(true);
 
-        setNeutralMode(NeutralMode.Brake);
+        setNeutralMode(NeutralMode.Coast);
 
         setPIDF(DRIVE_P, DRIVE_I, DRIVE_D, DRIVE_F);
 
@@ -324,7 +327,11 @@ public class Drivetrain extends DriveSubsystem {
         if (visionReceiver != null && visionRunner.isAlive()) {
             var buf = visionReceiver.getCurrentBuffer();
             if (buf.length < 2 || buf[0] < 0) return Optional.empty();
-            return Optional.of(new VisionTarget(buf[0], getRobotAngle() - buf[1] * 0.2));
+            ByteBuffer b = ByteBuffer.wrap(buf);
+            b.order(ByteOrder.BIG_ENDIAN);
+            float dst = b.getFloat(0);
+            float angle = b.getFloat(1);
+            return Optional.of(new VisionTarget(dst, getRobotAngle() - angle));
         } else {
             return Optional.empty();
         }

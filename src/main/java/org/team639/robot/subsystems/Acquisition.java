@@ -48,6 +48,8 @@ public class Acquisition extends Subsystem {
         lowerRollerExtension.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
         lowerRollerExtension.setNeutralMode(NeutralMode.Brake);
+
+        setFlowerOpen(true);
     }
 
     @Override
@@ -63,6 +65,10 @@ public class Acquisition extends Subsystem {
         flowerOpen.set(open);
     }
 
+    public boolean isFlowerOpen() {
+        return flowerOpen.get();
+    }
+
     /**
      * Sets the flower to be forward.
      *
@@ -70,6 +76,10 @@ public class Acquisition extends Subsystem {
      */
     public void setFlowerForward(boolean forward) {
         flowerForward.set(forward);
+    }
+
+    public boolean isFlowerExtended() {
+        return flowerForward.get();
     }
 
     /**
