@@ -1,5 +1,7 @@
 package org.team639.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -49,7 +51,15 @@ public class Lift extends Subsystem {
 //        mainTalon.configForwardSoftLimitEnable(true, 0);
 //        mainTalon.configForwardSoftLimitThreshold(Constants.LIFT_MAX_HEIGHT, 0);
 
+        mainTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+        mainTalon.setSensorPhase(true);
+
+        mainTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 15, 0);
+
         setPID(Constants.LIFT_P, Constants.LIFT_I, Constants.LIFT_D, Constants.LIFT_F);
+
+        if (encoderPresent()) setCurrentControlMode(ControlMode.Velocity);
+        else setCurrentControlMode(ControlMode.PercentOutput);
     }
 
     /**
@@ -192,7 +202,7 @@ public class Lift extends Subsystem {
      * Sets the current control mode.
      * @param controlMode The control mode to set the current control mode to.
      */
-    public void setcurrentControlMode(ControlMode controlMode) {
+    public void setCurrentControlMode(ControlMode controlMode) {
         this.currentControlMode = controlMode;
         mainTalon.configMotionCruiseVelocity(Constants.LIFT_MOTION_MAGIC_CRUISING_SPEED);
         mainTalon.configMotionAcceleration(Constants.LIFT_MOTION_MAGIC_ACCELERATION);
