@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Solenoid;
 import org.team639.robot.Constants;
-import org.team639.robot.commands.lift.EngageLiftMotorBrake;
 
 // Note - Encoder: 4096 ticks per rotation
 

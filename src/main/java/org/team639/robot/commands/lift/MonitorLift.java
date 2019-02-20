@@ -7,17 +7,16 @@ import org.team639.robot.subsystems.Lift;
 
 import static org.team639.robot.Constants.*;
 
-/*
- * Unimplemented
+/**
  * Class for using the lift motor as a brake instead of a solenoid
  */
-public class EngageLiftMotorBrake extends Command {
+public class MonitorLift extends Command {
 
     private Lift lift;
     private int position;
     private PID pid;
 
-    public EngageLiftMotorBrake(int position) {
+    public MonitorLift(int position) {
         this.position = position;
         lift = Robot.getLift();
         requires(lift);

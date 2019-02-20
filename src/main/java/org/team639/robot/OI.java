@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.team639.robot.commands.lift.*;
 
 import static org.team639.robot.Constants.LIFT_JOYSTICK_DEADZONE;
+
 /**
  * Defines the mappings between buttons and actions and allows access to raw joystick values.
  */

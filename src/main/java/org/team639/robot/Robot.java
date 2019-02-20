@@ -9,6 +9,7 @@ import org.team639.lib.commands.DriveThread;
 import org.team639.robot.commands.drive.DriveLayout;
 import org.team639.robot.sensors.LineFollower;
 import org.team639.robot.subsystems.Drivetrain;
+import org.team639.robot.subsystems.shuffleboard.LiftDisplay;
 
 /**
  * The main loop of Redshift, Code Red Robotics' 2019 robot.
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
     }
 
     private double liftMaxSpeed = 0;
+    private LiftDisplay liftDisplay = new LiftDisplay();
 
     @Override
     public void robotInit() {
@@ -87,6 +89,11 @@ public class Robot extends TimedRobot {
         if (liftSpeed > liftMaxSpeed) liftMaxSpeed = liftSpeed;
         SmartDashboard.putNumber("lift max speed", liftMaxSpeed);
         SmartDashboard.putNumber("lift position", lift.getEncPos());
+
+        liftDisplay.setEncoderPresent(lift.encoderPresent());
+        liftDisplay.setEncoderPosition(lift.getEncPos());
+        liftDisplay.setLimitSwitchStatus(lift.isAtLowerLimit());
+        System.out.println(lift.isAtLowerLimit());
     }
 
     @Override

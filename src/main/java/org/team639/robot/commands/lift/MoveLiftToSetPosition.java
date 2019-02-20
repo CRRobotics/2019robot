@@ -16,18 +16,22 @@ import javax.naming.ldap.Control;
  */
 public class MoveLiftToSetPosition extends Command {
     private Lift lift;
-    private LiftPosition position;
+    private int position;
     private boolean done;
     private PID pid;
+
+    public MoveLiftToSetPosition(int position) {
+        this.position = position;
+        lift = Robot.getLift();
+        requires(lift);
+    }
 
     /**
      * Constructor, creates a new MoveLiftToSetPosition command with a LiftPosition to go to.
      * @param position The position to go to.
      */
     public MoveLiftToSetPosition(LiftPosition position) {
-        this.position = position;
-        lift = Robot.getLift();
-        requires(lift);
+        this(position.getEncTicks());
     }
 
     /**
@@ -46,7 +50,7 @@ public class MoveLiftToSetPosition extends Command {
      */
     @Override
     protected void execute() {
-        int error = position.getEncTicks() - lift.getEncPos();
+        int error = position - lift.getEncPos();
         double speed;
         speed = pid.compute(error);
         lift.setSpeedPercent(speed);

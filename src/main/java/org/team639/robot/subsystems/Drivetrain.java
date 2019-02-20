@@ -45,7 +45,7 @@ public class Drivetrain extends DriveSubsystem {
     private UdpReceiver visionReceiver;
     private Thread visionRunner;
 
-    private DrivetrainDisplay display = new DrivetrainDisplay();
+    public final DrivetrainDisplay display = DrivetrainDisplay.getInstance();
 
     /**
      * Creates a drivetrain with the given components.
@@ -107,20 +107,20 @@ public class Drivetrain extends DriveSubsystem {
         leftMaster.set(controlMode.ctreMode, lSpeed);
 
         if (controlMode == Mode.ClosedLoop) {
-//            display.setLeftError(lSpeed - getLeftEncVelocity());
-//            display.setRightError(rSpeed - getRightEncVelocity());
+            display.setLeftError(lSpeed - getLeftEncVelocity());
+            display.setRightError(rSpeed - getRightEncVelocity());
 
             SmartDashboard.putNumber("left error", lSpeed - getLeftEncVelocity());
             SmartDashboard.putNumber("right error", rSpeed - getRightEncVelocity());
-
-            SmartDashboard.putNumber("left command", lSpeed);
-            SmartDashboard.putNumber("right command", rSpeed);
-            SmartDashboard.putNumber("side difference", lSpeed - rSpeed);
-
-            SmartDashboard.putNumber("left actual", getLeftEncVelocity());
-            SmartDashboard.putNumber("right actual", getRightEncVelocity());
-            SmartDashboard.putNumber("actual side difference", getLeftEncVelocity() - getRightEncVelocity());
         }
+
+        SmartDashboard.putNumber("left command", lSpeed);
+        SmartDashboard.putNumber("right command", rSpeed);
+        SmartDashboard.putNumber("side difference", lSpeed - rSpeed);
+
+        SmartDashboard.putNumber("left actual", getLeftEncVelocity());
+        SmartDashboard.putNumber("right actual", getRightEncVelocity());
+        SmartDashboard.putNumber("actual side difference", getLeftEncVelocity() - getRightEncVelocity());
     }
 
     /**

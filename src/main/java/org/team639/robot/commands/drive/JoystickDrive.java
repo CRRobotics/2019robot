@@ -95,7 +95,7 @@ public class JoystickDrive extends DriveCommand {
         double turnMultiplier = 1 - speed;
         if (turnMultiplier < 1d / 3d) turnMultiplier = 1d / 3d;
         if (turnMultiplier > 2d / 3d) turnMultiplier = 2d / 3d;
-        turning = turning * turnMultiplier;
+        turning = 0; // turning * turnMultiplier;
 
         drivetrain.setSpeedsPercent(speed + turning, speed - turning);
     }
