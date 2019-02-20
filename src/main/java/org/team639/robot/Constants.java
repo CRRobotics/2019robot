@@ -107,4 +107,15 @@ public class Constants {
 
         public static final double HATCH_DETECT_DISTANCE = 3.0;
     }
+
+    /**
+     * Constants for the drivetrain.
+     */
+    public static class Climbing {
+        //Encoder variables for climbing
+        public static final double ENC_TICKS_PER_ROTATION_CLIMBING = 1; //I don't actually know
+        public static final double WHEEL_CIRCUMFERENCE_CLIMBING = 1; //I don't actually know
+        public static final double TICKS_PER_INCH_CLIMBING = ENC_TICKS_PER_ROTATION_CLIMBING / WHEEL_CIRCUMFERENCE_CLIMBING;
+
+    }
 }

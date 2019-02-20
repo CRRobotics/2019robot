@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import org.team639.robot.subsystems.Acquisition;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.robot.subsystems.Lift;
+import org.team639.robot.subsystems.Climbing;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import org.team639.lib.commands.DriveThread;
 import org.team639.robot.commands.drive.DriveLayout;
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
 
     private static final Lift lift = new Lift(RobotMap.liftMainTalon, RobotMap.liftFollower, RobotMap.liftBrake);
 
+    private static Climbing climbing = new Climbing();
     public static DriveLayout getDriveLayout() {
         return DriveLayout.Arcade2JoystickRight;
     }
@@ -118,5 +120,9 @@ public class Robot extends TimedRobot {
 
     public static Lift getLift() {
         return lift;
+    }
+
+    public static Climbing getClimbing() {
+        return climbing;
     }
 }
