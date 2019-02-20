@@ -12,8 +12,7 @@ public class JoystickControlledClimb extends Command{
         requires(Robot.getClimbing());
     }
 
-    public void execute()
-    {
+    public void execute() {
         double input = OI.controller.getLeftStickY();
         Robot.getClimbing().moveSystem(input);
     }

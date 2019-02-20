@@ -116,6 +116,7 @@ public class Acquisition extends Subsystem {
         if (speed > 1) speed = 1;
         else if (speed < -1) speed = -1;
         lowerRollerExtension.set(ControlMode.PercentOutput, speed);
+        System.out.println("AAAAAAAAAAAHHHH");
     }
 
     /**

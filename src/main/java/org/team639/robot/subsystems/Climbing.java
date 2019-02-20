@@ -26,7 +26,7 @@ public class Climbing extends Subsystem {
     //private Solenoid piston2;
     private Solenoid breakPiston;
 
-    public void Climbing() {
+    public Climbing() {
         //Device numbers/channels at the moment are placeholders
         //Need to be changed in order to test code
         climbMotor1 = new TalonSRX(8);
@@ -34,10 +34,10 @@ public class Climbing extends Subsystem {
         //May set to inverted depending on how the motors run
         //climbMotor1.setInverted(true);
         //climbMotor1.setInverted(true);
-        highlimitswitch = new DigitalInput(2);
-        lowlimitswitch = new DigitalInput(3);
-        piston1 = new Solenoid(4);
-        breakPiston = new Solenoid(6);
+        highlimitswitch = new DigitalInput(7);
+        lowlimitswitch = new DigitalInput(8);
+        piston1 = new Solenoid(7);
+//        breakPiston = new Solenoid(6);
     }
 
     @Override
@@ -55,11 +55,11 @@ public class Climbing extends Subsystem {
     public void moveSystem(double speed) {
         //Enales brake when speed is set to 0, or close enough to 0
         if (speed > -.1 && speed < .1) {
-            breakPiston.set(true);
+//            breakPiston.set(true);
         }
         //Turns the break off if the piston is on while speed is not 0
-        if ((speed > -.1 || speed < .1) && breakPiston.get()) {
-            breakPiston.set(false);
+        if ((speed > -.1 || speed < .1) /*&& breakPiston.get()*/) {
+//            breakPiston.set(false);
         }
         if ((highlimitswitch.get() && speed > 1)
                 || (lowlimitswitch.get() && speed < 1)) {

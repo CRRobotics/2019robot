@@ -13,7 +13,9 @@ public class ExtendLowerRollerAsync extends Command {
     private Acquisition acquisition = Robot.acquisition;
 
     // Doesn't require Acquisition so other commands don't have to be interrupted
-    public ExtendLowerRollerAsync() {}
+    public ExtendLowerRollerAsync() {
+        requires(acquisition);
+    }
 
     /**
      * The initialize method is called the first time this Command is run after being started.
