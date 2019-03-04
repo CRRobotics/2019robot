@@ -16,7 +16,7 @@ public class ZeroLift extends Command {
 
     public ZeroLift() {
         super("ZeroLift");
-        lift = Robot.getLift();
+        lift = Robot.lift;
         requires(lift);
     }
 

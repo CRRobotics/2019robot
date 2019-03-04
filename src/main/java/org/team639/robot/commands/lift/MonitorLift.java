@@ -18,7 +18,7 @@ public class MonitorLift extends Command {
 
     public MonitorLift(int position) {
         this.position = position;
-        lift = Robot.getLift();
+        lift = Robot.lift;
         requires(lift);
     }
 

@@ -17,7 +17,7 @@ public class MoveLiftWithJoystick extends Command {
      * Moves the lift with a joystick.
      */
     public MoveLiftWithJoystick() {
-        lift = Robot.getLift();
+        lift = Robot.lift;
         requires(lift);
     }
 

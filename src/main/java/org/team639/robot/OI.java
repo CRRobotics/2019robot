@@ -7,7 +7,7 @@ import org.team639.robot.commands.acqusition.*;
 import static org.team639.robot.Constants.Acquisition.CARGO_EXPULSION_SPEED;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
-import org.team639.robot.commands.climbing.Pivot;
+import org.team639.robot.commands.climbing.ReleaseClimber;
 import org.team639.robot.commands.lift.*;
 
 import static org.team639.robot.Constants.LIFT_JOYSTICK_DEADZONE;
@@ -20,7 +20,7 @@ public class OI {
     public static final JoystickManager controller = new XBoxController(1);
 
     public static void mapButtons() {
-        controller.mapButton(XBoxController.Buttons.A, new Pivot(), JoystickManager.MappingType.WhenPressed);
+        controller.mapButton(XBoxController.Buttons.A, new ReleaseClimber(), JoystickManager.MappingType.WhenPressed);
 //        controller.mapButton(XBoxController.Buttons.B, new ToggleFlowerOpen(), JoystickManager.MappingType.WhenPressed);
         controller.mapButton(XBoxController.Buttons.X, new ExtendLowerRollerAsync(), JoystickManager.MappingType.WhenPressed);
 //        controller.mapButton(XBoxController.Buttons.Y, new CloseFlower(), JoystickManager.MappingType.WhenPressed);

@@ -28,9 +28,10 @@ public class Robot extends TimedRobot {
 
     public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.leftFollowers, RobotMap.rightFollowers, RobotMap.navx, new LineFollower(0));
 
-    private static final Lift lift = new Lift(RobotMap.liftMainTalon, RobotMap.liftFollower, RobotMap.liftBrake);
+    public static final Lift lift = new Lift(RobotMap.liftMainTalon, RobotMap.liftFollower, RobotMap.liftBrake);
 
-    private static Climbing climbing = new Climbing();
+    public static final Climbing climbing = new Climbing();
+
     public static DriveLayout getDriveLayout() {
         return DriveLayout.Arcade2JoystickRight;
     }
@@ -116,13 +117,5 @@ public class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
         super.testPeriodic();
-    }
-
-    public static Lift getLift() {
-        return lift;
-    }
-
-    public static Climbing getClimbing() {
-        return climbing;
     }
 }

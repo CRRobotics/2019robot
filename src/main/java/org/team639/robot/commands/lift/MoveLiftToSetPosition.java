@@ -22,7 +22,7 @@ public class MoveLiftToSetPosition extends Command {
 
     public MoveLiftToSetPosition(int position) {
         this.position = position;
-        lift = Robot.getLift();
+        lift = Robot.lift;
         requires(lift);
     }
 

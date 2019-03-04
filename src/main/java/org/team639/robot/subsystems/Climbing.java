@@ -1,8 +1,6 @@
 package org.team639.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
-import org.team639.lib.subsystem.DriveSubsystem;
 import org.team639.robot.Constants;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -11,33 +9,27 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import org.team639.robot.commands.climbing.JoystickControlledClimb;
 
-/*
+/**
  * Controls the functions of the climbing subsystem. This system has pneumatics that moves its
  * pivot points and motors that move it up and down.
  */
 public class Climbing extends Subsystem {
 
-    private TalonSRX climbMotor1;
-    //private TalonSRX climbMotor2;
+    private TalonSRX climbMotor;
     private DigitalInput highlimitswitch;
     private DigitalInput lowlimitswitch;
-    //We might only use 1 piston. This is still very much under construction
-    private Solenoid piston1;
-    //private Solenoid piston2;
-    private Solenoid breakPiston;
+    private Solenoid pivot;
+    private Solenoid clamps;
+    private Solenoid brake;
 
     public Climbing() {
-        //Device numbers/channels at the moment are placeholders
-        //Need to be changed in order to test code
-        climbMotor1 = new TalonSRX(8);
-        climbMotor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-        //May set to inverted depending on how the motors run
-        //climbMotor1.setInverted(true);
-        //climbMotor1.setInverted(true);
+        climbMotor = new TalonSRX(8);
+        climbMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         highlimitswitch = new DigitalInput(7);
         lowlimitswitch = new DigitalInput(8);
-        piston1 = new Solenoid(7);
-//        breakPiston = new Solenoid(6);
+        pivot = new Solenoid(7);
+        brake = new Solenoid(4);
+        clamps = new Solenoid(6);
     }
 
     @Override
@@ -45,55 +37,70 @@ public class Climbing extends Subsystem {
         setDefaultCommand(new JoystickControlledClimb());
     }
 
-    /* Moves the climbing motors based on a parameter amount
-     * between 1 and -1
-     * Assumptions:
+    /**
+     * Sets the speed of the climbing lift to a percentage between 1 and -1.
      * Values < 0 move the system down
      * Values > 0 move the system up
-     * @param speed The speed at which the motors are run, which will be scaled down 50%
+     * @param speed The speed at which the motors are to be run.
      */
-    public void moveSystem(double speed) {
-        //Enales brake when speed is set to 0, or close enough to 0
-        if (speed > -.1 && speed < .1) {
-//            breakPiston.set(true);
-        }
-        //Turns the break off if the piston is on while speed is not 0
-        if ((speed > -.1 || speed < .1) /*&& breakPiston.get()*/) {
-//            breakPiston.set(false);
-        }
+    public void setSpeed(double speed) {
         if ((highlimitswitch.get() && speed > 1)
                 || (lowlimitswitch.get() && speed < 1)) {
-            //Prevents the motors from running past the limit switches
-            climbMotor1.set(ControlMode.PercentOutput, 0);
+            // Prevents the motors from running past the limit switches
+            climbMotor.set(ControlMode.PercentOutput, 0);
         } else {
-            climbMotor1.set(ControlMode.PercentOutput, speed);
+            climbMotor.set(ControlMode.PercentOutput, speed);
         }
     }
 
-    /*
-     * Sets pistons 1 and 2 to a specified value
-     * @param open If set to true, will open the pistons, if set to false it will close them.
+    /**
+     * Releases or stores the subsystem.
+     * @param released Whether the climber should be released or not.
      */
-    public void setPistons(boolean open) {
-        piston1.set(open);
+    public void setReleased(boolean released) {
+        pivot.set(released); // TODO: Verify
     }
 
-    /*
-     * Returns the encoder position of a specified motor, assuming the encoder has index 0.
-     * @param The motor to return an encoder position of
-     */
-    public int getEncoderPositions(TalonSRX motor) {
-        return motor.getSelectedSensorPosition(0);
+    public boolean isReleased() {
+        return pivot.get(); // TODO: Verify
     }
 
-    /*
-     * Returns the encoder position, converted to inches of a specified motor, assuming the encoder has index 0.
-     * I don't even know if I'm doing it right.
-     * @param The motor to return an encoder position of
+    /**
+     * Returns the position of the climbing lift in encoder ticks
      */
-    public int getEncoderPositionsInInches(TalonSRX motor)
-    {
-        return motor.getSelectedSensorPosition(0)*1/(int)Constants.Climbing.TICKS_PER_INCH_CLIMBING;
+    public int getPosition() {
+        return climbMotor.getSelectedSensorPosition(0);
     }
 
+    /**
+     * Returns the encoder position, converted to inches, of a specified motor
+     * @return The encoder position, converted to inches, of a specified motor
+     */
+    public double getEncoderPositionInches() {
+        return climbMotor.getSelectedSensorPosition(0) / Constants.Climbing.TICKS_PER_INCH_CLIMBING;
+    }
+
+    public void setClamped(boolean clamped) {
+        clamps.set(clamped); // TODO: Verify
+    }
+
+    public boolean isClamped() {
+        return clamps.get(); // TODO: Verify
+    }
+
+    /**
+     * Change the quadrature reported position to 0, so changes in position are reported as relative to this.
+     * see SensorCollection.setQuadraturePosition for more information
+     */
+    public void zeroEncoder() {
+        climbMotor.getSensorCollection().setQuadraturePosition(0, 0);
+    }
+
+    public void setBrake(boolean engaged) {
+        brake.set(engaged); // TODO: Verify
+    }
+
+    public boolean isBraking() {
+        return brake.get(); // TODO: Verify
+    }
 }

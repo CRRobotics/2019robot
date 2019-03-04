@@ -10,7 +10,7 @@ public class MoveToMiddle extends ConditionalCommand {
 
     public MoveToMiddle() {
         super(new MoveLiftToSetPosition(LiftPosition.MIDDLE_HATCH), new MoveLiftToSetPosition(LiftPosition.MIDDLE_BALL));
-        lift = Robot.getLift();
+        lift = Robot.lift;
         requires(lift);
     }
 

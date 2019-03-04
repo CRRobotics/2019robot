@@ -10,7 +10,7 @@ public class MoveToBottom extends ConditionalCommand {
 
     public MoveToBottom() {
         super(new MoveLiftToSetPosition(LiftPosition.BOTTOM_HATCH), new MoveLiftToSetPosition(LiftPosition.BOTTOM_BALL));
-        lift = Robot.getLift();
+        lift = Robot.lift;
         requires(lift);
     }
 
