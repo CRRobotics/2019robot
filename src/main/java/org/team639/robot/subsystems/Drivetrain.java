@@ -352,8 +352,9 @@ public class Drivetrain extends DriveSubsystem {
         }
     }
 
-    private static int unsignedByteToInt(byte b) {
-        return b > 0 ? (int)b : (int)(b + 256);
+
+    public double getRobotPitch() {
+        return navx.getPitch();
     }
 
     /**
