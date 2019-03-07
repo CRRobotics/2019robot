@@ -103,8 +103,18 @@ public class Drivetrain extends DriveSubsystem {
      * @param rSpeed The value for the right side
      */
     public void setSpeedsRaw(double lSpeed, double rSpeed) {
-        rightMaster.set(controlMode.ctreMode, rSpeed);
-        leftMaster.set(controlMode.ctreMode, lSpeed);
+        double trim = SmartDashboard.getNumber("trim", -0.5);
+        if (Math.abs(trim) >= 0.3) trim = Math.signum(trim) * 0.3;
+
+        double lmod = 1, rmod = 1;
+        if (trim < 0) {
+            lmod = 1 + trim;
+        } else {
+            rmod = 1 - trim;
+        }
+
+        rightMaster.set(controlMode.ctreMode, rmod * rSpeed);
+        leftMaster.set(controlMode.ctreMode, lmod * lSpeed);
 
         if (controlMode == Mode.ClosedLoop) {
             display.setLeftError(lSpeed - getLeftEncVelocity());
