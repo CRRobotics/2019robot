@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.team639.robot.commands.acqusition.ExtendLowerRollerWithTrigger;
 import org.team639.robot.sensors.HatchDistanceSensor;
 
 import static org.team639.robot.Constants.Acquisition.HATCH_DETECT_DISTANCE;
@@ -60,6 +61,7 @@ public class Acquisition extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
+        setDefaultCommand(new ExtendLowerRollerWithTrigger());
     }
 
     /**

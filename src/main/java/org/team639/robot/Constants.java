@@ -106,6 +106,8 @@ public class Constants {
         public static final double CARGO_EXPULSION_SPEED = -1.0;
 
         public static final double HATCH_DETECT_DISTANCE = 3.0;
+
+        public static final double MINIMUM_EXTENSION_SPEED = 0.1;
     }
 
     /**
