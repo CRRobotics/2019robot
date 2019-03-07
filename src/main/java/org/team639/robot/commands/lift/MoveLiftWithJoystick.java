@@ -41,7 +41,6 @@ public class MoveLiftWithJoystick extends Command {
             lift.setSpeedPercent(OI.controller.getRightStickY());
         } else {
             lift.setSpeedPercent(0);
-            lift.setBrake(true);
         }
     }
 
@@ -52,7 +51,6 @@ public class MoveLiftWithJoystick extends Command {
     @Override
     protected void end() {
         lift.setSpeedPercent(0);
-        lift.setBrake(true);
     }
 
     /**

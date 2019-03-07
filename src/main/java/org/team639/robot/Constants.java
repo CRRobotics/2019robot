@@ -35,11 +35,9 @@ public class Constants {
     // Needs to be determined through testing.
     public static final int LIFT_TOLERANCE = 600;
 
-    // Arbitrary values for now, variables for MotionMagic.
-    public static final int LIFT_MOTION_MAGIC_CRUISING_SPEED = 1000;
-    public static final int LIFT_MOTION_MAGIC_ACCELERATION = 1000;
-
     public static final double LIFT_JOYSTICK_DEADZONE = 0.1;
+
+    public static final double LIFT_BRAKE_ERROR = 1000;
 
     /**
      * Is this code running on the real robot?

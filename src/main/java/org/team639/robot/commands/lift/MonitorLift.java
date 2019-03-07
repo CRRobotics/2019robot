@@ -1,7 +1,6 @@
 package org.team639.robot.commands.lift;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.team639.lib.math.PID;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Lift;
 
@@ -13,11 +12,9 @@ import static org.team639.robot.Constants.*;
 public class MonitorLift extends Command {
 
     private Lift lift;
-    private int position;
-    private PID pid;
+    private double position;
 
-    public MonitorLift(int position) {
-        this.position = position;
+    public MonitorLift() {
         lift = Robot.lift;
         requires(lift);
     }
@@ -27,8 +24,7 @@ public class MonitorLift extends Command {
      */
     @Override
     protected void initialize() {
-        //if (!lift.encoderPresent()) running = false;
-        pid = new PID(LIFT_POS_P, LIFT_POS_I, LIFT_POS_D, LIFT_MIN, LIFT_MAX, LIFT_RATE, LIFT_TOLERANCE, 0);
+        position = lift.getPosition();
     }
 
     /**
@@ -36,10 +32,8 @@ public class MonitorLift extends Command {
      */
     @Override
     protected void execute() {
-        int error = position - lift.getEncPos();
-        double speed;
-        speed = pid.compute(error);
-        lift.setSpeedPercent(speed);
+        double error = position - lift.getPosition();
+        if (error > LIFT_BRAKE_ERROR) lift.setBrake(true);
     }
 
     /**

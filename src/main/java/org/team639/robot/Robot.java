@@ -91,12 +91,14 @@ public class Robot extends TimedRobot {
 
         if (liftSpeed > liftMaxSpeed) liftMaxSpeed = liftSpeed;
         SmartDashboard.putNumber("lift max speed", liftMaxSpeed);
-        SmartDashboard.putNumber("lift position", lift.getEncPos());
+        SmartDashboard.putNumber("lift position", lift.getPosition());
 
         liftDisplay.setEncoderPresent(lift.encoderPresent());
-        liftDisplay.setEncoderPosition(lift.getEncPos());
+        liftDisplay.setEncoderPosition(lift.getPosition());
         liftDisplay.setLimitSwitchStatus(lift.isAtLowerLimit());
         System.out.println(lift.isAtLowerLimit());
+
+        SmartDashboard.putNumber("Robot pitch", drivetrain.getRobotPitch());
     }
 
     @Override

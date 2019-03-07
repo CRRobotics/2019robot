@@ -157,7 +157,7 @@ public class Acquisition extends Subsystem {
      * @return Whether a hatch is detected on the flower, regardless of whether the flower is actually open.
      */
     public boolean isHatchOnFlower() {
-        return hatchDistanceSensor.getDistanceInches() <= HATCH_DETECT_DISTANCE; // TODO: actually read sensor.
+        return hatchDistanceSensor.getDistanceInches() <= HATCH_DETECT_DISTANCE;
     }
 
     /**

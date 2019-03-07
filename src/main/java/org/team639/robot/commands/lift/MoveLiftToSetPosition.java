@@ -1,13 +1,10 @@
 package org.team639.robot.commands.lift;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.lib.math.PID;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Lift;
 import static org.team639.robot.Constants.*;
-
-import javax.naming.ldap.Control;
 
 /**
  * Moves the lift to one of several preset positions defined in {@link LiftPosition}
@@ -50,7 +47,7 @@ public class MoveLiftToSetPosition extends Command {
      */
     @Override
     protected void execute() {
-        int error = position - lift.getEncPos();
+        double error = position - lift.getPosition();
         double speed;
         speed = pid.compute(error);
         lift.setSpeedPercent(speed);

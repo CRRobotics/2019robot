@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Solenoid;
 import org.team639.robot.Constants;
+import org.team639.robot.commands.lift.MonitorLift;
 
 // Note - Encoder: 4096 ticks per rotation
 
@@ -70,7 +71,7 @@ public class Lift extends Subsystem {
      * Sets the default command to motorBrake, so if nothing is done the motor will hold the lift in place.
      */
     public void initDefaultCommand() {
-
+        setDefaultCommand(new MonitorLift());
     }
 
     /**
@@ -131,7 +132,7 @@ public class Lift extends Subsystem {
      * Returns the encoder position in ticks.
      * @return The encoder position in ticks.
      */
-    public int getEncPos() {
+    public double getPosition() {
 //        return mainTalon.getSelectedSensorPosition(0);
         return mainTalon.getSensorCollection().getQuadraturePosition();
     }
