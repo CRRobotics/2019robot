@@ -77,7 +77,7 @@ public class CoordinatedClimb extends Command {
      */
     @Override
     protected void interrupted() {
-        super.interrupted();
+        end();
     }
 
     /**
