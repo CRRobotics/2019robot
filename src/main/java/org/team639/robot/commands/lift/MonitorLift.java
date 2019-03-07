@@ -33,7 +33,7 @@ public class MonitorLift extends Command {
     @Override
     protected void execute() {
         double error = position - lift.getPosition();
-        if (error > LIFT_BRAKE_ERROR) lift.setBrake(true);
+        if (Math.abs(error) > LIFT_BRAKE_ERROR) lift.setBrake(true);
     }
 
     /**

@@ -48,7 +48,7 @@ public class CoordinatedClimb extends Command {
             lift.setBrake(true);
         } else {
             lift.setBrake(false);
-            lift.setSpeedPercent(0.5 - output);
+            lift.setSpeedPercent(-0.5 + output);
         }
     }
 
