@@ -166,6 +166,7 @@ public class Lift extends Subsystem {
      * @return whether or not the lift is at it's lower limit.
      */
     public boolean isAtLowerLimit() {
+        // TODO: Might need to change.
         return mainTalon.getSensorCollection().isRevLimitSwitchClosed();
     }
 

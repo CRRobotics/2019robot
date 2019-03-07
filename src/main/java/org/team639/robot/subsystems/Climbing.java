@@ -103,4 +103,8 @@ public class Climbing extends Subsystem {
     public boolean isBraking() {
         return brake.get(); // TODO: Verify
     }
+
+    public boolean isFullyExtended() {
+        return climbMotor.getSensorCollection().isFwdLimitSwitchClosed(); // TODO: Verify
+    }
 }
