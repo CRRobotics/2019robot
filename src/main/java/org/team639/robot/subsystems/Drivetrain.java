@@ -103,7 +103,7 @@ public class Drivetrain extends DriveSubsystem {
      * @param rSpeed The value for the right side
      */
     public void setSpeedsRaw(double lSpeed, double rSpeed) {
-        double trim = SmartDashboard.getNumber("trim", -0.5);
+        double trim = SmartDashboard.getNumber("trim", 0);
         if (Math.abs(trim) >= 0.3) trim = Math.signum(trim) * 0.3;
 
         double lmod = 1, rmod = 1;
@@ -364,7 +364,7 @@ public class Drivetrain extends DriveSubsystem {
 
 
     public double getRobotPitch() {
-        return navx.getPitch();
+        return navx.getRoll();
     }
 
     /**

@@ -25,8 +25,6 @@ public class IntakeCargo extends Command {
      */
     @Override
     protected void initialize() {
-        done = acquisition.isHatchOnFlower();
-
         if (!done) {
             acquisition.setLowerRollerSpeed(CARGO_INTAKE_SPEED);
             acquisition.setUpperRollerSpeed(CARGO_INTAKE_SPEED);

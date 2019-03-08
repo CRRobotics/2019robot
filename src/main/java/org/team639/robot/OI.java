@@ -7,6 +7,7 @@ import org.team639.robot.commands.acqusition.*;
 import static org.team639.robot.Constants.Acquisition.CARGO_EXPULSION_SPEED;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
+import org.team639.robot.commands.climbing.CoordinatedClimb;
 import org.team639.robot.commands.climbing.ReleaseClimber;
 import org.team639.robot.commands.lift.*;
 
@@ -20,18 +21,18 @@ public class OI {
     public static final JoystickManager controller = new XBoxController(1);
 
     public static void mapButtons() {
-        controller.mapButton(XBoxController.Buttons.A, new ReleaseClimber(), JoystickManager.MappingType.WhenPressed);
+        controller.mapButton(XBoxController.Buttons.A, new ToggleFlowerExtended(), JoystickManager.MappingType.WhenPressed);
 //        controller.mapButton(XBoxController.Buttons.B, new ToggleFlowerOpen(), JoystickManager.MappingType.WhenPressed);
-        controller.mapButton(XBoxController.Buttons.X, new ExtendLowerRollerAsync(), JoystickManager.MappingType.WhenPressed);
+        controller.mapButton(XBoxController.Buttons.X, new ToggleFlowerOpen(), JoystickManager.MappingType.WhenPressed);
 //        controller.mapButton(XBoxController.Buttons.Y, new CloseFlower(), JoystickManager.MappingType.WhenPressed);
 
-        controller.mapButton(XBoxController.Buttons.LB, new PlaceHatch(), JoystickManager.MappingType.WhenPressed);
-        controller.mapButton(XBoxController.Buttons.RB, new AcquireHatch(), JoystickManager.MappingType.WhenPressed);
+//        controller.mapButton(XBoxController.Buttons.LB, new CoordinatedClimb(), JoystickManager.MappingType.WhenPressed);
+//        controller.mapButton(XBoxController.Buttons.RB, new AcquireHatch(), JoystickManager.MappingType.WhenPressed);
 //        controller.mapButton(XBoxController.Buttons.RB, new SetIntakeSpeed(0), JoystickManager.MappingType.WhenReleased);
 
-        controller.mapButton(XBoxController.Buttons.B, new SetIntakeSpeed(CARGO_EXPULSION_SPEED), JoystickManager.MappingType.WhenPressed);
-        controller.mapButton(XBoxController.Buttons.B, new SetIntakeSpeed(0), JoystickManager.MappingType.WhenReleased);
-        controller.mapButton(XBoxController.Buttons.Y, new IntakeCargo(), JoystickManager.MappingType.WhenPressed);
+        controller.mapButton(XBoxController.Buttons.RB, new SetIntakeSpeed(CARGO_EXPULSION_SPEED), JoystickManager.MappingType.WhenPressed);
+        controller.mapButton(XBoxController.Buttons.RB, new SetIntakeSpeed(0), JoystickManager.MappingType.WhenReleased);
+        controller.mapButton(XBoxController.Buttons.LB, new IntakeCargo(), JoystickManager.MappingType.WhenPressed);
 
 //        controller.mapButton(XBoxController.Buttons.A, new ThreadedDriveCommand(new FollowLine(), Robot.drivetrain), JoystickManager.MappingType.WhenPressed);
 

@@ -47,9 +47,11 @@ public class Acquisition extends Subsystem {
         this.cargoDetector = cargoDetector;
         this.hatchDistanceSensor = hatchDistanceSensor;
 
-        lowerRoller.setInverted(true);
+
 
         lowerRollerExtension.configFactoryDefault();
+
+        lowerRoller.setInverted(true);
 
         lowerRollerExtension.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
@@ -118,7 +120,7 @@ public class Acquisition extends Subsystem {
         if (speed > 1) speed = 1;
         else if (speed < -1) speed = -1;
         lowerRollerExtension.set(ControlMode.PercentOutput, speed);
-        System.out.println("AAAAAAAAAAAHHHH");
+//        System.out.println("AAAAAAAAAAAHHHH " + speed);
     }
 
     /**
@@ -157,7 +159,7 @@ public class Acquisition extends Subsystem {
      * @return Whether a hatch is detected on the flower, regardless of whether the flower is actually open.
      */
     public boolean isHatchOnFlower() {
-        return hatchDistanceSensor.getDistanceInches() <= HATCH_DETECT_DISTANCE;
+        return false; // hatchDistanceSensor.getDistanceInches() <= HATCH_DETECT_DISTANCE;
     }
 
     /**

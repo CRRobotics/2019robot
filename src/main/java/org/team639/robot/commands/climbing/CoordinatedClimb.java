@@ -40,7 +40,7 @@ public class CoordinatedClimb extends Command {
             climbing.setBrake(true);
         } else {
             climbing.setBrake(false);
-            climbing.setSpeed(1);
+            climbing.setSpeed(-0.5);
         }
 
         if (lift.isAtLowerLimit()) {
@@ -48,7 +48,7 @@ public class CoordinatedClimb extends Command {
             lift.setBrake(true);
         } else {
             lift.setBrake(false);
-            lift.setSpeedPercent(-0.5 + output);
+            lift.setSpeedPercent(-0.25 + output);
         }
     }
 

@@ -16,7 +16,7 @@ import org.team639.robot.commands.climbing.JoystickControlledClimb;
 public class Climbing extends Subsystem {
 
     private TalonSRX climbMotor;
-    private DigitalInput highlimitswitch;
+    private DigitalInput fullyExtended;
     private DigitalInput lowlimitswitch;
     private Solenoid pivot;
     private Solenoid clamps;
@@ -25,11 +25,13 @@ public class Climbing extends Subsystem {
     public Climbing() {
         climbMotor = new TalonSRX(8);
         climbMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-        highlimitswitch = new DigitalInput(7);
+        fullyExtended = new DigitalInput(5);
         lowlimitswitch = new DigitalInput(8);
         pivot = new Solenoid(7);
         brake = new Solenoid(4);
         clamps = new Solenoid(6);
+
+        setClamped(false);
     }
 
     @Override
@@ -44,12 +46,13 @@ public class Climbing extends Subsystem {
      * @param speed The speed at which the motors are to be run.
      */
     public void setSpeed(double speed) {
-        if ((highlimitswitch.get() && speed > 1)
-                || (lowlimitswitch.get() && speed < 1)) {
+        if (isFullyExtended() && speed < 0) {
             // Prevents the motors from running past the limit switches
             climbMotor.set(ControlMode.PercentOutput, 0);
+//            System.out.println("uh oh");
         } else {
             climbMotor.set(ControlMode.PercentOutput, speed);
+//            System.out.println("settings: " + speed);
         }
     }
 
@@ -81,11 +84,11 @@ public class Climbing extends Subsystem {
     }
 
     public void setClamped(boolean clamped) {
-        clamps.set(clamped); // TODO: Verify
+        clamps.set(!clamped); // TODO: Verify
     }
 
     public boolean isClamped() {
-        return clamps.get(); // TODO: Verify
+        return !clamps.get(); // TODO: Verify
     }
 
     /**
@@ -97,14 +100,16 @@ public class Climbing extends Subsystem {
     }
 
     public void setBrake(boolean engaged) {
-        brake.set(engaged); // TODO: Verify
+        brake.set(!engaged); // TODO: Verify
     }
 
     public boolean isBraking() {
-        return brake.get(); // TODO: Verify
+        return !brake.get(); // TODO: Verify
     }
 
     public boolean isFullyExtended() {
-        return climbMotor.getSensorCollection().isFwdLimitSwitchClosed(); // TODO: Verify
+        return !fullyExtended.get(); // TODO: Verify
     }
+
+
 }

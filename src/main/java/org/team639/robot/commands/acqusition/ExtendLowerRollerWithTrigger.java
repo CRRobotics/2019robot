@@ -12,7 +12,7 @@ public class ExtendLowerRollerWithTrigger extends Command {
     private Acquisition acquisition = Robot.acquisition;
 
     public ExtendLowerRollerWithTrigger() {
-
+        requires(acquisition);
     }
 
     /**
@@ -34,7 +34,11 @@ public class ExtendLowerRollerWithTrigger extends Command {
             val = 0;
         }
 
-        var out =  val;
+        var out = -1 * val;
+
+        if (OI.controller.getButtonPressed(XBoxController.Buttons.B)) {
+            out *= -1;
+        }
 
         acquisition.setLowerRollerExtensionSpeed(out);
     }

@@ -45,6 +45,8 @@ public class Robot extends TimedRobot {
         System.out.println("thread started");
         OI.mapButtons();
 //        drivetrain.setControlMode(Drivetrain.Mode.OpenLoop);
+
+        SmartDashboard.putNumber("trim", 0);
     }
 
     @Override
@@ -96,7 +98,7 @@ public class Robot extends TimedRobot {
         liftDisplay.setEncoderPresent(lift.encoderPresent());
         liftDisplay.setEncoderPosition(lift.getPosition());
         liftDisplay.setLimitSwitchStatus(lift.isAtLowerLimit());
-        System.out.println(lift.isAtLowerLimit());
+//        System.out.println(lift.isAtLowerLimit());
 
         SmartDashboard.putNumber("Robot pitch", drivetrain.getRobotPitch());
     }

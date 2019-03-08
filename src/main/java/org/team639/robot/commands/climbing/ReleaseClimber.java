@@ -13,6 +13,7 @@ public class ReleaseClimber extends Command {
 
     @Override
     public void initialize() {
+        System.out.println(Robot.climbing.isReleased());
         Robot.climbing.setReleased(true);
     }
 

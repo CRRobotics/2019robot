@@ -71,7 +71,7 @@ public class Lift extends Subsystem {
      * Sets the default command to motorBrake, so if nothing is done the motor will hold the lift in place.
      */
     public void initDefaultCommand() {
-        setDefaultCommand(new MonitorLift());
+//        setDefaultCommand(new MonitorLift());
     }
 
     /**

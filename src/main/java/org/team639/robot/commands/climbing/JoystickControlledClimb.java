@@ -13,21 +13,25 @@ public class JoystickControlledClimb extends Command {
 
     private Climbing climbing = Robot.climbing;
 
-    public JoystickControlledClimb () {
+    public JoystickControlledClimb() {
         requires(climbing);
     }
 
     public void execute() {
+
         if (climbing.isReleased()) {
-            var val = OI.controller.getRightStickY();
-            if (Math.abs(val) > LIFT_JOYSTICK_DEADZONE) {
+            var val = OI.controller.getLeftStickY();
+//            System.out.println("aaah" + val + climbing.isFullyExtended());
+            if (Math.abs(val) > LIFT_JOYSTICK_DEADZONE && !(climbing.isFullyExtended() && val < 0)) {
+//                System.out.println("yes");
                 climbing.setBrake(false);
-                climbing.setSpeed(OI.controller.getRightStickY());
+                climbing.setSpeed(OI.controller.getLeftStickY());
             } else {
                 climbing.setSpeed(0);
                 climbing.setBrake(true);
             }
         } else {
+//            System.out.println("no");
             climbing.setBrake(true);
         }
     }

@@ -1,24 +1,18 @@
-package org.team639.robot.commands.lift;
+package org.team639.robot.commands.acqusition;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.team639.lib.controls.JoystickManager;
-import org.team639.lib.math.PID;
+import org.team639.lib.controls.XBoxController;
 import org.team639.robot.OI;
 import org.team639.robot.Robot;
-import org.team639.robot.subsystems.Lift;
+import org.team639.robot.subsystems.Acquisition;
 
-import static org.team639.robot.Constants.*;
+import static org.team639.robot.Constants.Acquisition.MINIMUM_EXTENSION_SPEED;
 
-public class MoveLiftWithJoystick extends Command {
+public class RetractLowerRollerWithTrigger extends Command {
+    private Acquisition acquisition = Robot.acquisition;
 
-    private Lift lift;
-
-    /**
-     * Moves the lift with a joystick.
-     */
-    public MoveLiftWithJoystick() {
-        lift = Robot.lift;
-        requires(lift);
+    public RetractLowerRollerWithTrigger() {
+        requires(acquisition);
     }
 
     /**
@@ -26,7 +20,7 @@ public class MoveLiftWithJoystick extends Command {
      */
     @Override
     protected void initialize() {
-        lift.setBrake(false);
+
     }
 
     /**
@@ -34,15 +28,15 @@ public class MoveLiftWithJoystick extends Command {
      */
     @Override
     protected void execute() {
-//        System.out.println(lift.encoderPresent());
-        var val = OI.controller.getRightStickY();
-        if (Math.abs(val) > LIFT_JOYSTICK_DEADZONE) {
-            lift.setBrake(false);
-            lift.setSpeedPercent(OI.controller.getRightStickY());
-        } else {
-            lift.setSpeedPercent(0);
-            lift.setBrake(true);
+        var val = OI.controller.getControllerAxis(XBoxController.ControllerAxis.RightTrigger);
+
+        if (val < MINIMUM_EXTENSION_SPEED) {
+            val = 0;
         }
+
+        var out = val;
+
+        acquisition.setLowerRollerExtensionSpeed(out);
     }
 
     /**
@@ -51,17 +45,16 @@ public class MoveLiftWithJoystick extends Command {
      */
     @Override
     protected void end() {
-        lift.setSpeedPercent(0);
-        lift.setBrake(true);
+        acquisition.setLowerRollerExtensionSpeed(0);
     }
 
     /**
      * Called when the command ends because somebody called {@link Command#cancel() cancel()} or
      * another command shared the same requirements as this one, and booted it out.
-     * <p>
+     *
      * <p>This is where you may want to wrap up loose ends, like shutting off a motor that was being
      * used in the command.
-     * <p>
+     *
      * <p>Generally, it is useful to simply call the {@link Command#end() end()} method within this
      * method, as done here.
      */
@@ -73,9 +66,10 @@ public class MoveLiftWithJoystick extends Command {
     /**
      * Returns whether this command is finished. If it is, then the command will be removed and {@link
      * Command#end() end()} will be called.
-     * <p>
+     *
      * <p>It may be useful for a team to reference the {@link Command#isTimedOut() isTimedOut()}
      * method for time-sensitive commands.
+     *
      * @return whether this command is finished.
      * @see Command#isTimedOut() isTimedOut()
      */
@@ -83,5 +77,4 @@ public class MoveLiftWithJoystick extends Command {
     protected boolean isFinished() {
         return false;
     }
-
 }
