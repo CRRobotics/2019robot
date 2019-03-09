@@ -20,12 +20,12 @@ public class JoystickControlledClimb extends Command {
     public void execute() {
 
         if (climbing.isReleased()) {
-            var val = OI.controller.getLeftStickY();
+            var val = OI.controller.getRightStickY();
 //            System.out.println("aaah" + val + climbing.isFullyExtended());
             if (Math.abs(val) > LIFT_JOYSTICK_DEADZONE && !(climbing.isFullyExtended() && val < 0)) {
 //                System.out.println("yes");
                 climbing.setBrake(false);
-                climbing.setSpeed(OI.controller.getLeftStickY());
+                climbing.setSpeed(val);
             } else {
                 climbing.setSpeed(0);
                 climbing.setBrake(true);

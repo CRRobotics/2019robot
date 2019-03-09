@@ -39,6 +39,7 @@ public class Climbing extends Subsystem {
         setDefaultCommand(new JoystickControlledClimb());
     }
 
+
     /**
      * Sets the speed of the climbing lift to a percentage between 1 and -1.
      * Values < 0 move the system down
@@ -110,6 +111,4 @@ public class Climbing extends Subsystem {
     public boolean isFullyExtended() {
         return !fullyExtended.get(); // TODO: Verify
     }
-
-
 }

@@ -35,10 +35,10 @@ public class MoveLiftWithJoystick extends Command {
     @Override
     protected void execute() {
 //        System.out.println(lift.encoderPresent());
-        var val = OI.controller.getRightStickY();
+        var val = OI.controller.getLeftStickY();
         if (Math.abs(val) > LIFT_JOYSTICK_DEADZONE) {
             lift.setBrake(false);
-            lift.setSpeedPercent(OI.controller.getRightStickY());
+            lift.setSpeedPercent(val);
         } else {
             lift.setSpeedPercent(0);
             lift.setBrake(true);

@@ -24,7 +24,7 @@ public class OI {
         controller.mapButton(XBoxController.Buttons.A, new ToggleFlowerExtended(), JoystickManager.MappingType.WhenPressed);
 //        controller.mapButton(XBoxController.Buttons.B, new ToggleFlowerOpen(), JoystickManager.MappingType.WhenPressed);
         controller.mapButton(XBoxController.Buttons.X, new ToggleFlowerOpen(), JoystickManager.MappingType.WhenPressed);
-//        controller.mapButton(XBoxController.Buttons.Y, new CloseFlower(), JoystickManager.MappingType.WhenPressed);
+        controller.mapButton(XBoxController.Buttons.Y, new ReleaseClimber(), JoystickManager.MappingType.WhenPressed);
 
 //        controller.mapButton(XBoxController.Buttons.LB, new CoordinatedClimb(), JoystickManager.MappingType.WhenPressed);
 //        controller.mapButton(XBoxController.Buttons.RB, new AcquireHatch(), JoystickManager.MappingType.WhenPressed);
@@ -40,7 +40,7 @@ public class OI {
         Button liftJoystickActivated = new Button() {
             @Override
             public boolean get() {
-                return Math.abs(controller.getRightStickY()) > LIFT_JOYSTICK_DEADZONE;
+                return Math.abs(controller.getLeftStickY()) > LIFT_JOYSTICK_DEADZONE;
             }
         };
         mapCondition(liftJoystickActivated, new MoveLiftWithJoystick(), JoystickManager.MappingType.WhenPressed);

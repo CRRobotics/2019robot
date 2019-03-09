@@ -105,7 +105,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        super.disabledPeriodic();
+        RobotMap.bigCompressor.set(0);
     }
 
     @Override
@@ -115,6 +115,12 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+//        System.out.println(RobotMap.pressureSwitch.get());
+//        if (RobotMap.pressureSwitch.get()) {
+            RobotMap.bigCompressor.set(0);
+//        } else {
+//            RobotMap.bigCompressor.set(0.5);
+//        }
         Scheduler.getInstance().run();
     }
 

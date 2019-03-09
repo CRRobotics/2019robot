@@ -14,6 +14,8 @@ import static org.team639.robot.Constants.REAL;
  * A central location for robot hardware.
  */
 public class RobotMap {
+    public static final Spark bigCompressor = new Spark(6);
+    public static final DigitalInput pressureSwitch = new DigitalInput(9);
 
     public static final Solenoid liftBrake = new Solenoid(3);
 
