@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
 //        SmartDashboard.putNumber("left vel", left);
 //        SmartDashboard.putNumber("right vel", right);
 
+//        System.out.println(drivetrain.encodersPresent());
         var liftSpeed = lift.getEncVelocity();
 
         if (liftSpeed > liftMaxSpeed) liftMaxSpeed = liftSpeed;

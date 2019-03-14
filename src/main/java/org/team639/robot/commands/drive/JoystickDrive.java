@@ -91,10 +91,10 @@ public class JoystickDrive extends DriveCommand {
      * @param turning The turning magnitude from -1 to 1
      */
     private void arcadeDrive(double speed, double turning) {
-        speed = speed * 2 / 3;
+//        speed = speed * 2 / 3;
         double turnMultiplier = 1 - speed;
         if (turnMultiplier < 1d / 3d) turnMultiplier = 1d / 3d;
-        if (turnMultiplier > 2d / 3d) turnMultiplier = 2d / 3d;
+//        if (turnMultiplier > 2d / 3d) turnMultiplier = 2d / 3d;
         turning = turning * turnMultiplier;
 
         drivetrain.setSpeedsPercent(speed + turning, speed - turning);
