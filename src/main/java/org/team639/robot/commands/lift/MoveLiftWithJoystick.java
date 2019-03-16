@@ -36,16 +36,20 @@ public class MoveLiftWithJoystick extends Command {
      */
     @Override
     protected void execute() {
-        if (!(System.currentTimeMillis() - brakeFire > 200)) return;
+        if ((System.currentTimeMillis() - brakeFire < 50)) return;
 //        System.out.println(lift.encoderPresent());
         var val = OI.controller.getLeftStickY();
-//        if (Math.abs(val) > LIFT_JOYSTICK_DEADZONE) {
-//            lift.setBrake(false);
-            lift.setSpeedPercent(val);
-//        } else {
-//            lift.setSpeedPercent(0);
-//            lift.setBrake(true);
-//        }
+        if (Math.abs(val) > LIFT_JOYSTICK_DEADZONE) {
+            if (lift.isBraking()) {
+                lift.setBrake(false);
+                brakeFire = System.currentTimeMillis();
+            } else {
+                lift.setSpeedPercent(val);
+            }
+        } else {
+            lift.setSpeedPercent(0);
+            lift.setBrake(true);
+        }
     }
 
     /**

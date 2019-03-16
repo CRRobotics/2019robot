@@ -55,6 +55,7 @@ public class Lift extends Subsystem {
         mainTalon.configPeakCurrentLimit(30);
         mainTalon.configPeakCurrentDuration(10);
         mainTalon.configContinuousCurrentLimit(25);
+        mainTalon.enableCurrentLimit(true);
 
         mainTalon.setNeutralMode(NeutralMode.Brake);
 
@@ -189,7 +190,7 @@ public class Lift extends Subsystem {
      * @return whether the pneumatic brake is active or not.
      */
     public boolean isBraking() {
-        return brake.get();
+        return !brake.get();
     }
 
     /**

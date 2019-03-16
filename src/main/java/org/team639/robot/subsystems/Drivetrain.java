@@ -86,9 +86,12 @@ public class Drivetrain extends DriveSubsystem {
         leftMaster.configPeakCurrentLimit(30);
         leftMaster.configContinuousCurrentLimit(25);
         leftMaster.configPeakCurrentDuration(10);
+        leftMaster.enableCurrentLimit(true);
+
         rightMaster.configPeakCurrentLimit(30);
         rightMaster.configContinuousCurrentLimit(25);
         rightMaster.configPeakCurrentDuration(10);
+        rightMaster.enableCurrentLimit(true);
 
 //        double ramp = 0.1; // SmartDashboard.getNumber("drive ramp", RAMP);
 //
