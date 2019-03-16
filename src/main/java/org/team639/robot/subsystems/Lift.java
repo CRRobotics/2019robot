@@ -52,10 +52,14 @@ public class Lift extends Subsystem {
 //        mainTalon.configForwardSoftLimitEnable(true, 0);
 //        mainTalon.configForwardSoftLimitThreshold(Constants.LIFT_MAX_HEIGHT, 0);
 
+        mainTalon.configPeakCurrentLimit(30);
+        mainTalon.configPeakCurrentDuration(10);
+        mainTalon.configContinuousCurrentLimit(25);
+
         mainTalon.setNeutralMode(NeutralMode.Brake);
 
         mainTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-        mainTalon.setSensorPhase(true);
+        mainTalon.setSensorPhase(false);
 
         mainTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 15, 0);
 

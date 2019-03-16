@@ -1,5 +1,6 @@
 package org.team639.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import org.team639.lib.controls.JoystickManager;
 import org.team639.lib.controls.XBoxController;
 import org.team639.robot.commands.acqusition.*;
@@ -9,6 +10,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import org.team639.robot.commands.climbing.CoordinatedClimb;
 import org.team639.robot.commands.climbing.ReleaseClimber;
+import org.team639.robot.commands.drive.SetDriveNeutralMode;
 import org.team639.robot.commands.lift.*;
 
 import static org.team639.robot.Constants.LIFT_JOYSTICK_DEADZONE;
@@ -21,6 +23,16 @@ public class OI {
     public static final JoystickManager controller = new XBoxController(1);
 
     public static void mapButtons() {
+        Button driveLeftTrigger = new Button() {
+            @Override
+            public boolean get() {
+                return drive.getControllerAxis(XBoxController.ControllerAxis.LeftTrigger) > 0.2;
+            }
+        };
+
+        mapCondition(driveLeftTrigger, new SetDriveNeutralMode(NeutralMode.Brake), JoystickManager.MappingType.WhenPressed);
+        mapCondition(driveLeftTrigger, new SetDriveNeutralMode(NeutralMode.Coast), JoystickManager.MappingType.ToggleWhenPressed);
+
         controller.mapButton(XBoxController.Buttons.A, new ToggleFlowerExtended(), JoystickManager.MappingType.WhenPressed);
 //        controller.mapButton(XBoxController.Buttons.B, new ToggleFlowerOpen(), JoystickManager.MappingType.WhenPressed);
         controller.mapButton(XBoxController.Buttons.X, new ToggleFlowerOpen(), JoystickManager.MappingType.WhenPressed);

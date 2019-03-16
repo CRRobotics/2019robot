@@ -28,19 +28,21 @@ public class ExtendLowerRollerWithTrigger extends Command {
      */
     @Override
     protected void execute() {
-        var val = OI.controller.getControllerAxis(XBoxController.ControllerAxis.RightTrigger);
+        var right = OI.controller.getControllerAxis(XBoxController.ControllerAxis.RightTrigger);
 
-        if (val < MINIMUM_EXTENSION_SPEED) {
-            val = 0;
+        if (right < MINIMUM_EXTENSION_SPEED) {
+            right = 0;
         }
 
-        var out = -1 * val;
+        var out = -1 * right;
 
         if (OI.controller.getButtonPressed(XBoxController.Buttons.B)) {
             out *= -1;
         }
 
         acquisition.setLowerRollerExtensionSpeed(out);
+
+
     }
 
     /**

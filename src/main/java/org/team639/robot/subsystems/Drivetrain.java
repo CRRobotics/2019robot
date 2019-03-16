@@ -59,6 +59,8 @@ public class Drivetrain extends DriveSubsystem {
         this.navx = navx;
         this.lineFollower = lineFollower;
 
+        SmartDashboard.putNumber("drive ramp", RAMP);
+
         for (IMotorController motorController : leftFollowers) motorController.follow(leftMaster);
         for (IMotorController motorController : rightFollowers) motorController.follow(rightMaster);
 
@@ -80,6 +82,25 @@ public class Drivetrain extends DriveSubsystem {
 
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+
+        leftMaster.configPeakCurrentLimit(30);
+        leftMaster.configContinuousCurrentLimit(25);
+        leftMaster.configPeakCurrentDuration(10);
+        rightMaster.configPeakCurrentLimit(30);
+        rightMaster.configContinuousCurrentLimit(25);
+        rightMaster.configPeakCurrentDuration(10);
+
+//        double ramp = 0.1; // SmartDashboard.getNumber("drive ramp", RAMP);
+//
+//        leftMaster.configClosedloopRamp(ramp);
+//        leftMaster.configClosedloopRamp(ramp);
+//
+//        for (IMotorController leftFollower : leftFollowers) {
+//            leftFollower.configClosedloopRamp(ramp, 0);
+//        }
+//        for (IMotorController rightFollower : rightFollowers) {
+//            rightFollower.configClosedloopRamp(ramp, 0);
+//        }
 
         zeroRobotAngle();
 

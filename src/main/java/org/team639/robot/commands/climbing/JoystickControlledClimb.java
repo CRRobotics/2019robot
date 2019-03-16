@@ -1,9 +1,11 @@
 package org.team639.robot.commands.climbing;
+import org.team639.lib.controls.XBoxController;
 import org.team639.robot.OI;
 import edu.wpi.first.wpilibj.command.Command;
 import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Climbing;
 
+import static org.team639.robot.Constants.Acquisition.MINIMUM_EXTENSION_SPEED;
 import static org.team639.robot.Constants.LIFT_JOYSTICK_DEADZONE;
 
 /**
@@ -30,6 +32,14 @@ public class JoystickControlledClimb extends Command {
                 climbing.setSpeed(0);
                 climbing.setBrake(true);
             }
+
+            var left = OI.controller.getControllerAxis(XBoxController.ControllerAxis.LeftTrigger);
+
+            if (left < MINIMUM_EXTENSION_SPEED) {
+                left = 0;
+            }
+
+            climbing.setPusherSpeed(-0.5 * left);
         } else {
 //            System.out.println("no");
             climbing.setBrake(true);

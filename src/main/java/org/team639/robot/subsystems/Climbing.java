@@ -1,6 +1,7 @@
 package org.team639.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import edu.wpi.first.wpilibj.Spark;
 import org.team639.robot.Constants;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -22,6 +23,8 @@ public class Climbing extends Subsystem {
     private Solenoid clamps;
     private Solenoid brake;
 
+    private Spark pusher;
+
     public Climbing() {
         climbMotor = new TalonSRX(8);
         climbMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
@@ -30,6 +33,7 @@ public class Climbing extends Subsystem {
         pivot = new Solenoid(7);
         brake = new Solenoid(4);
         clamps = new Solenoid(6);
+        pusher = new Spark(1);
 
         setClamped(false);
     }
@@ -110,5 +114,9 @@ public class Climbing extends Subsystem {
 
     public boolean isFullyExtended() {
         return !fullyExtended.get(); // TODO: Verify
+    }
+
+    public void setPusherSpeed(double speed) {
+        pusher.set(speed);
     }
 }

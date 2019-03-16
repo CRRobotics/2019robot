@@ -12,6 +12,7 @@ import static org.team639.robot.Constants.*;
 public class MoveLiftWithJoystick extends Command {
 
     private Lift lift;
+    private long brakeFire;
 
     /**
      * Moves the lift with a joystick.
@@ -27,6 +28,7 @@ public class MoveLiftWithJoystick extends Command {
     @Override
     protected void initialize() {
         lift.setBrake(false);
+        brakeFire = System.currentTimeMillis();
     }
 
     /**
@@ -34,15 +36,16 @@ public class MoveLiftWithJoystick extends Command {
      */
     @Override
     protected void execute() {
+        if (!(System.currentTimeMillis() - brakeFire > 200)) return;
 //        System.out.println(lift.encoderPresent());
         var val = OI.controller.getLeftStickY();
-        if (Math.abs(val) > LIFT_JOYSTICK_DEADZONE) {
-            lift.setBrake(false);
+//        if (Math.abs(val) > LIFT_JOYSTICK_DEADZONE) {
+//            lift.setBrake(false);
             lift.setSpeedPercent(val);
-        } else {
-            lift.setSpeedPercent(0);
-            lift.setBrake(true);
-        }
+//        } else {
+//            lift.setSpeedPercent(0);
+//            lift.setBrake(true);
+//        }
     }
 
     /**

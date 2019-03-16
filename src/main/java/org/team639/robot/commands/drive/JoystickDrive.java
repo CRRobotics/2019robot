@@ -19,6 +19,10 @@ public class JoystickDrive extends DriveCommand {
     public double lmax = 0;
     public double rmax = 0;
 
+    private double lastLeft = 0;
+    private double lastRight = 0;
+    public static final double maxDiff = 1 / 0.25 / 50;
+
     public JoystickDrive() {
         super("JoystickDrive");
         drivetrain = Robot.drivetrain;
@@ -91,12 +95,34 @@ public class JoystickDrive extends DriveCommand {
      * @param turning The turning magnitude from -1 to 1
      */
     private void arcadeDrive(double speed, double turning) {
-//        speed = speed * 2 / 3;
+        speed = speed * 0.85;
         double turnMultiplier = 1 - speed;
-        if (turnMultiplier < 1d / 3d) turnMultiplier = 1d / 3d;
-//        if (turnMultiplier > 2d / 3d) turnMultiplier = 2d / 3d;
+        if (turnMultiplier < 1d / 2d) turnMultiplier = 1d / 2d;
+        if (turnMultiplier > 4d / 5d) turnMultiplier = 4d / 5d;
         turning = turning * turnMultiplier;
 
-        drivetrain.setSpeedsPercent(speed + turning, speed - turning);
+        double left = speed + turning;
+        double right = speed - turning;
+//
+        if(Math.signum(left) != Math.signum(lastLeft)) {
+            lastLeft = 0;
+        }
+
+        if(Math.signum(right) != Math.signum(lastRight)) {
+            lastRight = 0;
+        }
+
+        if(Math.abs(left) - Math.abs(lastLeft) > maxDiff) {
+            left = (Math.abs(lastLeft) + maxDiff) * Math.signum(left);
+        }
+
+        if(Math.abs(right) - Math.abs(lastRight) > maxDiff){
+            right += (Math.abs(lastRight) + maxDiff) * Math.signum(right);
+        }
+
+        lastLeft = left;
+        lastRight = right;
+
+        drivetrain.setSpeedsPercent(left, right);
     }
 }
