@@ -6,6 +6,9 @@ import org.team639.robot.Robot;
 import org.team639.robot.subsystems.Climbing;
 import org.team639.robot.subsystems.Lift;
 
+/**
+ * COmmand to climb using the lift and climber in coordination. Never tested or tuned so I do not advise using it.
+ */
 public class CoordinatedClimb extends Command {
     private Climbing climbing = Robot.climbing;
     private Lift lift = Robot.lift;

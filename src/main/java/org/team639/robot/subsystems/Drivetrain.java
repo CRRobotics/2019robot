@@ -51,9 +51,19 @@ public class Drivetrain extends DriveSubsystem {
      * Creates a drivetrain with the given components.
      * @param leftMaster The master motor on the left side.
      * @param rightMaster The master motor on the right side.
+     * @param leftFollowers An array of following motor controllers on the left side.
+     * @param rightFollowers An array of following motor controllers on the right side.
      * @param navx The robot navx.
+     * @param lineFollower The line follower that is supposed to be mounted on the robot (It never was because no one left space for it).
      */
-    public Drivetrain(TalonSRX leftMaster, TalonSRX rightMaster, IMotorController[] leftFollowers, IMotorController[] rightFollowers, AHRS navx, LineFollower lineFollower) {
+    public Drivetrain(
+            TalonSRX leftMaster,
+            TalonSRX rightMaster,
+            IMotorController[] leftFollowers,
+            IMotorController[] rightFollowers,
+            AHRS navx,
+            LineFollower lineFollower
+    ) {
         this.leftMaster = leftMaster;
         this.rightMaster = rightMaster;
         this.navx = navx;
@@ -320,10 +330,18 @@ public class Drivetrain extends DriveSubsystem {
         return rightMaster.getSelectedSensorVelocity(0);
     }
 
+    /**
+     * Returns the current control mode of the drivetrain.
+     * @return The current control mode of the drivetrain.
+     */
     public Mode getControlMode() {
         return controlMode;
     }
 
+    /**
+     * Sets the control mode of the drivetrain.
+     * @param controlMode The control mode to set the drivetrain to.
+     */
     public synchronized void setControlMode(Mode controlMode) {
         this.controlMode = controlMode;
     }
@@ -368,10 +386,19 @@ public class Drivetrain extends DriveSubsystem {
         track();
     }
 
+    /**
+     * Returns an OptionalDouble of the line follower value or an empty OptionalDouble if no line is detected.
+     * @return An OptionalDouble of the line follower value or an empty OptionalDouble if no line is detected.
+     */
     public OptionalDouble lineFollowerValue() {
         return lineFollower.getRawPosition();
     }
 
+    /**
+     * Returns an optional with the vision target information if one is detected, or empty otherwise.
+     * Worth noting that no vision was ever actually put on the robot.
+     * @return An optional with the vision target information if one is detected, or empty otherwise.
+     */
     public Optional<VisionTarget> getVisionTarget() {
         if (visionReceiver != null && visionRunner.isAlive()) {
             var buf = visionReceiver.getCurrentBuffer();
@@ -386,8 +413,12 @@ public class Drivetrain extends DriveSubsystem {
         }
     }
 
-
+    /**
+     * Returns the pitch of the robot.
+     * @return The pitch of the robot.
+     */
     public double getRobotPitch() {
+        // Due to the orientation of the navx, the pitch is actually the roll.
         return navx.getRoll();
     }
 

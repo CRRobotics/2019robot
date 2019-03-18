@@ -9,6 +9,9 @@ import org.team639.robot.subsystems.Lift;
 
 import static org.team639.robot.Constants.*;
 
+/**
+ * Facilitates changing the position of the lift with a joystick.
+ */
 public class MoveLiftWithJoystick extends Command {
 
     private Lift lift;

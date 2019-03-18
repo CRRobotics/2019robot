@@ -26,7 +26,14 @@ public class Robot extends TimedRobot {
             RobotMap.hatchDetector
     );
 
-    public static final Drivetrain drivetrain = new Drivetrain(RobotMap.leftDriveMaster, RobotMap.rightDriveMaster, RobotMap.leftFollowers, RobotMap.rightFollowers, RobotMap.navx, new LineFollower(0));
+    public static final Drivetrain drivetrain = new Drivetrain(
+            RobotMap.leftDriveMaster,
+            RobotMap.rightDriveMaster,
+            RobotMap.leftFollowers,
+            RobotMap.rightFollowers,
+            RobotMap.navx,
+            new LineFollower(0)
+    );
 
     public static final Lift lift = new Lift(RobotMap.liftMainTalon, RobotMap.liftFollower, RobotMap.liftBrake);
 
