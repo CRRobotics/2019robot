@@ -36,6 +36,13 @@ public class Acquisition extends Subsystem {
 
     /**
      * Creates a new acquisition using the provided hardware.
+     * @param lowerRollerExtension The talon that extends the lower roller.
+     * @param upperRoller The spark controlling the upper roller.
+     * @param lowerRoller The spark controlling the lower roller.
+     * @param flowerOpen The solenoid that opens and closes the hatch mechanism.
+     * @param flowerForward The solenoid that extends and retracts the hatch mechanism.
+     * @param cargoDetector The cargo detection sensor.
+     * @param hatchDistanceSensor The hatch detection sensor (taken off real robot).
      */
     public Acquisition(TalonSRX lowerRollerExtension, Spark upperRoller, Spark lowerRoller, Solenoid flowerOpen, Solenoid flowerForward, DigitalInput cargoDetector, HatchDistanceSensor hatchDistanceSensor) {
         super("Acquisition");

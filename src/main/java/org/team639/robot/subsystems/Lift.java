@@ -38,6 +38,7 @@ public class Lift extends Subsystem {
      * Constructor, initializes the lift given the two required motors.
      * @param mainTalon The main motor.
      * @param follower The following motor.
+     * @param brake The lift brake.
      */
     public Lift(TalonSRX mainTalon, VictorSPX follower, Solenoid brake) {
 

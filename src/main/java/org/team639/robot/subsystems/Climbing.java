@@ -46,8 +46,8 @@ public class Climbing extends Subsystem {
 
     /**
      * Sets the speed of the climbing lift to a percentage between 1 and -1.
-     * Values < 0 move the system down
-     * Values > 0 move the system up
+     * Values &#60; 0 move the system down
+     * Values &#62; 0 move the system up
      * @param speed The speed at which the motors are to be run.
      */
     public void setSpeed(double speed) {
@@ -74,7 +74,8 @@ public class Climbing extends Subsystem {
     }
 
     /**
-     * Returns the position of the climbing lift in encoder ticks
+     * Returns the position of the climbing lift in encoder ticks.
+     * @return The position of the climbing lift in encoder ticks.
      */
     public int getPosition() {
         return climbMotor.getSelectedSensorPosition(0);

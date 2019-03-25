@@ -8,7 +8,9 @@ public class SetDriveNeutralMode extends Command {
     private NeutralMode mode;
 
     /**
-     * Creates a new command. The name of this command will be set to its class name.
+     * Creates a new command that sets the drivetrain neutral mode to the mode specified.
+     *
+     * @param mode The neutral mode to set the drivetrain to.
      */
     public SetDriveNeutralMode(NeutralMode mode) {
         this.mode = mode;
