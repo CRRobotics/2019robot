@@ -1,6 +1,7 @@
 package org.team639.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import org.team639.robot.subsystems.Acquisition;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team639.robot.subsystems.Lift;
@@ -35,12 +36,24 @@ public class Robot extends TimedRobot {
             new LineFollower(0)
     );
 
+    private static final SendableChooser<DriveLayout> driveMode;
+
+    static {
+        driveMode = new SendableChooser<>();
+        driveMode.setDefaultOption("Arcade 2 joystick right", DriveLayout.Arcade2JoystickRight);
+        driveMode.addOption("Arcade 2 joystick left", DriveLayout.Arcade2JoystickLeft);
+        driveMode.addOption("Arcade 1 joystick right", DriveLayout.Arcade1JoystickRight);
+        driveMode.addOption("Tank", DriveLayout.Tank);
+
+        SmartDashboard.putData("Drive Layout", driveMode);
+    }
+
     public static final Lift lift = new Lift(RobotMap.liftMainTalon, RobotMap.liftFollower, RobotMap.liftBrake);
 
     public static final Climbing climbing = new Climbing();
 
     public static DriveLayout getDriveLayout() {
-        return DriveLayout.Arcade2JoystickRight;
+        return driveMode.getSelected();
     }
 
     private double liftMaxSpeed = 0;
